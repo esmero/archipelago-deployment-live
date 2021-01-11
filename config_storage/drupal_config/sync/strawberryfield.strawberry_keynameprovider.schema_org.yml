@@ -1,0 +1,12 @@
+uuid: f1b80a9b-40cb-42c3-add2-1141293b9360
+langcode: en
+status: true
+dependencies: {  }
+id: schema_org
+label: schema.org
+pluginid: jsonld
+pluginconfig:
+  url: 'https://schema.org/docs/jsonldcontext.json'
+  filterurl: 'https://raw.githubusercontent.com/esmero/archipelago-deployment/8.x-1.0-beta3/web/sites/default/files/jsonld/c20db5b6a8d641e98c0570d1ef89017f.jsonld'
+  keys: 'ismemberof,name_label,type,hocr,city,category,country,state,display_name'
+active: true
