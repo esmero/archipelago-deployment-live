@@ -1,5 +1,4 @@
 # Run docker-compose run -d
-# drush config-import
 
 version: '3.5'
 services:
@@ -37,6 +36,7 @@ services:
       - host-net
       - esmero-net
     volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
     environment:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
@@ -95,10 +95,12 @@ services:
       AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
       CACHE_SERVER_DERIVATIVE: S3Cache
-      S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: archipelago
-      S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: somefolder/media/
-      S3CACHE_BUCKET_NAME: archipelago
-      S3CACHE_OBJECT_KEY_PREFIX: somefolder/iiifcache/
+      S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: ${MINIO_BUCKET_MEDIA}
+      S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: ${MINIO_FOLDER_PREFIX_MEDIA}
+      S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_CACHE} 
+      S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE} 
+      XMS: 2g
+      XMX: 4g
     volumes:
       - ${ARCHIPELAGO_ROOT}/config_storage/iiifconfig:/etc/cantaloupe
       - ${ARCHIPELAGO_ROOT}/data_storage/iiifcache:/var/cache/cantaloupe
@@ -107,15 +109,20 @@ services:
     container_name: esmero-minio
     restart: always
     image: minio/minio:latest
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
     ports:
       - "9000:9000"
     networks:
       - host-net
-       - esmero-net
+      - esmero-net
     environment:
+      MINIO_HTTP_TRACE: /tmp/minio-log.txt
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-    command: gateway s3
+    command: gateway s3 https://s3.amazonaws.com/
 networks:
   host-net:
     driver: bridge
