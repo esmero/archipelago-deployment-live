@@ -96,6 +96,7 @@ module:
   settings_tray: 0
   shortcut: 0
   simpletest: 0
+  smtp: 0
   sophron: 0
   strawberry_runners: 0
   strawberryfield: 0
