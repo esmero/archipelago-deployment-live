@@ -10,8 +10,8 @@ dependencies:
     - search_api
     - file
   config:
-    - field.storage.node.field_descriptive_metadata
     - field.storage.node.field_tags
+    - field.storage.node.field_descriptive_metadata
     - search_api.server.esmero_solr_7_5
     - core.entity_view_mode.node.digital_object_image_only_for_carousel
     - core.entity_view_mode.node.search_index
@@ -356,6 +356,51 @@ field_settings:
         - field.storage.node.field_descriptive_metadata
       module:
         - node
+  sbf_label:
+    label: 'A Label'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: label
+    type: text
+  sbf_metadata:
+    label: 'SBF Ordered list of additional metadata'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: metadata
+    type: string
+  sbf_plaintext:
+    label: 'Data body containing plain text'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: plaintext
+    type: text
+  sbf_sentiment:
+    label: 'SBF Sentiment in integer range'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: sentiment
+    type: string
+  sbf_ts:
+    label: 'SBF Time stamp'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: ts
+    type: string
+  sbf_uri:
+    label: 'SBF source or related URI/URL'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: uri
+    type: string
+  sbf_when:
+    label: 'SBF Ordered list of dates in string format'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: when
+    type: string
+  sbf_where:
+    label: 'SBF Ordered list of places'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: where
+    type: string
+  sbf_who:
+    label: 'SBF Ordered list of agents'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: who
+    type: string
   sequence_id:
     label: 'Sequence ID'
     datasource_id: strawberryfield_flavor_datasource
@@ -424,7 +469,7 @@ field_settings:
     label: 'Parent Node » Title'
     datasource_id: strawberryfield_flavor_datasource
     property_path: 'target_id:title'
-    type: string
+    type: text
   title_autocomplete:
     label: 'Title for autocomplete'
     datasource_id: 'entity:node'
@@ -516,8 +561,7 @@ processor_settings:
       add_properties: 20
   content_access:
     weights:
-      preprocess_index: -6
-      preprocess_query: -4
+      preprocess_query: -30
   highlight:
     highlight: server
     highlight_partial: false
