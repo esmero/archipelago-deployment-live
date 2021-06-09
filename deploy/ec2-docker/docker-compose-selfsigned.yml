@@ -109,7 +109,7 @@ services:
     restart: always
     image: minio/minio:latest
     volumes:
-      - ${ARCHIPELAGO_ROOT}/data_storage/miniodata:/data:cached
+      - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
     ports:
       - "9000:9000"
     networks:
