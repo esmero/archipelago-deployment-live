@@ -35,6 +35,7 @@ services:
       - host-net
       - esmero-net
     volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
     environment:
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
@@ -91,12 +92,14 @@ services:
       - esmero-net
     environment:
       AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
-        AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
-        CACHE_SERVER_DERIVATIVE: FileSystem
-        S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: archipelago
-        S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: somefolder/media/
-        S3CACHE_BUCKET_NAME: archipelago
-        S3CACHE_OBJECT_KEY_PREFIX: somefolder/iiifcache/
+      AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
+      CACHE_SERVER_DERIVATIVE: FileSystem
+      S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: ${MINIO_BUCKET_MEDIA}
+      S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: ${MINIO_BUCKET_MEDIA}
+      S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_MEDIA}
+      S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE}
+      XMS: 2g
+      XMX: 4g
     volumes:
       - ${ARCHIPELAGO_ROOT}/config_storage/iiifconfig:/etc/cantaloupe
       - ${ARCHIPELAGO_ROOT}/data_storage/iiifcache:/var/cache/cantaloupe
