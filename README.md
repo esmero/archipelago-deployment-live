@@ -15,9 +15,10 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - Running your own local/development Archipelago. For that we suggest using https://github.com/esmero/archipelago-deployment
 
 ## Requirements
-###Minimal
+
+### Minimal
 - 4 Gbytes of RAM (e.g AWS EC2 t3.medium) 2 CPUs, Single SSD Drive of 100 Gbytes
-###Recommend base line
+### Recommend base line
 - 8 Gbytes of RAM (AWS EC2 t3.medium)  2 CPUs, Single SSD Drive of 100 Gbytes, optional: one magnetic Drive of 500 Gbytes for Caches/Temp files/Backups.
 ### Good for all large repository
 - 16 Gbytes of RAM (AWS EC2 m6g.xlarge - Graviton)  4 CPUs, Single SSD Drive of 200 Gbytes, optional: one magnetic Drive of 1TB for Caches/Temp files/Backups.
@@ -26,9 +27,9 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - Most recent Docker as a running as a service and docker-compose 
 - Basic Unix/Linux terminal skills and a root/sudo account
 
-# Deployment on Linux/X86/AMD system
+## Deployment on Linux/X86/AMD system
 
-## Step 1:
+### Step 1:
 Deploy your base system
 
 
@@ -67,7 +68,7 @@ sudo reboot
 ```
 Reboot is needed to allow Docker to take full control over your OS resources.
 
-## Step 2:
+### Step 2:
 
 In your location of choice clone this repo
 ```SHELL
@@ -76,9 +77,9 @@ cd archipelago-deployment-live
 git checkout 1.0.0-RC2
 ```
 
-## Step 3. Setup your enviromental variables for Docker/Services
+### Step 3. Setup your enviromental variables for Docker/Services
 
-### Setup Enviromentals
+#### Setup Enviromentals
 
 Setup your deployment enviromental variables by copying the template
 
@@ -125,7 +126,7 @@ Now that you know, you also know that these values should be not **shared** and 
 `docker-compose` will read this .env and start all services for you based on its content.
 Once you have modified this and you are ready for your first big decision. 
 
-### Running a fully qualified domain you wish a valid/signed certificate for?
+#### Running a fully qualified domain you wish a valid/signed certificate for?
 
 This means you will use the  `docker-compose-aws-s3.yml`. Do the following
 ```Shell
@@ -135,7 +136,7 @@ cp deploy/ec2-docker/docker-compose-aws-s3.yml deploy/ec2-docker/docker-compose.
 If you have more than a single domain you may create a text file inside 
 `config_storage/nginxconfig/certbot_extra_domains/your.domain.org` and write for each subdomain there an entry/line.
 
-### OR Running self-signed? (optional) . 
+#### OR Running self-signed? (optional) . 
 
 Only if you are not running a fully qualified domain you wish a valid/signed
 
@@ -149,28 +150,29 @@ cp deploy/ec2-docker/docker-compose-selfsigned.yml deploy/ec2-docker/docker-comp
 Note: Self signed docker-compose.yml file is setup to use min.io with local storage
 ```YAML
     volumes:
-      - ${ARCHIPELAGO_ROOT}/data_storage/miniodata:/data:cached
+      - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
 ```
 This folder will be created by minio. If you are using a secondary Drive (e.g magnetic) you can modify your `deploy/ec2-docker/docker-compose.yml` to use a folder there e.g . 
 
 ```YAML
     volumes:
-      - /persistentinotherdrive/data_storage/miniodata:/data:cached
+      - /persistentinotherdrive/data_storage/minio-data:/data:cached
 ```
 
 Make sure your logged in user can read/write to it.
 
 NOTE: If you want to use AWS S3 storage for the self signed version replace the minio Service YAML block with this [Service Block](https://github.com/esmero/archipelago-deployment-live/blob/e90cf7701f1ae8e0a580a0901aaadb669baa21fd/deploy/ec2-docker/docker-compose-aws-s3.yml#L108-L125) in your new `deploy/ec2-docker/docker-compose.yml`. You can mix and match services and even remove all `:cached` statements for improved volumen performance.
 
+### Step 4. First Run
 
-### Now Permissions
+#### First Permissions
 
 ```SHELL
 sudo chown -R 100:100 data_storage/iiifcache
 sudo chown -R 8983:8983 data_storage/solrcore
 ```
 
-### First Run
+#### Actual first run
 
 Time to spin our docker containers for the first time. We will start all without going into background so log/error checking is easier. Specially if you have selected a Valid/Signed Cert choice and also want to be sure S3 keys/access are working
 
@@ -178,11 +180,103 @@ Time to spin our docker containers for the first time. We will start all without
 cd deploy/ec2-docker
 docker-compose up
 ```
+
 You will see a lot of things happening. Check for errors/problems/clear alerts and give all a minute or so to start. 
+Ok, let's assume your setup managed to request a valid signed SSL cert, you will see a nice message!
 
-... More soon
+```
+- Congratulations! Your certificate and chain have been saved at:XXXXX
+   Your certificate will expire on 20XX-XX-XX. To obtain a new or
+   tweaked version of this certificate in the future, simply run
+   certbot again. To non-interactively renew *all* of your
+   certificates, run "certbot renew"
+```
 
+Archipelago will do that for you whenever its about to expire so no need to deal with this manually. Even when `docker-compose` restarts
 
+Now press CTRL+C. `docker-compose` will shutdown gracefully. Good!
 
+### Step 5. Deploy Drupal
 
+#### Composer and Drupal
 
+Copy the shipped default composer.default.json to composer.json (ONLY if you are installing from scratch)
+
+```SHELL
+cd ..
+cp drupal/composer.default.json drupal/composer.json
+```
+
+Start Docker again
+
+```SHELL
+docker-compose up -d
+```
+
+Wait a few seconds and run
+
+```SHELL
+docker exec -ti esmero-php bash -c "chown -R www-data:www-data private"
+docker exec -ti esmero-php bash -c "composer install"
+```
+
+Composer install will take a little while and bring all your PHP libraries.
+
+Once done execute our setup script that will prepare your Drupal settings.php and bring some of the `.env` enviromental variables to the Drupal environment. 
+
+```SHELL
+docker exec -ti esmero-php bash -c 'scripts/archipelago/setup.sh'
+```
+
+And now you can deploy Drupal! 
+
+**IMPORTANT:** Make sure you replace in the following command `root:MYSQL_ROOT_PASSWORD` the `MYSQL_ROOT_PASSWORD` string with the **value** you used/assigned in your `.env` file for `MYSQL_ROOT_PASSWORD`. And replace `ADMIN_PASSWORD` with a password that is safe and you won't forget!
+
+```SHELL
+docker exec -ti esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose config_installer  config_installer_sync_configure_form.sync_directory=/var/www/html/config/sync/ --db-url=mysql://root:MYSQL_ROOT_PASSWORD@esmero-db/drupal8 --account-name=admin --account-pass=ADMIN_PASSWORD -r=/var/www/html/web --sites-subdir=default --notify=false install_configure_form.enable_update_status_module=NULL install_configure_form.enable_update_status_emails=NULL;drush cr;chown -R www-data:www-data sites;"
+```
+
+### Step 6. Users and initial Content.
+
+After installation is done (may take a few) you can install initial users:
+
+```SHELL
+docker exec -ti esmero-php bash -c 'drush ucrt demo --password="demo"; drush urol metadata_pro "demo"'
+docker exec -ti esmero-php bash -c 'drush ucrt jsonapi --password="jsonapi"; drush urol metadata_api "jsonapi"'
+````
+
+Before ingesting the base content we need to make sure we can access your JSON-API on your new setup domain. That means we need to change internal urls (https://esmero-web) to the new valid SSL driven ones. This is easy.
+
+On your host machine (no need to `docker exec` these ones) replace in the following command `your.domain.org` with the domain you setup in your `.env` file.
+
+```SHELL
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' deploy.sh
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' update_deployed.sh
+```
+
+Now your deploy and `update_deployed.sh` are update and ready. Let's ingest some ADOs
+
+```SHELL
+docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
+```
+
+## Deployment on ARM64/v8(Graviton, Apple M1) system:
+
+This is slightly different and requires 3 new Docker Images we built that are replacements + plus swapping MYSQL 8 for MariaDB 15.  
+
+We will generate soon an alternative docker-compose-arm64.yml file for that case but in the meantime here is an example
+https://github.com/esmero/archipelago-deployment/blob/1.0.0-RC3/docker-compose-arm64.yml
+
+## Caring & Coding + Fixing + Testing
+
+* [Diego Pino](https://github.com/DiegoPino)
+* [Giancarlo Birello](https://github.com/giancarlobi)
+* [Allison Lund](https://github.com/alliomeria)
+
+## Acknowledgments
+
+This software is a [Metropolitan New York Library Council](https://metro.org) Open-Source initiative and part of the Archipelago Commons project.
+
+## License
+
+[GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
