@@ -24,7 +24,7 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - 16 Gbytes of RAM (AWS EC2 m6g.xlarge - Graviton)  4 CPUs, Single SSD Drive of 200 Gbytes, optional: one magnetic Drive of 1TB for Caches/Temp files/Backups.
 ### OS:
 - Ubuntu 20.04 /Amazon Linux 2/Debian 10.9 / AlmaLinux (Centos replacement) matching your CPU archicture (of course)
-- Most recent Dockerrunning as a service and docker-compose 
+- Most recent `Docker` running as a service and `docker-compose `
 - Basic Unix/Linux terminal skills and a root/sudo account
 
 ## Deployment on Linux/X86/AMD system
