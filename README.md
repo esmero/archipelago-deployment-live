@@ -24,14 +24,13 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - 16 Gbytes of RAM (AWS EC2 m6g.xlarge - Graviton)  4 CPUs, Single SSD Drive of 200 Gbytes, optional: one magnetic Drive of 1TB for Caches/Temp files/Backups.
 ### OS:
 - Ubuntu 20.04 /Amazon Linux 2/Debian 10.9 / AlmaLinux (Centos replacement) matching your CPU archicture (of course)
-- Most recent Docker as a running as a service and docker-compose 
+- Most recent Dockerrunning as a service and docker-compose 
 - Basic Unix/Linux terminal skills and a root/sudo account
 
 ## Deployment on Linux/X86/AMD system
 
 ### Step 1:
 Deploy your base system
-
 
 Make sure your Firewall/AWS Security group has these ports open for everyone to access
 - 443 (NGINX SSL)
@@ -43,7 +42,7 @@ And protected/modally open for your own development/testing/administration
 - 9000 (Minio)
 - 22 (so you can ssh into your machine)
 
-Setup your system using your fav. package manager with 
+Setup your system using your favorite package manager with 
 
 - Docker
 - git
@@ -92,7 +91,7 @@ and editing it
 nano deploy/ec2-docker/ec2-docker/.env
 ```
 
-The content of that file is the following
+The content of that file would be similar to this.
 ```ENV
 ARCHIPELAGO_ROOT=/home/ec2-user/archipelago-deployment-live
 ARCHIPELAGO_EMAIL=your@validemail.org
@@ -108,23 +107,24 @@ MINIO_FOLDER_PREFIX_CACHE=iiifcache/
 
 What does each key mean?
 
-- `ARCHIPELAGO_ROOT`: the absolute path to your `archipelago-deployment-live` git repo in your host machine.
-- `ARCHIPELAGO_EMAIL`: a valid email, will be used to register your SSL Certificate via Certbot.
-- `ARCHIPELAGO_DOMAIN`: A valid domain name for your repository. If not using your own it may be one provided by your Cloud provider. e.g http://ec2-xx-xxx-xxx-xx.compute-1.amazonaws.com. This domain will be also used to request your SSL Certificate via Certbot.
-- `MINIO_ACCESS_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to generated there. The user/IAM owner of this ACCESS KEY needs to have access to read/write the bucket you will configure in this same .env file. If running local `min.io` whatever you set will be used.
-- `MINIO_SECRET_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to generated there. The user/IAM owner of the matching SECRET_KEY needs to have access to read/write the bucket you will configure in this same .env file. If running local `min.io` whatever you set will be used.
+- `ARCHIPELAGO_ROOT`: the **absolute path** to your `archipelago-deployment-live` git repo in your host machine.
+- `ARCHIPELAGO_EMAIL`: a valid **email**, will be used to register your SSL Certificate via Certbot.
+- `ARCHIPELAGO_DOMAIN`: a valid **domain name** for your repository. If not using your own it may be one provided by your Cloud provider. e.g http://ec2-xx-xxx-xxx-xx.compute-1.amazonaws.com. This domain will be also used to request your SSL Certificate via Certbot.
+- `MINIO_ACCESS_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to be generated there. The user/IAM owner of this ACCESS KEY needs to have access to read/write the bucket you will configure in this same `.env`. If running local `min.io` whatever you set will be used.
+- `MINIO_SECRET_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to generated there. The user/IAM owner of the matching SECRET_KEY needs to have access to read/write the bucket you will configure in this same `.env` file. If running local `min.io` whatever you set will be used.
 - `MYSQL_ROOT_PASSWORD`: The MYSQL 8 or Mariadb 15 password. This password will be used later also during Drupal deployment via `drush`
 - `MINIO_BUCKET_MEDIA`: The name of your Persistant Storage Bucket. If using mini.io local we recommend keeping it simple. E.g `archipelago`
-- `MINIO_FOLDER_PREFIX_MEDIA`: The `folder` (a prefix really) where your DO Storage and File storage will go inside the `MINIO_BUCKET_MEDIA` Bucket. `media/` is a fine name for this one and common in archipelago deployments
+- `MINIO_FOLDER_PREFIX_MEDIA`: The `folder` (a prefix really) where your DO Storage and File storage will go inside the `MINIO_BUCKET_MEDIA` Bucket. `media/` is a _fine_ name for this one and common in archipelago deployments.
 - `MINIO_BUCKET_CACHE`: The name of your IIIF Cache storage Bucket. May be the same as `MINIO_BUCKET_MEDIA`. If different make sure your your `MINIO_ACCESS_KEY` and/or IAM role ACL have permission to read write to this one too. 
-- `MINIO_FOLDER_PREFIX_CACHE`:  The `folder` (a prefix really) where Cantaloupe will/can write its iiif caches. `iiifcache/` is a good name.
+- `MINIO_FOLDER_PREFIX_CACHE`:  The `folder` (a prefix really) where Cantaloupe will/can write its `iiif` caches. `iiifcache/` is a _lovely_ name we use a lot.
 
 `IMPORTANT NOTE`: For AWS EC2. If your selected an `IAM role` for your server when setting it up/deploying it, `min.io` will use the AWS EC2 backed internal API to request access to your S3. This means the ROLE itself needs to have read/write access (ACL) to the given Bucket(s) and your key/secrets won't be able to override that. Please do not ignore this note. It will save you a LOT of frustration and coffee. You can also run an EC2 instace without a given IAM and in that case just the ACCESS_KEY/SECRET will matter.
 
 Now that you know, you also know that these values should be not **shared** and this `.env` file **should not** commited/kept in version control. Please be careful.
 
-`docker-compose` will read this .env and start all services for you based on its content.
-Once you have modified this and you are ready for your first big decision. 
+`docker-compose` will read this `.env` and start all services for you based on its content.
+
+Once you have modified this you are ready for your first big decision. 
 
 #### Running a fully qualified domain you wish a valid/signed certificate for?
 
@@ -132,11 +132,12 @@ This means you will use the  `docker-compose-aws-s3.yml`. Do the following
 ```Shell
 cp deploy/ec2-docker/docker-compose-aws-s3.yml deploy/ec2-docker/docker-compose.yml
 ```
+
 ##### Optional (expert) extra domains:
 If you have more than a single domain you may create a text file inside 
 `config_storage/nginxconfig/certbot_extra_domains/your.domain.org` and write for each subdomain there an entry/line.
 
-#### OR Running self-signed? (optional) . 
+#### OR Running self-signed? (optional): 
 
 Only if you are not running a fully qualified domain you wish a valid/signed
 
@@ -152,7 +153,7 @@ Note: Self signed docker-compose.yml file is setup to use min.io with local stor
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
 ```
-This folder will be created by minio. If you are using a secondary Drive (e.g magnetic) you can modify your `deploy/ec2-docker/docker-compose.yml` to use a folder there e.g . 
+This folder will be created by min.io. If you are using a secondary Drive (e.g magnetic) you can modify your `deploy/ec2-docker/docker-compose.yml` to use a folder there e.g . 
 
 ```YAML
     volumes:
@@ -161,7 +162,7 @@ This folder will be created by minio. If you are using a secondary Drive (e.g ma
 
 Make sure your logged in user can read/write to it.
 
-NOTE: If you want to use AWS S3 storage for the self signed version replace the minio Service YAML block with this [Service Block](https://github.com/esmero/archipelago-deployment-live/blob/e90cf7701f1ae8e0a580a0901aaadb669baa21fd/deploy/ec2-docker/docker-compose-aws-s3.yml#L108-L125) in your new `deploy/ec2-docker/docker-compose.yml`. You can mix and match services and even remove all `:cached` statements for improved volumen performance.
+NOTE: If you want to use AWS S3 storage for the self signed version replace the minio Service YAML block with this [Service Block](https://github.com/esmero/archipelago-deployment-live/blob/e90cf7701f1ae8e0a580a0901aaadb669baa21fd/deploy/ec2-docker/docker-compose-aws-s3.yml#L108-L125) in your new `deploy/ec2-docker/docker-compose.yml`. You can mix and match services and even remove all `:cached` statements for _improved_ R/W volumen performance.
 
 ### Step 4. First Run
 
@@ -222,7 +223,7 @@ docker exec -ti esmero-php bash -c "composer install"
 
 Composer install will take a little while and bring all your PHP libraries.
 
-Once done execute our setup script that will prepare your Drupal settings.php and bring some of the `.env` enviromental variables to the Drupal environment. 
+Once done, execute our setup script that will prepare your Drupal `settings.php` and bring some of the `.env` enviromental variables to the Drupal environment. 
 
 ```SHELL
 docker exec -ti esmero-php bash -c 'scripts/archipelago/setup.sh'
@@ -230,7 +231,7 @@ docker exec -ti esmero-php bash -c 'scripts/archipelago/setup.sh'
 
 And now you can deploy Drupal! 
 
-**IMPORTANT:** Make sure you replace in the following command `root:MYSQL_ROOT_PASSWORD` the `MYSQL_ROOT_PASSWORD` string with the **value** you used/assigned in your `.env` file for `MYSQL_ROOT_PASSWORD`. And replace `ADMIN_PASSWORD` with a password that is safe and you won't forget!
+**IMPORTANT:** Make sure you replace in the following command inside `root:MYSQL_ROOT_PASSWORD` the `MYSQL_ROOT_PASSWORD` string with the **value** you used/assigned in your `.env` file for `MYSQL_ROOT_PASSWORD`. And replace `ADMIN_PASSWORD` with a password that is safe and you won't forget! That passwords is for your Drupal super user (uid:0).
 
 ```SHELL
 docker exec -ti esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose config_installer  config_installer_sync_configure_form.sync_directory=/var/www/html/config/sync/ --db-url=mysql://root:MYSQL_ROOT_PASSWORD@esmero-db/drupal8 --account-name=admin --account-pass=ADMIN_PASSWORD -r=/var/www/html/web --sites-subdir=default --notify=false install_configure_form.enable_update_status_module=NULL install_configure_form.enable_update_status_emails=NULL;drush cr;chown -R www-data:www-data sites;"
@@ -238,23 +239,23 @@ docker exec -ti esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose c
 
 ### Step 6. Users and initial Content.
 
-After installation is done (may take a few) you can install initial users:
+After installation is done (may take a few) you can install initial users and assign them roles:
 
 ```SHELL
 docker exec -ti esmero-php bash -c 'drush ucrt demo --password="demo"; drush urol metadata_pro "demo"'
 docker exec -ti esmero-php bash -c 'drush ucrt jsonapi --password="jsonapi"; drush urol metadata_api "jsonapi"'
 ````
 
-Before ingesting the base content we need to make sure we can access your JSON-API on your new setup domain. That means we need to change internal urls (https://esmero-web) to the new valid SSL driven ones. This is easy.
+Before ingesting the base content we need to make sure we can access your `JSON-API` on for your new domain. That means we need to change internal urls (`https://esmero-web`) to the new valid SSL driven ones. This is easy:
 
-On your host machine (no need to `docker exec` these ones) replace in the following command `your.domain.org` with the domain you setup in your `.env` file.
+On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file.
 
 ```SHELL
  sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' deploy.sh
  sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' update_deployed.sh
 ```
 
-Now your deploy and `update_deployed.sh` are update and ready. Let's ingest some ADOs
+Now your `deploy.sh` and `update_deployed.sh` are update and ready. Let's ingest some Twig Templates, an AMI Set, menus and a Blocks.
 
 ```SHELL
 docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
