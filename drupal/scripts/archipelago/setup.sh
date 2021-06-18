@@ -8,7 +8,7 @@ cat <<EOT >> /var/www/html/web/sites/default/settings.php
 \$settings['s3fs.secret_key'] = \$MINIO_ACCESS_KEY;
 \$settings['s3fs.upload_as_private'] = TRUE;
 \$settings['file_private_path'] = '/var/www/html/private';
-ini_set('memory_limit', '1024');
+ini_set('memory_limit', '1024M');
 \$settings['install_profile'] = 'standard';
 if (PHP_SAPI !== 'cli') {
   \$settings['reverse_proxy'] = TRUE;
