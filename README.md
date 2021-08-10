@@ -83,12 +83,12 @@ git checkout 1.0.0-RC2
 Setup your deployment enviromental variables by copying the template
 
 ```
-cp deploy/ec2-docker/.env.template deploy/ec2-docker/cd ec2-docker/.env
+cp deploy/ec2-docker/.env.template deploy/ec2-docker/.env
 ```
 and editing it
 
 ```Shell
-nano deploy/ec2-docker/ec2-docker/.env
+nano deploy/ec2-docker/.env
 ```
 
 The content of that file would be similar to this.
@@ -126,18 +126,25 @@ Now that you know, you also know that these values should be not **shared** and 
 
 Once you have modified this you are ready for your first big decision. 
 
-#### Running a fully qualified domain you wish a valid/signed certificate for?
+#### Running a fully qualified domain you wish a valid/signed certificate for AMD/INTEL Architecture?
 
 This means you will use the  `docker-compose-aws-s3.yml`. Do the following
 ```Shell
 cp deploy/ec2-docker/docker-compose-aws-s3.yml deploy/ec2-docker/docker-compose.yml
 ```
 
-##### Optional (expert) extra domains:
+#### Running a fully qualified domain you wish a valid/signed certificate for ARM64/Apple M1 Architecture?
+
+This means you will use the  `docker-compose-aws-s3-arm64.yml`. Do the following
+```Shell
+cp deploy/ec2-docker/docker-compose-aws-s3-arm64.yml deploy/ec2-docker/docker-compose.yml
+```
+
+##### Optional (expert) extra domains (does not apply to ARM64/Apple M1 Architecture):
 If you have more than a single domain you may create a text file inside 
 `config_storage/nginxconfig/certbot_extra_domains/your.domain.org` and write for each subdomain there an entry/line.
 
-#### OR Running self-signed? (optional): 
+#### OR Running self-signed? (optional and does not apply to ARM64/Apple M1 Architecture): 
 
 Only if you are not running a fully qualified domain you wish a valid/signed
 
@@ -248,11 +255,11 @@ docker exec -ti esmero-php bash -c 'drush ucrt jsonapi --password="jsonapi"; dru
 
 Before ingesting the base content we need to make sure we can access your `JSON-API` on for your new domain. That means we need to change internal urls (`https://esmero-web`) to the new valid SSL driven ones. This is easy:
 
-On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file.
+On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file. Go to your base git clone folder and then run
 
 ```SHELL
- sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' deploy.sh
- sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' update_deployed.sh
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/deploy.sh
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/update_deployed.sh
 ```
 
 Now your `deploy.sh` and `update_deployed.sh` are update and ready. Let's ingest some Twig Templates, an AMI Set, menus and a Blocks.
@@ -263,7 +270,7 @@ docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
 
-This is slightly different and requires 3 new Docker Images we built that are replacements + plus swapping MYSQL 8 for MariaDB 15.  
+This is slightly different.  
 
 We will generate soon an alternative docker-compose-arm64.yml file for that case but in the meantime here is an example
 https://github.com/esmero/archipelago-deployment/blob/1.0.0-RC3/docker-compose-arm64.yml
