@@ -83,12 +83,12 @@ git checkout 1.0.0-RC2
 Setup your deployment enviromental variables by copying the template
 
 ```
-cp deploy/ec2-docker/.env.template deploy/ec2-docker/cd ec2-docker/.env
+cp deploy/ec2-docker/.env.template deploy/ec2-docker/.env
 ```
 and editing it
 
 ```Shell
-nano deploy/ec2-docker/ec2-docker/.env
+nano deploy/ec2-docker/.env
 ```
 
 The content of that file would be similar to this.
