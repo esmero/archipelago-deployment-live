@@ -1,0 +1,133 @@
+# Run docker-compose up -d
+# Docker file for Arm64 and Apple M1 machines
+version: '3.5'
+services:
+  web:
+    container_name: esmero-web
+    image: jonasal/nginx-certbot
+    restart: always
+    environment:
+      CERTBOT_EMAIL: ${ARCHIPELAGO_EMAIL}
+      ENVSUBST_VARS: FQDN
+      FQDN: ${ARCHIPELAGO_DOMAIN}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/templates:/etc/nginx/templates
+      - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
+      - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx
+      - ${ARCHIPELAGO_ROOT}/data_storage/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - solr
+      - php
+      - db
+    tty: true
+    networks:
+      - host-net
+      - esmero-net
+  php:
+    container_name: esmero-php
+    restart: always
+    image: "esmero/php-7.4-fpm:1.0.0-RC2-multiarch"
+    tty: true
+    networks:
+      - host-net
+      - esmero-net
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MINIO_BUCKET_MEDIA: ${MINIO_BUCKET_MEDIA}
+      MINIO_FOLDER_PREFIX_MEDIA: ${MINIO_FOLDER_PREFIX_MEDIA}
+  solr:
+    container_name: esmero-solr
+    restart: always
+    image: "solr:8.8.2"
+    tty: true
+    ports:
+      - "8983:8983"
+    networks:
+      - host-net
+      - esmero-net
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/data_storage/solrcore:/var/solr/data
+      - ${ARCHIPELAGO_ROOT}/config_storage/solrconfig:/drupalconfig
+      - ${ARCHIPELAGO_ROOT}/data_storage/solrlib:/opt/solr/contrib/archipelago/lib
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - drupal
+      - /drupalconfig
+  db:
+    image: mariadb:10.5.10-focal
+    command: --max_allowed_packet=256M
+    container_name: esmero-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - host-net
+      - esmero-net
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/data_storage/db:/var/lib/mysql
+  nlp:
+    container_name: esmero-nlp
+    restart: always
+    image: "esmero/esmero-nlp:1.0.1-RC2-arm64"
+    ports:
+      - "6400:6400"
+    networks:
+      - host-net
+      - esmero-net
+  iiif:
+    container_name: esmero-cantaloupe
+    image: "esmero/cantaloupe-s3:4.1.9RC2-arm64"
+    restart: always
+    ports:
+      - "8183:8182"
+    networks:
+      - host-net
+      - esmero-net
+    environment:
+      AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
+      CACHE_SERVER_DERIVATIVE: S3Cache
+      S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: ${MINIO_BUCKET_MEDIA}
+      S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: ${MINIO_FOLDER_PREFIX_MEDIA}
+      S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_CACHE} 
+      S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE} 
+      XMS: 2g
+      XMX: 4g
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/iiifconfig:/etc/cantaloupe
+      - ${ARCHIPELAGO_ROOT}/data_storage/iiifcache:/var/cache/cantaloupe
+      - ${ARCHIPELAGO_ROOT}/data_storage/iiiftmp:/var/cache/cantaloupe_tmp
+  minio:
+    container_name: esmero-minio
+    restart: always
+    image: minio/minio:latest
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
+    ports:
+      - "9000:9000"
+    networks:
+      - host-net
+      - esmero-net
+    environment:
+      MINIO_HTTP_TRACE: /tmp/minio-log.txt
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    command: gateway s3 https://s3.amazonaws.com/
+networks:
+  host-net:
+    driver: bridge
+  esmero-net:
+    driver: bridge
+    internal: true
