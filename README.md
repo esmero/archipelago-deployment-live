@@ -248,11 +248,11 @@ docker exec -ti esmero-php bash -c 'drush ucrt jsonapi --password="jsonapi"; dru
 
 Before ingesting the base content we need to make sure we can access your `JSON-API` on for your new domain. That means we need to change internal urls (`https://esmero-web`) to the new valid SSL driven ones. This is easy:
 
-On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file.
+On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file. Go to your base git clone folder and then run
 
 ```SHELL
- sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' deploy.sh
- sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' update_deployed.sh
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/deploy.sh
+ sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/update_deployed.sh
 ```
 
 Now your `deploy.sh` and `update_deployed.sh` are update and ready. Let's ingest some Twig Templates, an AMI Set, menus and a Blocks.
