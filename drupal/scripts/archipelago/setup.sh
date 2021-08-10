@@ -5,9 +5,11 @@ cat <<EOT >> /var/www/html/web/sites/default/settings.php
 \$MINIO_ACCESS_KEY=getenv("MINIO_ACCESS_KEY");
 \$MINIO_SECRET_KEY=getenv("MINIO_SECRET_KEY");
 \$MINIO_BUCKET_MEDIA=getenv("MINIO_BUCKET_MEDIA");
+\$MINIO_FOLDER_PREFIX_MEDIA=getenv("MINIO_FOLDER_PREFIX_MEDIA");
 \$settings['s3fs.access_key'] = \$MINIO_ACCESS_KEY;
 \$settings['s3fs.secret_key'] = \$MINIO_SECRET_KEY;
 \$config['s3fs.settings']['bucket'] = \$MINIO_BUCKET_MEDIA
+\$config['s3fs.settings']['root_folder'] = \$MINIO_FOLDER_PREFIX_MEDIA
 \$settings['s3fs.upload_as_private'] = TRUE;
 \$settings['file_private_path'] = '/var/www/html/private';
 ini_set('memory_limit', '1024M');
