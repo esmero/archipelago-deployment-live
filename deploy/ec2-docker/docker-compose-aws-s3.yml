@@ -43,6 +43,7 @@ services:
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MINIO_BUCKET_MEDIA: ${MINIO_BUCKET_MEDIA}
+      MINIO_FOLDER_PREFIX_MEDIA: ${MINIO_FOLDER_PREFIX_MEDIA}
   solr:
     container_name: esmero-solr
     restart: always
