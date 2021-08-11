@@ -115,6 +115,7 @@ services:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
     ports:
       - "9000:9000"
+      - "9001:9001"
     networks:
       - host-net
       - esmero-net
@@ -124,7 +125,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-    command: gateway s3 https://s3.amazonaws.com/
+    command: gateway s3 https://s3.amazonaws.com/ --console-address ":9001"
 networks:
   host-net:
     driver: bridge
