@@ -15,7 +15,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/templates:/etc/nginx/templates
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/template:/etc/nginx/templates
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
       - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx
       - ${ARCHIPELAGO_ROOT}/data_storage/letsencrypt:/etc/letsencrypt
