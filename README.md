@@ -80,7 +80,7 @@ In your location of choice clone this repo
 ```SHELL
 git clone https://github.com/esmero/archipelago-deployment-live
 cd archipelago-deployment-live
-git checkout 1.0.0-RC2
+git checkout 1.0.0-RC3
 ```
 
 ### Step 3. Setup your enviromental variables for Docker/Services
