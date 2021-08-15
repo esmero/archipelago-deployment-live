@@ -50,7 +50,7 @@ Setup your system using your favorite package manager with
 - tree
 - docker-compose
 
-e.g for Amazon Linux 2 these steps are tested:
+e.g for Amazon Linux 2 (x86/amd64)these steps are tested:
 ```SHELL
 sudo yum update -y
 sudo amazon-linux-extras install docker
@@ -65,6 +65,13 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo reboot
 ```
+
+Note: To install docker-compose on AWS Linux 2 on `arm64`architecture execute
+```SHELL
+sudo curl -L --fail https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
 Reboot is needed to allow Docker to take full control over your OS resources.
 
 ### Step 2:
