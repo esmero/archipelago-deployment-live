@@ -182,7 +182,123 @@ To https://github.com/yourOwnAccount/archipelago-deployment-live
 
 And done.
 
-TO BE CONTINUED ...
+## 2. Keeping your Archipelago Modules Updated during releases
+
+Releases in Archipelago are a bit different to other OSS projects. When a Release is done (let's say 1.0.0-RC2) we freeze the current release branches in every module we provide, package the release and inmediatelly start with a new Release Cycle (6 months long normally) by creating in each repository a new Set of Branches (for this example 1.0.0-RC3). All new commits, fixes, improvements, features now will ALWAYS go into the Open/on-going new cycle branches (for this example 1.0.0-RC3) and once we are done we do all over again: We freeze ((or this example 1.0.0-RC3) and a new release cycle starts with fresh new "WIP" branches (for this example 1.1.0). 
+
+Some Modules like AMI or Strawberry Runners have their independent Version but are anyways release together. E.g for `1.0.0-RC3` both AMI and Strawberry Runners are 0.2.0. Why? because work started later than the core Archipelago and also because they are not really CORE. So what happens with `main` branches? In our project `main` branches are never experimental. They are always a 1:1 with the latest stable release. So `main` will contain a full commit of 1.0.0-RC2 until we freeze 1.0.0-RC3 when `main` gets that code. Over and over. Nice right?
+
+### Which modules belong to Archipelago and follow a release cycle?
+
+The following modules are the ones we update on every release:
+
+- https://github.com/esmero/strawberryfield -> Composer name: `strawberryfield/strawberryfield`
+- https://github.com/esmero/format_strawberryfield -> Composer name: `strawberryfield/format_strawberryfield`
+- https://github.com/esmero/webform_strawberryfield -> Composer name: `strawberryfield/webform_strawberryfield`
+- https://github.com/esmero/ami -> Composer name: `archipelago/ami`
+- https://github.com/esmero/strawberry_runners    -> Composer name: `strawberryfield/strawberry_runners`
+
+We also update macro modules that are meant for deployment like this [Repository](https://github.com/esmero/archipelago-deployment-live) and https://github.com/esmero/archipelago-deployment
+
+To keep your Archipelago up to date, specially once you `go custom` as described in this Documentation, the process is quite simple. 
+E.g to fetch latest `1.0.0-RC3` updates during the `1.0.0-RC3` release cycle run:
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require strawberryfield/strawberryfield:dev-1.0.0-RC3 strawberryfield/format_strawberryfield:dev-1.0.0-RC3 strawberryfield/webform_strawberryfield:dev-1.0.0-RC3 archipelago/ami:0.2.0.x-dev archipelago/archipelago_subtheme:1.0.0-RC3 strawberryfield/strawberry_runners:0.2.0.x-dev -W strawberryfield/strawberry_runners:0.2.0.x-dev -W"
+```
+And then run any Database updates that may be needed:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush updatedb"
+```
+This will bring all the new code and all (except if there are BUGS! )should work as expected.
+
+_Note:_ Archipelago really tries hard to be as backwards compatible as possible and rarely you will see a non documented or non dealt with deprecation. 
+
+_Note 2:_ We of course recommend running always Stable (frozen) release but since code is plastic and fixes will go into a WIP open branch you should be safe enough to move all modules together. 
+
+You can run these commands any time you need and while the release is open you will _get always_ the latest code (even if its always the same branch). Please follow/subscribe to each Module's Github to be aware of changes/issues and improvements.
+
+## 3. Keeping your Archipelago's Drupal Contributed Modules and Core updated
+
+### 3.1 Contributed Modules.
+To keep your Archipelago's Drupal up to date check your Drupal at https://yoursite.org/admin/modules/update. Make sure you check mostly (yes mostly, no need to overreact) for Security Updates. Not every Drupal contributed module (project) keeps backwards compatibility and we try to test every version we ship (as in this repositorie's composer.lock files) before releasing. Once you detected a major change/requirement, visit the Project's Changelog Website and take some time reading it. If you feel confident its not going to break all, copy the suggested `composer command`. E.g if you visit https://www.drupal.org/project/google_api_client/releases/8.x-3.2 you will see that the update is suggested as:
+```
+Install with Composer: $ composer require 'drupal/google_api_client:^3.2'
+```
+
+Using the same module as an example, before doing any final updates, check your current running version (take note in case you need to revert)
+
+```Shell
+docker exec -ti esmero-php bash -c "composer info 'drupal/google_api_client"
+```
+
+**Keep the version around**.
+
+Now let's update, which means using the suggested command translated to our own Docker world like this (notice the `-W`)
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require 'drupal/google_api_client:^3.2 -W"
+```
+
+And then run any Database updates that may be needed:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush updatedb"
+```
+
+This will update that module. Test your website. Depending on what you update you want to focus first on the functionality it provides and then create/edit/delete a fictuous Digital Object to ensure it did not added any errors to your most beloved Digital Objects workflows.
+
+If you see errors, you feel its not acting as it should you can revert by doing:
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require 'drupal/google_api_client:^VERSION_YOU_KEPT_AROUND -W"
+```
+
+And then run any Database updates that may be needed:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush updatedb"
+```
+
+If this happens** we encourage you to please** 👏 share your finding with our community/slack/Github ISSUE here.
+
+### 3.1 Drupal Core inside the same major version:
+
+Quite similar to a contributed module but normally involves at least 3 dependencies and of course larger changes.
+
+#### Exact Version
+E.g. Inside a same major version (E.g inside Drupal 9) If you are currently running Drupal 9.0.1 and you want to update to an exact latest (as i write 9.2.4)
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require drupal/core:9.2.4 drupal/core-composer-scaffold:9.2.4 drupal/core-project-message:9.2.4 --update-with-dependencies"
+```
+
+And then run any Database updates that may be needed:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush updatedb"
+```
+
+#### Alternative Major Version
+
+if you want to only remember a `single command` and want to be sure to also get all extra packages run
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 -W"
+```
+
+And then run any Database updates that may be needed:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush updatedb"
+```
+
+This will always get you the latest `Drupal 9` and `depedencies` allowed by your composer.json
+
+### 3.2 Drupal Core between major versions:
+
+Since mayor versions may bring larger deprecations, contributed modules will stay behind and the world (and your database may collapse) we _really_ recommend to do some tests first (locally) or follow one of our guides. We at archipelago will always document a larger version update. Currently, [Drupal 8 to Drupal 9 Update is documented in detail here](upgradeFromD8ToD9.md)
 
 ---
 
