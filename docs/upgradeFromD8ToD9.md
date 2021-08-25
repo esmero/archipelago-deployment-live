@@ -1,4 +1,4 @@
-# archipelago-deployment-live upgrading Drupal 8 to Drupal 9
+# Archipelago-deployment-live: upgrading Drupal 8 to Drupal 9
 
 ## What is this documentaton for?
 
@@ -20,7 +20,7 @@ Backups are always going to be your best friends. Archipelago's code, Database a
 
 ### Step 1:
 
-Shutdown your `docker-compose` ensemble. Move to your `archipelago-deployment-live` folder and run this
+Shutdown your `docker-compose` ensemble. Move to your `archipelago-deployment-live` folder and run this:
 ```Shell
 cd deploy/ec2-docker
 docker-compose down
@@ -28,7 +28,7 @@ docker-compose down
 
 ### Step 2:
 
-Verify all containers are actually down. The following command should return an empty listing. If not wait a little longer and run it again.
+Verify all containers are actually down. The following command should return an empty listing. If anything is still running, wait a little longer and run the following comman again.
 
 ```Shell
 docker ps
@@ -51,7 +51,7 @@ The process may take a few minutes. Now let's verify all is there and the `tar.g
 tar -tvvf $HOME/archipelago-deployment-live-backup-20210109.tar.gz 
 ```
 
-You will see a listing of files. If corrupt (do you have enough space? your ssh connection dropped) you will see
+You will see a listing of files. If corrupt (do you have enough space? did your ssh connection drop?) you will see:
 
 ```
 tar: Unrecognized archive format
@@ -59,7 +59,7 @@ tar: Unrecognized archive format
 
 ### Step 4:
 
-Restart your d`docker-compose` ensemble and wait a little while for all to start. Newer versions of Minio may take up to 4 minutes to connect if you are using it as an AWS S3 Gateway.
+Restart your `docker-compose` ensemble and wait a little while for all to start. Newer versions of Minio may take up to 4 minutes to connect if you are using it as an AWS S3 Gateway.
 
 ```Shell
 docker-compose up -d
@@ -69,7 +69,7 @@ docker-compose up -d
 
 ### Step 1:
 
-your current `archipelago-deployment-live` repo folder and open up the file `permissions` for some of your most protected drupal files.
+Navigate to your current `archipelago-deployment-live` repo folder and open up the file `permissions` for some of your most protected Drupal files.
 
 ```Shell
 cd ../../
@@ -80,8 +80,7 @@ sudo chmod 666 drupal/web/sites/default/*services.yml
 
 ### Step 2:
 
-We are going to tell `composer` to update `composer.json` requirements but not update yet all dependencies (means also your Drupal 8 is running this whole time without being affected, nice!).
-This is very important to avoid dead-locks of cross dependant libraries.
+We are going to tell `composer` to update `composer.json` requirements *but not* update yet all dependencies (means also your Drupal 8 is running this whole time without being affected, nice!). This is very important to avoid dead-locks of cross-dependant libraries.
 
 Run each line for D9 core and its base packages.
 
@@ -105,7 +104,7 @@ docker exec -ti esmero-php bash -c "composer require 'drupal/role_based_theme_sw
 
 *Note:* We are fixing `drupal/bootstrap_barrio` to an exact version (5.1) because 5.5 and later are now Bootstrap 5 and `archipelago_subtheme` is still Bootstrap 4. 
 
-We ned to also remove legacy modules that are **no longer supported** by D9 or have been incorporated into `Core`. 
+We need to also remove legacy modules that are **no longer supported** by D9 or have been incorporated into `Core`. 
 
 ```Shell
 docker exec -ti esmero-php bash -c "composer remove drupal/config_installer  --update-with-dependencies --no-update"
@@ -137,7 +136,7 @@ Finally! Now we are going to tell `composer` to actually fetch the NEW code and 
 docker exec -ti esmero-php bash -c "composer update -W"
 ````
 
-During this process you may a message like this because of applied patches during Archipelago D8 installation. Select 'y' and press enter.
+During this process you may see a message like this because of applied patches during Archipelago D8 installation. Select 'y' and press enter.
 
 ```
  - Upgrading drupal/fancy_file_delete (2.0.3 => 2.0.5): Extracting archive
@@ -150,7 +149,7 @@ During this process you may a message like this because of applied patches durin
 If you see **no** issues and all ends in a **Green colored message** all is good!  (Jump to Step 4)
 
 
-#### What if not all is OK and i see red and a lot of dependency explanations?
+#### What if not all is OK and I see red and a lot of dependency explanations?
 
 If you have manually installed packages via composer in the past that are NO longer Drupal 9 compatible you may see errors. 
 In that case you need to check each package website's (normally https://www.drupal.org/project/the_module_name) and check if there is a Drupal 9 compatible version. 
@@ -161,7 +160,7 @@ If so run:
 docker exec -ti esmero-php bash -c "composer require 'drupal/the_module_name:^VERSION_NUMBER_THAT_WORKS_ON_DRUPAL9_' --update-with-dependencies --no-update" and run **Step 3 ** again (and again until all is cleared)
 ```
 
-If not: try to find a replacement module that does something simular, but in any case you may end having to remove before proceding. Give us a ping/slack/google group/open a github ISSUE if you find yourself clueless about this. 
+If not: try to find a replacement module that does something simular, but in any case you may end having to remove before proceding. Give us a ping/slack/google group/open a github ISSUE if you find yourself uncertain about this. 
 
 ```Shell
 docker exec -ti esmero-php bash -c "composer remove drupal/the_module_name --no-update"
@@ -170,8 +169,7 @@ docker exec -ti esmero-php bash -c " drush pm-uninstall the_module_name"
 
 ### Step 4:
 
-We will now ask Drupal to update its internal Configs and databases and enabled a few last minute modules. In case for some weird dependecy issue you ended running an older version of D9, the 
-following commands will bring you up to date.
+We will now ask Drupal to update its internal Configs and databases and enable a few last minute modules. In case for some odd dependecy issue you end up running an older version of D9, the following commands will bring you up to date.
 
  ```Shell  
 docker exec -ti esmero-php bash -c "drush updatedb"
@@ -181,7 +179,7 @@ docker exec -ti esmero-php bash -c "composer require drupal/jquery_ui drupal/jqu
 docker exec -ti esmero-php bash -c "drush en jquery_ui jquery_ui_datepicker"
 ```
 
-And YET another update pass!
+And yet another update pass!
 
 ```Shell
 docker exec -ti esmero-php bash -c "composer update -W"
@@ -190,8 +188,7 @@ docker exec -ti esmero-php bash -c "drush updatedb"
 
 ### Step 5:
 
-Good! If you made it this far you are almost ready (are we ever ready?)
-Now to restore permissions for your important protected Drupal files and you should be ready to (hopefully) stay in the Drupal 9 realm for a few years!
+Good! If you made it this far you are almost ready (are we ever ready?). Now to restore permissions for your important protected Drupal files, and  then you should be ready to (hopefully) stay in the Drupal 9 realm for a few years!
 
 ```Shell
 sudo chmod 755 drupal/web/sites/default
@@ -199,7 +196,7 @@ sudo chmod 644 drupal/web/sites/default/*settings.php
 sudo chmod 644 drupal/web/sites/default/*services.yml
 ```
 
-Please log into your Archipelago and test/check all is working. Your Configurations will have changed (the yml files) so its a good moment to get yourself a package of those and after checking them you can export them
+Please log into your Archipelago and test/check all is working. Your Configurations will have changed (the .yml files) so it's a good moment to get yourself a package of those and after checking them you can export them.
 
 Type to get all the options. 
 
@@ -207,13 +204,14 @@ Type to get all the options.
 docker exec -ti esmero-php bash -c "drush cex --help"
 ````
 
-If you run it directly it will overwrite your `drupal/config/sync` folder so it may be a good idea to double check OR if you are keeping `configs` in an alternate folder to add the 
-`--destination[=DESTINATION]` flag to the command at the end.
+If you run this comman directly it will overwrite your `drupal/config/sync` folder, so it may be a good idea to double check OR if you are keeping `configs` in an alternate folder to add the `--destination[=DESTINATION]` flag to the command at the end.
 
 ```Shell
 docker exec -ti esmero-php bash -c "drush cex"
 ````
 
 ---
+
+Thank you for reading! Please contact us on our [Archipelago Commons Google Group](https://groups.google.com/forum/#!forum/archipelago-commons) with any questions or feedback, or open an ISSUE in this [Archipelago Deployment Live Repository](https://github.com/esmero/archipelago-deployment-live/).
 
 Return to [Archipelago Live Deployment](../README.md).
