@@ -1,6 +1,6 @@
 # Archipelago-deployment-live: upgrading Drupal 8 to Drupal 9
 
-## What is this documentaton for?
+## What is this documentation for?
 
 If you already have a well setup and well loved Archipelago (RC2 or your own custom version) running Drupal 8 (D8), this documentation will allow you to update to Drupal 9 (D9) without major issues.
 
