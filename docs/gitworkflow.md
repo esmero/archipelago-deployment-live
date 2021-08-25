@@ -302,4 +302,6 @@ Since mayor versions may bring larger deprecations, contributed modules will sta
 
 ---
 
+Thank you for reading! Please contact us on our [Archipelago Commons Google Group](https://groups.google.com/forum/#!forum/archipelago-commons) with any questions or feedback, or open an ISSUE in this [Archipelago Deployment Live Repository](https://github.com/esmero/archipelago-deployment-live/).
+
 Return to [Archipelago Live Deployment](../README.md).
