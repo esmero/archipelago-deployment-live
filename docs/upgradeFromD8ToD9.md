@@ -213,3 +213,7 @@ If you run it directly it will overwrite your `drupal/config/sync` folder so it 
 ```Shell
 docker exec -ti esmero-php bash -c "drush cex"
 ````
+
+---
+
+Return to [Archipelago Live Deployment](../README.md).
