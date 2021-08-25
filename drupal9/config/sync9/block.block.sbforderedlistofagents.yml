@@ -1,0 +1,30 @@
+uuid: 7161a2b5-09e1-44a6-978e-fe4b2654e60c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.sbf_ordered_list_of_agents
+  module:
+    - context
+    - facets
+  theme:
+    - archipelago_subtheme
+id: sbforderedlistofagents
+theme: archipelago_subtheme
+region: sidebar_second
+weight: 0
+provider: null
+plugin: 'facet_block:sbf_ordered_list_of_agents'
+settings:
+  id: 'facet_block:sbf_ordered_list_of_agents'
+  label: 'NLP Extracted Agents'
+  provider: facets
+  label_display: visible
+  block_id: sbforderedlistofagents
+visibility:
+  view_inclusion:
+    id: view_inclusion
+    view_inclusion:
+      view-solr_search_content-page_2: view-solr_search_content-page_2
+    negate: false
+    context_mapping: {  }

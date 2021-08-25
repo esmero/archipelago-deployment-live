@@ -1,0 +1,90 @@
+uuid: bfe45160-7464-4113-bb27-ee27dd347cdf
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.digital_object_collection.body
+    - field.field.node.digital_object_collection.field_descriptive_metadata
+    - node.type.digital_object_collection
+  module:
+    - ds
+    - format_strawberryfield
+    - text
+    - user
+third_party_settings:
+  ds:
+    layout:
+      id: layout_onecol
+      library: layout_discovery/onecol
+      disable_css: false
+      entity_classes: all_classes
+      settings:
+        label: ''
+    regions:
+      content:
+        - node_title
+        - node_changed_date
+        - langcode
+        - links
+        - body
+        - field_descriptive_metadata
+    fields:
+      node_changed_date:
+        plugin_id: node_changed_date
+        weight: 1
+        label: hidden
+        formatter: ds_post_date_long
+      node_title:
+        plugin_id: node_title
+        weight: 0
+        label: hidden
+        formatter: default
+        settings:
+          link: true
+          wrapper: h2
+          class: ''
+id: node.digital_object_collection.full
+targetEntityType: node
+bundle: digital_object_collection
+mode: full
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_descriptive_metadata:
+    weight: 5
+    label: hidden
+    settings:
+      iiif_group: true
+      thumbnails: true
+      json_key_source: 'as:image'
+      max_width: '0'
+      max_height: '520'
+      use_iiif_globals: '1'
+      iiif_base_url: 'http://localhost:8183/iiif/2'
+      iiif_base_url_internal: 'http://esmero-cantaloupe:8182/iiif/2'
+    third_party_settings: {  }
+    type: strawberry_media_formatter
+    region: content
+  langcode:
+    type: language
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
+  links:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  content_moderation_control: true
+  search_api_excerpt: true

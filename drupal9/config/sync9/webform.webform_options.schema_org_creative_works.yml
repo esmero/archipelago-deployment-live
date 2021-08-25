@@ -1,0 +1,34 @@
+uuid: 204e143d-3568-4d0d-9c56-6f67177eb5ef
+langcode: en
+status: true
+dependencies: {  }
+id: schema_org_creative_works
+label: 'Schema.org Creative Works'
+category: archipelago
+likert: false
+options: |-
+  Article: Article
+  Book: Book
+  Dataset: Dataset
+  DigitalDocument: 'Digital Document'
+  Map: Map
+  Movie: Movie
+  MusicRecording: 'Music Recording'
+  Painting: Painting
+  Photograph: Photograph
+  Sculpture: Sculpture
+  VisualArtwork: 'Visual Artwork'
+  Thesis: Thesis
+  Podcast: Podcast
+  PodcastEpisode: 'Podcast Episode'
+  Panorama: 'Panorama (http://ns.google.com/photos/1.0/panorama)'
+  PanoramaTour: 'Panorama Tour (http://ns.google.com/photos/1.0/panorama)'
+  3DModel: '3D Model'
+  WebPage: 'Web Page'
+  AudioObject: 'Audio Object'
+  VideoObject: 'Video Object'
+  Conversation: 'Conversation (Oral History)'
+  ShortStory: 'Short Story'
+  ArchiveComponent: 'Archive Component'
+  NewspaperIssue: 'Newspaper Issue'
+  PublicationIssue: 'Publication Issue'

@@ -1,0 +1,631 @@
+uuid: 0f8e8c19-7450-4356-b6a1-f5b0b99c6069
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_solr
+    - node
+    - user
+    - strawberryfield
+    - search_api
+    - file
+  config:
+    - field.storage.node.field_tags
+    - field.storage.node.field_descriptive_metadata
+    - search_api.server.esmero_solr_7_5
+    - core.entity_view_mode.node.digital_object_image_only_for_carousel
+    - core.entity_view_mode.node.search_index
+third_party_settings:
+  search_api_solr:
+    finalize: false
+    commit_before_finalize: false
+    commit_after_finalize: false
+    multilingual:
+      limit_to_content_language: false
+      include_language_independent: true
+    highlighter:
+      maxAnalyzedChars: 51200
+      fragmenter: gap
+      regex:
+        slop: 0.5
+        pattern: blank
+        maxAnalyzedChars: 10000
+      usePhraseHighlighter: true
+      highlightMultiTerm: true
+      preserveMulti: false
+      highlight:
+        mergeContiguous: false
+        requireFieldMatch: false
+        snippets: 3
+        fragsize: 0
+    mlt:
+      mintf: 1
+      mindf: 1
+      maxdf: 0
+      maxdfpct: 0
+      minwl: 0
+      maxwl: 0
+      maxqt: 100
+      maxntp: 2000
+      boost: false
+      interestingTerms: none
+    term_modifiers:
+      slop: 3
+      fuzzy: 1
+    advanced:
+      index_prefix: ''
+      collection: ''
+      timezone: ''
+_core:
+  default_config_hash: 5gcfQOCjXVt6We4_q02H8VjnECSON5NgKOchFAsncxU
+id: default_solr_index
+name: 'Drupal Content to Solr 8'
+description: 'Basic Content'
+read_only: false
+field_settings:
+  agents:
+    label: '🍓 Strawberry (Descriptive Metadata source) » agents'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:name_label'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  aggregated_field:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields: {  }
+  as_image_exif_focallength:
+    label: '🍓 Strawberry (Descriptive Metadata source) » as_image_exif_focallength'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:as_image_exif_focallength'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  as_image_exif_mimetype:
+    label: '🍓 Strawberry (Descriptive Metadata source) » as_image_exif_mimetype'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:as_image_exif_mimetype'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  author:
+    label: 'Author name'
+    datasource_id: 'entity:node'
+    property_path: 'uid:entity:name'
+    type: string
+    dependencies:
+      module:
+        - node
+        - user
+  author_1:
+    label: '🍓 Strawberry (Descriptive Metadata source) » author'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:author'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  changed:
+    label: Changed
+    datasource_id: 'entity:node'
+    property_path: changed
+    type: date
+    dependencies:
+      module:
+        - node
+  checksum:
+    label: 'Checksum that can be used to check if the source needs reprocessing'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: checksum
+    type: string
+  city:
+    label: '🍓 Strawberry (Descriptive Metadata source) » city'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:city'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  created:
+    label: 'Authored on'
+    datasource_id: 'entity:node'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - node
+  date_created_original:
+    label: '🍓 Strawberry (Descriptive Metadata source) » Date created original'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:date_created_original'
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  digital_object_type:
+    label: '🍓 Strawberry (Descriptive Metadata source) » digital_object_type'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:digital_object_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  field_tags:
+    label: Tags
+    datasource_id: 'entity:node'
+    property_path: field_tags
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_tags
+  file_uuid:
+    label: 'Source File UUID (first one passed in a Post Processor chain)'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: file_uuid
+    type: string
+  fulltext:
+    label: 'Unmodified data body'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: fulltext
+    type: text
+  fulltext_with_original_ocr:
+    label: 'Unmodified data body'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: fulltext
+    type: 'solr_text_custom:ocr_highlight'
+  hocr:
+    label: '🍓 Strawberry (Descriptive Metadata source) » hocr'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:hocr'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  ismemberof:
+    label: '🍓 Strawberry (Descriptive Metadata source) » ismemberof'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:ismemberof'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  label_1:
+    label: '🍓 Strawberry (Descriptive Metadata source) » Full text labels'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:label'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  label_2:
+    label: '🍓 Strawberry (Descriptive Metadata source) » label'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:label'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  license:
+    label: '🍓 Strawberry (Descriptive Metadata source) » license'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:license'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  name_1:
+    label: '🍓 Strawberry (Descriptive Metadata source) » name'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  nid_ref:
+    label: '🍓 Strawberry (Descriptive Metadata source) » entity_sbf_entity_reference_ismemberof » ID'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ismemberof:nid'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  nid_ref_partof:
+    label: '🍓 Strawberry (Descriptive Metadata source) » entity_sbf_entity_reference_ispartof » ID'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ispartof:nid'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  node_grants:
+    label: 'Node access information'
+    property_path: search_api_node_grants
+    type: string
+    indexed_locked: true
+    type_locked: true
+    hidden: true
+  ocr_text:
+    label: 'FullText test'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: fulltext
+    type: 'solr_text_custom:ocr_highlight'
+    boost: !!float 0
+  parent_digital_object_type:
+    label: '🍓 Strawberry Parent Digital Object Type'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ismemberof:field_descriptive_metadata:digital_object_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  parent_id:
+    label: 'Parent ID'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: parent_id
+    type: string
+  processor_id:
+    label: 'Processor Plugin id that populated this data'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: processor_id
+    type: string
+  rendered_item:
+    label: 'Rendered HTML output'
+    property_path: rendered_item
+    type: text
+    configuration:
+      roles:
+        anonymous: anonymous
+      view_mode:
+        'entity:file':
+          file: ''
+        'entity:node':
+          article: ''
+          digital_object: default
+          digital_object_collection: ''
+          page: ''
+          webform: ''
+        strawberryfield_flavor_datasource:
+          digital_object: ''
+          digital_object_collection: ''
+  rendered_item_iiif_img:
+    label: 'IIIF Image Tag for ADO'
+    property_path: rendered_item
+    type: string
+    configuration:
+      roles:
+        anonymous: anonymous
+      view_mode:
+        'entity:file':
+          file: ''
+        'entity:node':
+          article: ''
+          digital_object: digital_object_image_only_for_carousel
+          digital_object_collection: ''
+          page: ''
+          webform: ''
+        strawberryfield_flavor_datasource:
+          digital_object: search_index
+          digital_object_collection: search_index
+  sbf_entity_reference_partof_memberof_title:
+    label: '🍓 Strawberry (Descriptive Metadata source) » ispartof » ismemberof » Title'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ispartof:field_descriptive_metadata:sbf_entity_reference_ismemberof:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  sbf_entity_reference_partof_title:
+    label: '🍓 Strawberry (Descriptive Metadata source) » entity_sbf_entity_reference_ispartof » Title'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ispartof:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  sbf_entity_reference_title:
+    label: '🍓 Strawberry (Descriptive Metadata source) » entity_sbf_entity_reference_ismemberof » Title'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:sbf_entity_reference_ismemberof:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+      module:
+        - node
+  sbf_label:
+    label: 'A Label'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: label
+    type: text
+  sbf_metadata:
+    label: 'SBF Ordered list of additional metadata'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: metadata
+    type: string
+  sbf_plaintext:
+    label: 'Data body containing plain text'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: plaintext
+    type: text
+  sbf_sentiment:
+    label: 'SBF Sentiment in integer range'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: sentiment
+    type: string
+  sbf_ts:
+    label: 'SBF Time stamp'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: ts
+    type: string
+  sbf_uri:
+    label: 'SBF source or related URI/URL'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: uri
+    type: string
+  sbf_when:
+    label: 'SBF Ordered list of dates in string format'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: when
+    type: string
+  sbf_where:
+    label: 'SBF Ordered list of places'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: where
+    type: string
+  sbf_who:
+    label: 'SBF Ordered list of agents'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: who
+    type: string
+  sequence_id:
+    label: 'Sequence ID'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: sequence_id
+    type: string
+  status:
+    label: 'Publishing status'
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  status_2:
+    label: Status
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+  sticky:
+    label: 'Sticky at top of lists'
+    datasource_id: 'entity:node'
+    property_path: sticky
+    type: boolean
+    dependencies:
+      module:
+        - node
+  str_flatten_keys:
+    label: '🍓 Strawberry (Descriptive Metadata source) » JSON keys defined in this field'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:str_flatten_keys'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  subject_labels:
+    label: '🍓 Strawberry (Descriptive Metadata source) » subject_labels'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:subject_labels'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    boost: !!float 8
+    dependencies:
+      module:
+        - node
+  title_1:
+    label: 'Related ADOs » Content » Title'
+    datasource_id: 'entity:node'
+    property_path: 'field_sbf_nodetonode:entity:title'
+    type: string
+    dependencies:
+      module:
+        - node
+        - strawberryfield
+  title_2:
+    label: 'Parent Node » Title'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: 'target_id:title'
+    type: text
+  title_autocomplete:
+    label: 'Title for autocomplete'
+    datasource_id: 'entity:node'
+    property_path: title
+    type: 'solr_text_custom:ngram'
+    dependencies:
+      module:
+        - node
+  title_string:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
+    dependencies:
+      module:
+        - node
+  title_unstemmed:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: solr_text_unstemmed
+    dependencies:
+      module:
+        - node
+  type:
+    label: 'Content type'
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+    dependencies:
+      module:
+        - node
+  type_1:
+    label: '🍓 Strawberry (Descriptive Metadata source) » type'
+    datasource_id: 'entity:node'
+    property_path: 'field_descriptive_metadata:type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_descriptive_metadata
+  uid:
+    label: 'Author ID'
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  uid_2:
+    label: UID
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: uid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+  uuid:
+    label: 'Parent Node » UUID'
+    datasource_id: strawberryfield_flavor_datasource
+    property_path: 'target_id:uuid'
+    type: string
+datasource_settings:
+  'entity:file': {  }
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+  strawberryfield_flavor_datasource:
+    bundles:
+      default: false
+      selected:
+        - digital_object
+        - digital_object_collection
+    languages:
+      default: true
+      selected:
+        - '0'
+    metadatadisplayentity_source: null
+processor_settings:
+  add_url:
+    weights:
+      preprocess_index: -30
+  aggregated_field:
+    weights:
+      add_properties: 20
+  content_access:
+    weights:
+      preprocess_query: -30
+  highlight:
+    highlight: server
+    highlight_partial: false
+    excerpt: true
+    excerpt_length: 128
+    exclude_fields:
+      - fulltext_with_original_ocr
+      - ocr_text
+    prefix: '<strong class="purple">'
+    suffix: '</strong>'
+    weights:
+      postprocess_query: 0
+  html_filter:
+    all_fields: false
+    fields:
+      - aggregated_field
+      - as_image_exif_focallength
+      - as_image_exif_mimetype
+      - author
+      - city
+      - digital_object_type
+      - hocr
+      - ismemberof
+      - label_1
+      - label_2
+      - license
+      - name_1
+      - parent_digital_object_type
+      - rendered_item
+      - rendered_item_iiif_img
+      - sbf_entity_reference_title
+      - str_flatten_keys
+      - subject_labels
+      - title
+      - title_1
+      - title_autocomplete
+      - title_string
+      - title_unstemmed
+      - type
+      - type_1
+    title: true
+    alt: true
+    tags:
+      b: 2
+      h1: 5
+      h2: 3
+      h3: 2
+      string: 2
+    weights:
+      preprocess_index: -3
+      preprocess_query: -6
+  language_with_fallback: {  }
+  rendered_item:
+    weights:
+      add_properties: 0
+      pre_index_save: -10
+  reverse_entity_references: {  }
+  solr_date_range:
+    weights:
+      preprocess_index: 0
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: esmero_solr_7_5
