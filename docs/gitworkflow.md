@@ -271,10 +271,16 @@ Quite similar to a contributed module but normally involves at least 3 dependenc
 E.g. Inside a same major version (E.g inside Drupal 9) If you are currently running Drupal `9.0.1` and you want to update to an exact latest (as i write `9.2.4`)
 
 ```Shell
-docker exec -ti esmero-php bash -c "composer require drupal/core:9.2.4 drupal/core-composer-scaffold:9.2.4 drupal/core-project-message:9.2.4 --update-with-dependencies"
+docker exec -ti esmero-php bash -c "composer require drupal/core:9.2.4 drupal/core-dev:9.2.4 drupal/core-composer-scaffold:9.2.4 drupal/core-project-message:9.2.4 --update-with-dependencies"
 ```
 
-And then run any Database updates that may be needed:
+Or under Drupal 8, if you are currently running Drupal `8.9.14` and you want to update to an exact latest (as i write `8.9.18`)
+
+```Shell
+docker exec -ti esmero-php bash -c "composer require drupal/core-dev:8.9.18 drupal/core:8.9.18 drupal/core-composer-scaffold:8.9.18 --update-with-dependencies"
+```
+
+And then for both cases run any Database updates that may be needed:
 
 ```Shell
 docker exec -ti esmero-php bash -c "drush updatedb"
@@ -282,19 +288,23 @@ docker exec -ti esmero-php bash -c "drush updatedb"
 
 #### Alternative Major Version
 
-if you want to only remember a `single command` and want to be sure to also get all extra packages run
+if you want to only remember a `single command` and want to be sure to also get all extra packages run for Drupal 9
 
 ```Shell
-docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 -W"
+docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^9 drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 -W"
+```
+Or for Drupal 9
+```Shell
+docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^8 drupal/core:^8 drupal/core-composer-scaffold:^8 drupal/core-project-message:^8 -W"
 ```
 
-And then run any Database updates that may be needed:
+And then for both cases run any Database updates that may be needed:
 
 ```Shell
 docker exec -ti esmero-php bash -c "drush updatedb"
 ```
 
-This will always get you the latest `Drupal 9` and `dependencies` allowed by your composer.json
+This will always get you the latest `Drupal` and `dependencies` allowed by your composer.json
 
 ### 3.2 Drupal Core between major versions:
 
