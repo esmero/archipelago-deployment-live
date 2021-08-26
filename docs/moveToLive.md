@@ -674,7 +674,7 @@ networks:
 ```
 
 Press CNTRL-X and you are done.
-Now the final test!
+Now the final test!!
 
 ## Shutdown the old one, start the new one
 
@@ -684,7 +684,7 @@ will survive and we can come back over and over until we are ready. Let's try!
 We will start by shutting down the running docker-ensemble
 
 ```
-cd `$HOME/archipelago-deployment`
+cd $HOME/archipelago-deployment
 docker-compose down
 ```
 
@@ -692,7 +692,7 @@ Now let's go to our new deployment. Docker starts here in a different folder
 
 
 ```
-cd `$HOME/archipelago-deployment-live/deploy/ec2-docker`
+cd $HOME/archipelago-deployment-live/deploy/ec2-docker
 docker-compose up
 ```
 
