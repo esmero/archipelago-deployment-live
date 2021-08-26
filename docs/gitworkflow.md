@@ -204,7 +204,7 @@ To keep your Archipelago up to date, specially once you `go custom` as described
 E.g to fetch latest `1.0.0-RC3` updates during the `1.0.0-RC3` release cycle run:
 
 ```Shell
-docker exec -ti esmero-php bash -c "composer require strawberryfield/strawberryfield:dev-1.0.0-RC3 strawberryfield/format_strawberryfield:dev-1.0.0-RC3 strawberryfield/webform_strawberryfield:dev-1.0.0-RC3 archipelago/ami:0.2.0.x-dev archipelago/archipelago_subtheme:1.0.0-RC3 strawberryfield/strawberry_runners:0.2.0.x-dev -W strawberryfield/strawberry_runners:0.2.0.x-dev -W"
+docker exec -ti esmero-php bash -c "composer require strawberryfield/strawberryfield:dev-1.0.0-RC3 strawberryfield/format_strawberryfield:dev-1.0.0-RC3 strawberryfield/webform_strawberryfield:dev-1.0.0-RC3 archipelago/ami:0.2.0.x-devstrawberryfield/strawberry_runners:0.2.0.x-dev -W" strawberryfield/strawberry_runners:0.2.0.x-dev -W"
 ```
 And then run any Database updates that may be needed:
 
