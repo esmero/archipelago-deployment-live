@@ -293,7 +293,7 @@ if you want to only remember a `single command` and want to be sure to also get 
 ```Shell
 docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^9 drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 -W"
 ```
-Or for Drupal 9
+Or for Drupal 8
 ```Shell
 docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^8 drupal/core:^8 drupal/core-composer-scaffold:^8 drupal/core-project-message:^8 -W"
 ```
