@@ -277,10 +277,19 @@ docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
 
-This is slightly different.  
+This applies to AWS `m6g` and `t3g` Instances and is documented inline in this guide. Please open an [ISSUE](https://github.com/esmero/archipelago-deployment-live/issues) in this repository if you run into any problems.
+Please review https://github.com/esmero/archipelago-deployment-live/blob/1.0.0-RC3/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml for more info
 
-We will generate soon an alternative docker-compose-arm64.yml file for that case but in the meantime here is an example
-https://github.com/esmero/archipelago-deployment/blob/1.0.0-RC3/docker-compose-arm64.yml
+### How to i know my Architecture?
+
+Run 
+
+```Shell
+uname -m 
+```
+
+- For an `x86(64 bit)` processor system output will be `x86_64`
+- For an `ARM(64 bit)` processor system output will be `aarch64`
 
 ## Caring & Coding + Fixing + Testing
 
