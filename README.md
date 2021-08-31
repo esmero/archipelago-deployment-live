@@ -204,8 +204,7 @@ Now press CTRL+C. `docker-compose` will shutdown gracefully. Good!
 Copy the shipped default composer.default.json to composer.json (ONLY if you are installing from scratch)
 
 ```SHELL
-cd ..
-cp drupal/composer.default.json drupal/composer.json
+cp ../../drupal/composer.default.json ../../drupal/composer.json
 ```
 
 Start Docker again
@@ -260,6 +259,35 @@ Now your `deploy.sh` and `update_deployed.sh` are update and ready. Let's ingest
 ```SHELL
 docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 ```
+
+NOTE: `update_deployed.sh` is not needed when deploying for the first time and totally **discouraged** on a customized Archipelago. 
+If you make modifications to your `Twig templates`, that command will replace the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update non-customized ones with newer versions.
+
+### Step 7. Set your public IIIF server URL to your actual domain
+
+By default archipelago ships with a public facing and an internal facing IIIF Server URLs configured. These urls are used by a number of IIIF enabled viewers and need to be changed to reflect your new reality (a real Domain name and a proxied path!). These settings belong to the `strawberryfield/format_strawberryfield` module. 
+
+First check your current settings:
+
+```Shell
+docker exec -ti esmero-php bash -c "drush config-get format_strawberryfield.iiif_settings"
+```
+
+You will see the following:
+
+```
+pub_server_url: 'http://localhost:8183/iiif/2'
+int_server_url: 'http://esmero-cantaloupe:8182/iiif/2'
+```
+
+Let's modify `pub_server_url`. Replace in the following command `your.domain.org` with the domain you defined in your `.env` file. 
+NOTE: We are passing the `-y` flag to `drush` avoid that way having to answer "yes".
+
+```
+docker exec -ti esmero-php bash -c "drush -y config-set format_strawberryfield.iiif_settings pub_server_url https://your.domain.org/cantaloupe/iiif/2"
+```
+
+Finally Done! Now you can log into your new Archipelago using `https` and start exploring. Thank you for following this guide!
 
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
 
