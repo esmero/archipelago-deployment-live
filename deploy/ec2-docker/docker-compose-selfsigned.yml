@@ -14,7 +14,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconf_selfcert/conf.d:/etc/nginx/user.conf.d:ro
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig_selfcert/conf.d:/etc/nginx/user.conf.d:ro
       - ${ARCHIPELAGO_ROOT}/data_storage/selfcert:/etc/self_cert
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
       - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx:cached
