@@ -24,7 +24,7 @@ Shutdown your `docker-compose` ensemble. Move to your `archipelago-deployment-li
 ```Shell
 cd deploy/ec2-docker
 docker-compose down
-````
+```
 
 ### Step 2:
 
@@ -32,7 +32,7 @@ Verify all containers are actually down. The following command should return an 
 
 ```Shell
 docker ps
-````
+```
 
 ### Step 3:
 
@@ -99,7 +99,7 @@ docker exec -ti esmero-php bash -c "composer require symfony/yaml:^4  --update-w
 docker exec -ti esmero-php bash -c "composer require drupal/webform:^6  --update-with-dependencies --no-update"
 docker exec -ti esmero-php bash -c "composer require drupal/google_api_client:3.2 --update-with-dependencies --no-update"
 docker exec -ti esmero-php bash -c "composer require drupal/bootstrap_barrio:5.1 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require 'drupal/role_based_theme_switcher:^9' --update-with-dependencies --no-update"
+docker exec -ti esmero-php bash -c "composer require 'drupal/role_theme_switcher:^1.1' --update-with-dependencies --no-update"
 ```
 
 *Note:* We are fixing `drupal/bootstrap_barrio` to an exact version (5.1) because 5.5 and later are now Bootstrap 5 and `archipelago_subtheme` is still Bootstrap 4. 
@@ -111,7 +111,6 @@ docker exec -ti esmero-php bash -c "composer remove drupal/config_installer  --u
 docker exec -ti esmero-php bash -c "composer remove drupal/jsonapi_earlyrendering_workaround --no-update"
 docker exec -ti esmero-php bash -c "composer remove drupal/markdown --no-update"
 docker exec -ti esmero-php bash -c "composer remove drupal/module_missing_message_fixer --no-update "
-docker exec -ti esmero-php bash -c "composer remove drupal/role_theme_switcher --no-update"
 docker exec -ti esmero-php bash -c "composer remove drupal/key_value --no-update"
 docker exec -ti esmero-php bash -c "composer remove drupal/olivero --no-update"
 ```
@@ -122,9 +121,9 @@ And we uninstall those from Drupal too (IMPORTANT)
 docker exec -ti esmero-php bash -c " drush pm-uninstall module_missing_message_fixer"
 docker exec -ti esmero-php bash -c " drush pm-uninstall jsonapi_earlyrendering_workaround"
 docker exec -ti esmero-php bash -c " drush pm-uninstall markdown"
-docker exec -ti esmero-php bash -c " drush pm-uninstall role_theme_switcher"
+docker exec -ti esmero-php bash -c " drush pm-uninstall webprofiler"
 docker exec -ti esmero-php bash -c " drush pm-uninstall key_value"
-````
+```
 
 *Note:* If we happened to remove via `composer` a module without using `--no-update` then the `drush pm-uninstall` would totally fail and many other things will become weird! NEVER do that. You can always `drush pm-uninstall` first in the future if you are not going to remember to use `--no-update`, just to be double safe.
 
@@ -134,7 +133,7 @@ Finally! Now we are going to tell `composer` to actually fetch the NEW code and 
 
 ```Shell
 docker exec -ti esmero-php bash -c "composer update -W"
-````
+```
 
 During this process you may see a message like this because of applied patches during Archipelago D8 installation. Select 'y' and press enter.
 
@@ -202,13 +201,13 @@ Type to get all the options.
 
 ```Shell
 docker exec -ti esmero-php bash -c "drush cex --help"
-````
+```
 
 If you run this comman directly it will overwrite your `drupal/config/sync` folder, so it may be a good idea to double check OR if you are keeping `configs` in an alternate folder to add the `--destination[=DESTINATION]` flag to the command at the end.
 
 ```Shell
 docker exec -ti esmero-php bash -c "drush cex"
-````
+```
 
 ---
 
