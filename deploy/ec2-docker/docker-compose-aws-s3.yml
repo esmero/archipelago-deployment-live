@@ -65,7 +65,7 @@ services:
       - /drupalconfig
   db:
     image: mysql:8.0.22
-    command: mysqld --default-authentication-plugin=mysql_native_password  --max_allowed_packet=256M
+    command: mysqld --default-authentication-plugin=mysql_native_password --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M
     container_name: esmero-db
     restart: always
     environment:
