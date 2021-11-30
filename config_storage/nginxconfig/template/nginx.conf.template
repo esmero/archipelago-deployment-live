@@ -17,6 +17,10 @@ server {
 
     fastcgi_buffers 16 16k;
     fastcgi_buffer_size 32k;
+    
+    # Please adapt to your needs
+    proxy_buffers 16 16k;  
+    proxy_buffer_size 16k;
 
     # Cantaloupe proxypass
     location /cantaloupe/ {
@@ -27,8 +31,6 @@ server {
        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
        if ($request_uri ~* "/cantaloupe/(.*)") {
          proxy_pass http://cantaloupe/$1;
-         proxy_buffers 16 16k;  
-         proxy_buffer_size 16k;
        }
     }
 
