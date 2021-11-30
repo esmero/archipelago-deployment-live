@@ -1,10 +1,8 @@
 {# This Template generates Thumbnails for various Media representations
 
-Updated on 25/11/2021 for RC3
-
 Structures passed from Archipelago are
 - node
-  The full Node entity
+  The full Node entitya
 - data
   The Full JSON Structure converted in an Array
 - iiif_server
@@ -68,72 +66,25 @@ Without Double quotes.
     {% endif %}
   {% endfor %}  
 {% endif%}
-{# <----START OUTPUT --> #}
-<a href="{{ nodeurl }}" alt="{{ node.label.value }}" hreflang="{{ len }}">
 {% if source|length > 0 %}
-{# NOTE: remote iiif-lazy class if you do not want lazy loading #}
-<img class="field-iiif image-iiif iiif-lazy img-fluid rounded" id="thumb_iiif-field_descriptive_metadata-{{ node.uuid.value }}-0-image1" src="{{ source }}" width="240" alt="Thumbnail for {{ node.label.value }}" typeof="foaf:Image">
+  {% set thumb_width = width < max_thumb_width ? with: max_thumb_width %}
+  {% set thumb_height = (thumb_width/width * height)|round() %}
+"thumbnail": [{
+  "id": "{{ source }}",
+  "type": "Image",
+  "format": "image/jpeg",
+  "width": {{ width }},
+  "height": 180
+}]
 {% else %}
-{# -- IF we have no source we can e.g use font awesome -- #}
-{# 
-Options we took from /admin/structure/webform/config/options/manage/schema_org_creative_works/source
-Article: Article 
-Book: Book
-Collection: Collection
-Dataset: Dataset
-DigitalDocument: 'Digital Document'
-Map: Map
-Movie: Movie
-MusicRecording: 'Music Recording'
-Painting: Painting
-Photograph: Photograph
-Sculpture: Sculpture
-VisualArtwork: VisualArtwork
-Thesis: Thesis
-Podcast: Podcast
-PodcastEpisode: 'Podcast Episode'
-Panorama: 'Panorama (http://ns.google.com/photos/1.0/panorama)'
-PanoramaTour: 'Panorama Tour (http://ns.google.com/photos/1.0/panorama)'
-3DModel: '3D Model'
-WebPage: 'Web Page'
-AudioObject: 'Audio Object'
-VideoObject: 'Video Object'
-Conversation: 'Conversation (Oral History)'
-ShortStory: 'Short Story'
-#}
-{% if data.type in ['DigitalDocument', 'Article','Thesis'] %}
-<i class="fas fa-file-alt fa-9x"></i>
-{% elseif data.type in ['Photograph','Painting','VisualArtwork'] %}
-<i class="fas fa-photo-video fa-9x"></i>
-{% elseif data.type in ['Movie','VideoObject'] %}
-<i class="fas fa-film fa-9x"></i>
-{% elseif data.type in ['MusicRecording', 'AudioObject'] %}
-<i class="fas fa-headphones-alt fa-9x"></i>
-{% elseif data.type in ['Podcast','PodcastEpisode'] %}
-<i class="fas fa-podcast"></i>
-{% elseif data.type in ['ShortStory','Conversation',] %}
-<i class="fas fa-comments fa-9x"></i>
-{% elseif data.type in ['Sculpture','3DModel'] %}
-<i class="fas fa-cubes fa-9x"></i>
-{% elseif data.type in ['Book'] %}
-<i class="fas fa-book fa-9x"></i>
-{% elseif data.type in ['WebPage'] %}
-<i class="fas fa-sitemap fa-9x"></i>
-{% elseif data.type in ['Panorama','PanoramaTour'] %}
-<i class="fas fa-vr-cardboard fa-9x"></i>
-{% elseif data.type in ['Dataset'] %}
-<i class="fas fa-table fa-9x"></i>
-{% elseif data.type in ['CreativeWorkSeries'] %}
-<i class="fab fa-buffer fa-9x"></i>
-{% elseif data.type in ['Collection'] %}
-<i class="fas fa-archive fa-9x"></i>
-{% elseif data.type in ['Map'] %}
-<i class="fas fa-map-marked-alt fa-9x"></i>
-{% else %} 
-<i class="fas fa-file-contract fa-9x"></i>
+"thumbnail": 
+[{
+  "id": "{{ url('<front>')|render ~ file_url('public://media-icons/generic/no-thumbnail.png') }}",
+  "type": "Image",
+  "format": "image/png",
+  "width": 180,
+  "height": 180
+}]
 {% endif %}
-{# -- ENDIF fontawesome -- #}
-{% endif %}
-</a>
 {% endspaceless %}
 {% endapply %}
