@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Adding Drupal 8\9 basic Configs"
+echo "Adding Drupal 9 basic Configs"
 chmod 755 /var/www/html/web/sites/default/settings.php
 cat <<EOT >> /var/www/html/web/sites/default/settings.php
 \$MINIO_ACCESS_KEY=getenv("MINIO_ACCESS_KEY");
@@ -13,7 +13,6 @@ cat <<EOT >> /var/www/html/web/sites/default/settings.php
 \$settings['s3fs.upload_as_private'] = TRUE;
 \$settings['file_private_path'] = '/var/www/html/private';
 ini_set('memory_limit', '1024M');
-\$settings['install_profile'] = 'standard';
 if (PHP_SAPI !== 'cli') {
   \$settings['reverse_proxy'] = TRUE;
   \$settings['reverse_proxy_addresses'] = [@\$_SERVER['REMOTE_ADDR']];

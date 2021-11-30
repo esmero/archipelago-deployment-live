@@ -17,6 +17,10 @@ server {
 
     fastcgi_buffers 16 16k;
     fastcgi_buffer_size 32k;
+    
+    # Please adapt to your needs
+    proxy_buffers 16 16k;  
+    proxy_buffer_size 16k;
 
     # Cantaloupe proxypass
     location /cantaloupe/ {

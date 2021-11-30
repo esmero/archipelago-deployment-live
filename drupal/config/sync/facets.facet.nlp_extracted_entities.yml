@@ -8,7 +8,7 @@ dependencies:
   module:
     - search_api
 id: nlp_extracted_entities
-name: 'SBF Ordered list of places'
+name: 'NLP Extracted Entities'
 url_alias: nlp_extracted_entities
 weight: 0
 min_count: 1

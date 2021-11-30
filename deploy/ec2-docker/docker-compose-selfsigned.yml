@@ -1,5 +1,6 @@
 # Run docker-compose run -d
 # drush config-import
+# From 1.0.0 this won't be maintained. For a non SSL version please see https://github.com/esmero/archipelago-deployment
 
 version: '3.5'
 services:

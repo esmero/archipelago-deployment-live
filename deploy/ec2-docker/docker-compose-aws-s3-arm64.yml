@@ -65,7 +65,7 @@ services:
       - /drupalconfig
   db:
     image: mariadb:10.5.10-focal
-    command: --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M
+    command: --default-authentication-plugin=mysql_native_password  --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
     container_name: esmero-db
     restart: always
     environment:
