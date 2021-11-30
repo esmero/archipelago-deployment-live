@@ -123,7 +123,7 @@ What does each key mean?
 
 - `ARCHIPELAGO_ROOT`: the **absolute path** to your `archipelago-deployment-live` git repo in your host machine.
 - `ARCHIPELAGO_EMAIL`: a valid **email**, will be used to register your SSL Certificate via Certbot.
-- `ARCHIPELAGO_DOMAIN`: a valid **domain name** for your repository. If not using your own it may be one provided by your Cloud provider. e.g http://ec2-xx-xxx-xxx-xx.compute-1.amazonaws.com. This domain will be also used to request your SSL Certificate via Certbot.
+- `ARCHIPELAGO_DOMAIN`: a valid **domain name** for your repository. This domain will be also used to request your SSL Certificate via Certbot.
 - `MINIO_ACCESS_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to be generated there. The user/IAM owner of this ACCESS KEY needs to have access to read/write the bucket you will configure in this same `.env`. If running local `min.io` whatever you set will be used.
 - `MINIO_SECRET_KEY`: If you are running a Cloud Service backed S3/Azure Storage this needs to generated there. The user/IAM owner of the matching SECRET_KEY needs to have access to read/write the bucket you will configure in this same `.env` file. If running local `min.io` whatever you set will be used.
 - `MYSQL_ROOT_PASSWORD`: The MYSQL 8 or Mariadb 15 password. This password will be used later also during Drupal deployment via `drush`
