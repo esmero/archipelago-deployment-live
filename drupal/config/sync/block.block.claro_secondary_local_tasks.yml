@@ -1,14 +1,14 @@
-uuid: c3e699f8-8bd7-4cba-aa48-9aa425ffda44
+uuid: a3f123da-42e0-4d14-b1bd-4054fee17c63
 langcode: en
 status: true
 dependencies:
   theme:
-    - bootstrap_barrio_subtheme
+    - claro
 _core:
-  default_config_hash: QeZBeCilQfeET3GeW6ZtJkEiwROADTZktFgKWwPieD4
-id: bootstrap_barrio_subtheme_secondary_local_tasks
-theme: bootstrap_barrio_subtheme
-region: top_header
+  default_config_hash: D_hUB_AW2IvKbVo3lVG-B2KfTsX6xJ-CxfOcRYUnL3E
+id: claro_secondary_local_tasks
+theme: claro
+region: pre_content
 weight: 0
 provider: null
 plugin: local_tasks_block

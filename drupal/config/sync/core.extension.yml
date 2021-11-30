@@ -51,7 +51,6 @@ module:
   file_mdm_exif: 0
   filter: 0
   form_mode_manager: 0
-  form_mode_manager_theme_switcher: 0
   format_strawberryfield: 0
   google_api_client: 0
   hal: 0
@@ -61,9 +60,11 @@ module:
   imagemagick: 0
   inline_entity_form: 0
   inline_form_errors: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
   jsonapi: 0
   jsonapi_earlyrendering_workaround: 0
-  key_value: 0
   language: 0
   layout_discovery: 0
   link: 0
@@ -73,7 +74,6 @@ module:
   migrate: 0
   migrate_drupal: 0
   moderated_content_bulk_publish: 0
-  module_missing_message_fixer: 0
   node: 0
   options: 0
   page_cache: 0
@@ -95,7 +95,6 @@ module:
   serialization: 0
   settings_tray: 0
   shortcut: 0
-  simpletest: 0
   smtp: 0
   sophron: 0
   strawberry_runners: 0
@@ -125,7 +124,6 @@ module:
   webform_submission_log: 0
   webform_templates: 0
   webform_ui: 0
-  webform_views: 0
   workflows: 0
   ds: 1
   menu_link_content: 1
@@ -134,7 +132,7 @@ module:
   ds_extras: 2
   content_translation: 10
   views: 10
-  standard: 1000
+  minimal: 1000
 theme:
   stable: 0
   seven: 0
@@ -142,7 +140,7 @@ theme:
   bootstrap_barrio: 0
   archipelago_subtheme: 0
   olivero: 0
-  bootstrap_barrio_subtheme: 0
-profile: standard
+  claro: 0
+profile: minimal
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

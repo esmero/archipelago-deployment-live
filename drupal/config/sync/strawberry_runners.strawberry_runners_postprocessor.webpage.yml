@@ -13,7 +13,10 @@ pluginconfig:
     searchapi: searchapi
     plugin: 0
   processor_queue_type: background
-  timeout: '10'
+  nlp: 1
+  nlp_url: 'http://esmero-nlp:6400'
+  nlp_method: polyglot
+  timeout: '25'
   weight: '0'
 pluginid: webpage
 active: true
