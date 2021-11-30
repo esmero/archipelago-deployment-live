@@ -262,7 +262,7 @@ docker exec -ti esmero-php bash -c 'drush urol administrator "admin"'
 
 Before ingesting the base content we need to make sure we can access your `JSON-API` on for your new domain. That means we need to change internal urls (`https://esmero-web`) to the new valid SSL driven ones. This is easy:
 
-On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file. Go to your base git clone folder and then run
+On your host machine (no need to `docker exec` these ones), replace first in the following command `your.domain.org` with the domain you setup in your `.env` file. Go to **your base git clone folder** (Important, YOUR BASE CLONE FOLDER) and then run
 
 ```SHELL
  sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/deploy.sh
