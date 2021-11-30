@@ -211,7 +211,7 @@ Archipelago will do that for you whenever its about to expire so no need to deal
 
 Now press CTRL+C. `docker-compose` will shutdown gracefully. Good!
 
-### Step 5. Deploy Drupal
+### Step 5. Deploy Drupal 9
 
 #### Composer and Drupal
 
@@ -247,7 +247,7 @@ And now you can deploy Drupal!
 **IMPORTANT:** Make sure you replace in the following command inside `root:MYSQL_ROOT_PASSWORD` the `MYSQL_ROOT_PASSWORD` string with the **value** you used/assigned in your `.env` file for `MYSQL_ROOT_PASSWORD`. And replace `ADMIN_PASSWORD` with a password that is safe and you won't forget! That passwords is for your Drupal super user (uid:0).
 
 ```SHELL
-docker exec -ti esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose config_installer  config_installer_sync_configure_form.sync_directory=/var/www/html/config/sync/ --db-url=mysql://root:MYSQL_ROOT_PASSWORD@esmero-db/drupal8 --account-name=admin --account-pass=ADMIN_PASSWORD -r=/var/www/html/web --sites-subdir=default --notify=false install_configure_form.enable_update_status_module=NULL install_configure_form.enable_update_status_emails=NULL;drush cr;chown -R www-data:www-data sites;"
+docker exec -ti -u www-data esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose --existing-config --db-url=mysql://root:MYSQL_ROOT_PASSWORD@esmero-db/drupal9 --account-name=admin --account-pass=ADMIN_PASSWORD -r=/var/www/html/web --sites-subdir=default --notify=false;drush cr;chown -R www-data:www-data sites;"
 ```
 
 ### Step 6. Users and initial Content.
@@ -257,6 +257,7 @@ After installation is done (may take a few) you can install initial users and as
 ```SHELL
 docker exec -ti esmero-php bash -c 'drush ucrt demo --password="demo"; drush urol metadata_pro "demo"'
 docker exec -ti esmero-php bash -c 'drush ucrt jsonapi --password="jsonapi"; drush urol metadata_api "jsonapi"'
+docker exec -ti esmero-php bash -c 'drush urol administrator "admin"'
 ````
 
 Before ingesting the base content we need to make sure we can access your `JSON-API` on for your new domain. That means we need to change internal urls (`https://esmero-web`) to the new valid SSL driven ones. This is easy:
