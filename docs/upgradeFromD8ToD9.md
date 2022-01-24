@@ -1,77 +1,106 @@
-# Archipelago-deployment-live: upgrading Drupal 8 to Drupal 9
+<!--documentation
+---
+title: "Archipelago-deployment-live: upgrading Drupal 8 to Drupal 9 (1.0.0-RC2 to 1.0.0-RC3)"
+tags:
+  - Archipelago-deployment-live
+  - Drupal 8
+  - Drupal 9
+---
+documentation-->
+
+# Archipelago-deployment-live: upgrading Drupal 8 to Drupal 9 (1.0.0-RC2 to 1.0.0-RC3)
 
 ## What is this documentation for?
 
-If you already have a well setup and well loved Archipelago (RC2 or your own custom version) running Drupal 8 (D8), this documentation will allow you to update to Drupal 9 (D9) without major issues.
+If you already have a well-set-up and well-loved Archipelago (RC2 or your own custom version) running Drupal 8 (D8), this documentation will allow you to update to Drupal 9 (D9) without major issues.
 
-D8 will be no longer supported by the end of November 2021. D9 has been around for a little while and even if not every module is supported yet, what you need and want for **Archipelago** has been since a long time
-D9 ready. 
+D8 is no longer supported as of the end of November 2021. D9 has been around for a little while and even if every module is not supported yet, what you need and want for **Archipelago** has long been D9-ready. 
 
 ## Requirements
 
-- A live instance (working, tested) of Archipelago via Docker running Drupal 8
-- Basic knowledge and instincts on how to run Terminal Commands, `composer` and `drush`
+- An [archipelago-deployment-live](https://github.com/esmero/archipelago-deployment-live) instance 1.0.0-RC2 (working, tested) deployed using provided instructions via Docker and running Drupal 8.
+- Basic knowledge and instincts (+ courage) on how to run Terminal Commands, `composer` and `drush`.
 - Patience. You can't skip steps here.
-- For Shell Commands documented here please copy line by line. Not the whole block.
+- For Shell Commands documented here please copy line by line—not the whole block.
 
-## Backing up
+## Backing up and preparing for the upgrade
 
-Backups are always going to be your best friends. Archipelago's code, Database and settings are mostly self contained in your current `archipelago-deployment-live` repo folder and backing up is because of that simple
+Backups are always going to be your best friends. Archipelago's code, database and settings are mostly self-contained in your current `archipelago-deployment-live` repo folder, and backing up is simple because of that.
 
 ### Step 1:
 
-Shutdown your `docker-compose` ensemble. Move to your `archipelago-deployment-live` folder and run this:
-```Shell
+Shut down your `docker-compose` ensemble. Move to your `archipelago-deployment-live` folder and run this:
+
+```shell
 cd deploy/ec2-docker
 docker-compose down
 ```
 
 ### Step 2:
 
-Verify all containers are actually down. The following command should return an empty listing. If anything is still running, wait a little longer and run the following comman again.
+Verify that all containers are actually down. The following command should return an empty listing. If anything is still running, wait a little longer, and run the following comman again.
 
-```Shell
+```shell
 docker ps
 ```
 
 ### Step 3:
 
-Now let's tar.gz the whole ensemble with data and configs. As an example we will save this into your `$HOME` folder. 
-As a good practice we append the **current date **(YEAR-DAY-MONTH) to the filename. Here we assume today is September 1st of 2021.
+Now let's `tar.gz` the whole ensemble with data and configs. As an example we will save this into your `$HOME` folder.
+As a good practice we append the **current date **(YEAR-MONTH-DAY) to the filename. Here we assume today is December 1st of 2021.
 
-```Shell
+```shell
 
-sudo tar -czvpf $HOME/archipelago-deployment-live-backup-20210109.tar.gz ../../../archipelago-deployment-live
-
-```
-
-The process may take a few minutes. Now let's verify all is there and the `tar.gz` is not corrupt.
-
-```Shell
-tar -tvvf $HOME/archipelago-deployment-live-backup-20210109.tar.gz 
-```
-
-You will see a listing of files. If corrupt (do you have enough space? did your ssh connection drop?) you will see:
+sudo tar -czvpf $HOME/archipelago-deployment-live-backup-20211201.tar.gz ../../../archipelago-deployment-live
 
 ```
+
+The process may take a few minutes. Now let's verify that all is there and that the `tar.gz` is not corrupt.
+
+```shell
+tar -tvvf $HOME/archipelago-deployment-live-backup-20211201.tar.gz 
+```
+
+You will see a listing of files. If corrupt (Do you have enough space? Did your ssh connection drop?) you will see the following:
+
+```shell
 tar: Unrecognized archive format
 ```
 
 ### Step 4:
 
-Restart your `docker-compose` ensemble and wait a little while for all to start. Newer versions of Minio may take up to 4 minutes to connect if you are using it as an AWS S3 Gateway.
+Restart your `docker-compose` ensemble, and wait a little while for all to start.
 
-```Shell
+```shell
 docker-compose up -d
 ```
 
-## Upgrading
+### Step 5:
+
+Export/backup all of your live Archipelago configurations (this allows you to compare/come back in case you lose something custom during the upgrade).
+
+```shell
+docker exec esmero-php mkdir config/backup
+docker exec esmero-php drush cex --destination=/var/www/html/config/backup
+```
+
+Good. Now it's safe to begin the upgrade.
+
+___
+
+## Upgrading to 1.0.0-RC3
 
 ### Step 1:
 
-Navigate to your current `archipelago-deployment-live` repo folder and open up the file `permissions` for some of your most protected Drupal files.
+First we are going to disable modules that are not part of 1.0.0-RC3 or are not yet compatible with D9. Run the following command:
 
-```Shell
+```shell
+docker exec esmero-php drush pm-uninstall module_missing_message_fixer markdown webprofiler key_value webform_views
+```
+
+From inside your `archipelago-deployment-live` repo folder we are going to open up the file `permissions` for some of your most protected Drupal files.
+
+```shell
 cd ../../
 sudo chmod 777 drupal/web/sites/default
 sudo chmod 666 drupal/web/sites/default/*settings.php
@@ -80,73 +109,110 @@ sudo chmod 666 drupal/web/sites/default/*services.yml
 
 ### Step 2:
 
-We are going to tell `composer` to update `composer.json` requirements *but not* update yet all dependencies (means also your Drupal 8 is running this whole time without being affected, nice!). This is very important to avoid dead-locks of cross-dependant libraries.
+Time to fetch the `1.0.0-RC3` branch and update our `docker-compose` and `composer` dependencies. We are also going to stop the current `docker` ensemble to update all containers to newer versions:
 
-Run each line for D9 core and its base packages.
-
-```Shell
-docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^9 --update-with-dependencies --no-update"
+```shell
+cd deploy/ec2-docker
+docker-compose down
+git checkout 1.0.0-RC3 
 ```
 
-Now we are going to update D8 Archipelago required and suggested modules into D9 requirements/compatible packages:
+Then copy the appropriate `docker-compose` file for your architecture:
 
-```Shell
-docker exec -ti esmero-php bash -c "composer require drupal/form_mode_manager:^2.0@RC --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require drupal/display_field_copy:^2.0 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require symfony/event-dispatcher:^4 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require symfony/yaml:^4  --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require drupal/webform:^6  --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require drupal/google_api_client:3.2 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require drupal/bootstrap_barrio:5.1 --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer require 'drupal/role_theme_switcher:^1.1' --update-with-dependencies --no-update"
+<!--switch_below
+
+??? info "OSX (macOS)/x86-64"
+
+    ```shell
+    cp docker-compose-osx.yml docker-compose.yml
+    ```
+
+??? info "Linux/x86-64/AMD64"
+
+    ```shell
+    cp docker-compose-linux.yml docker-compose.yml
+    ```
+
+??? info "OSX (macOS)/Linux/ARM64"
+
+    ```shell
+    cp docker-compose-arm64.yml docker-compose.yml
+    ```
+
+switch_below-->
+
+___
+
+OSX (macOS)/x86-64:
+
+```shell
+cp docker-compose-osx.yml docker-compose.yml
 ```
 
-*Note:* We are fixing `drupal/bootstrap_barrio` to an exact version (5.1) because 5.5 and later are now Bootstrap 5 and `archipelago_subtheme` is still Bootstrap 4. 
+___
 
-We need to also remove legacy modules that are **no longer supported** by D9 or have been incorporated into `Core`. 
+Linux/x86-64/AMD64:
 
-```Shell
-docker exec -ti esmero-php bash -c "composer remove drupal/config_installer  --update-with-dependencies --no-update"
-docker exec -ti esmero-php bash -c "composer remove drupal/jsonapi_earlyrendering_workaround --no-update"
-docker exec -ti esmero-php bash -c "composer remove drupal/markdown --no-update"
-docker exec -ti esmero-php bash -c "composer remove drupal/module_missing_message_fixer --no-update "
-docker exec -ti esmero-php bash -c "composer remove drupal/key_value --no-update"
-docker exec -ti esmero-php bash -c "composer remove drupal/olivero --no-update"
+```shell
+cp docker-compose-linux.yml docker-compose.yml
 ```
 
-And we uninstall those from Drupal too (IMPORTANT)
+___
 
-```Shell
-docker exec -ti esmero-php bash -c " drush pm-uninstall module_missing_message_fixer"
-docker exec -ti esmero-php bash -c " drush pm-uninstall jsonapi_earlyrendering_workaround"
-docker exec -ti esmero-php bash -c " drush pm-uninstall markdown"
-docker exec -ti esmero-php bash -c " drush pm-uninstall webprofiler"
-docker exec -ti esmero-php bash -c " drush pm-uninstall key_value"
+OSX (macOS)/Linux/ARM64:
+
+```shell
+cp docker-compose-arm64.yml docker-compose.yml
 ```
 
-*Note:* If we happened to remove via `composer` a module without using `--no-update` then the `drush pm-uninstall` would totally fail and many other things will become weird! NEVER do that. You can always `drush pm-uninstall` first in the future if you are not going to remember to use `--no-update`, just to be double safe.
+___
+
+<!--switch_above
+switch_above-->
+
+Finally, pull the images, and bring up the ensemble:
+
+```shell
+docker compose pull 
+docker compose up -d
+```
+
+Give all a little time to start. The latest `min.io` adds a new console, and your `Solr` core and `Database` need to be upgraded. Please be patient. To ensure all is well, run (more than once if necessary) the following:
+
+```shell
+docker ps
+```
+
+You should see something like this: 
+
+```shell
+CONTAINER ID   IMAGE                                    COMMAND                  CREATED          STATUS          PORTS                                                           NAMES
+867fd2a42134   nginx                                    "/docker-entrypoint.…"   32 seconds ago   Up 27 seconds   0.0.0.0:8001->80/tcp, :::8001->80/tcp                           esmero-web
+8663e84a9b48   solr:8.8.2                               "docker-entrypoint.s…"   33 seconds ago   Up 30 seconds   0.0.0.0:8983->8983/tcp, :::8983->8983/tcp                       esmero-solr
+9b580fa0088f   minio/minio:latest                       "/usr/bin/docker-ent…"   33 seconds ago   Up 28 seconds   0.0.0.0:9000-9001->9000-9001/tcp, :::9000-9001->9000-9001/tcp   esmero-minio
+50e2f41c7b60   esmero/esmero-nlp:1.0                    "/usr/local/bin/entr…"   33 seconds ago   Up 30 seconds   0.0.0.0:6400->6400/tcp, :::6400->6400/tcp                       esmero-nlp
+300810fd6f03   esmero/cantaloupe-s3:4.1.9RC             "sh -c 'java -Dcanta…"   33 seconds ago   Up 30 seconds   0.0.0.0:8183->8182/tcp, :::8183->8182/tcp                       esmero-cantaloupe
+248e4638ba2a   mysql:8.0.22                             "docker-entrypoint.s…"   33 seconds ago   Up 28 seconds   3306/tcp, 33060/tcp                                             esmero-db
+141ace919344   esmero/php-7.4-fpm:1.0.0-RC2-multiarch   "docker-php-entrypoi…"   33 seconds ago   Up 28 seconds   9000/tcp                                                        esmero-php
+```
+
+Important here is the `STATUS` column. It **needs** to be a number that goes up in time every time you run `docker ps` again (and again).
 
 ### Step 3:
 
-Finally! Now we are going to tell `composer` to actually fetch the NEW code and update its dependencies.
+Now we are going to tell `composer` to actually fetch the new code and dependencies using the 1.0.0-RC3 provided `composer.lock` and update the whole Drupal/PHP/JS environment.
 
-```Shell
-docker exec -ti esmero-php bash -c "composer update -W"
+```shell
+docker exec -ti esmero-php bash -c "composer install"
 ```
 
-During this process you may see a message like this because of applied patches during Archipelago D8 installation. Select 'y' and press enter.
+This will fail (sorry!) for a few packages but no worries, they need to be patched and composer is not that smart. So simply run it again:
 
+```shell
+docker exec -ti esmero-php bash -c "composer install"
 ```
- - Upgrading drupal/fancy_file_delete (2.0.3 => 2.0.5): Extracting archive
-    drupal/form_mode_manager has modified files:
-    M src/AbstractEntityFormModesFactory.php
-    M src/Controller/FormModeManagerEntityController.php
-    Discard changes [y,n,v,d,s,?]? y
-```  
-  
-If you see **no** issues and all ends in a **Green colored message** all is good!  (Jump to Step 4)
 
+Well done! If you see **no** issues and all ends in a **Green colored message** all is good! [Jump to Step 4](#step-4_1)
 
 #### What if not all is OK and I see red and a lot of dependency explanations?
 
@@ -155,61 +221,84 @@ In that case you need to check each package website's (normally https://www.drup
 
 If so run:
 
-```Shell
+```shell
 docker exec -ti esmero-php bash -c "composer require 'drupal/the_module_name:^VERSION_NUMBER_THAT_WORKS_ON_DRUPAL9_' --update-with-dependencies --no-update" and run **Step 3 ** again (and again until all is cleared)
 ```
 
 If not: try to find a replacement module that does something simular, but in any case you may end having to remove before proceding. Give us a ping/slack/google group/open a github ISSUE if you find yourself uncertain about this. 
 
-```Shell
+```shell
 docker exec -ti esmero-php bash -c "composer remove drupal/the_module_name --no-update"
 docker exec -ti esmero-php bash -c " drush pm-uninstall the_module_name"
 ```
 
 ### Step 4:
 
-We will now ask Drupal to update its internal Configs and databases and enable a few last minute modules. In case for some odd dependecy issue you end up running an older version of D9, the following commands will bring you up to date.
+We will now ask Drupal to update some internal configs and databases. They will bring you up to date with RC3 settings and D9 particularities.
 
- ```Shell  
-docker exec -ti esmero-php bash -c "drush updatedb"
-docker exec -ti esmero-php bash -c "drush en role_based_theme_switcher"
-docker exec -ti esmero-php bash -c "composer require drupal/core:^9.2 drupal/core-dev:^9.2 -W"
-docker exec -ti esmero-php bash -c "composer require drupal/jquery_ui drupal/jquery_ui_datepicker"
-docker exec -ti esmero-php bash -c "drush en jquery_ui jquery_ui_datepicker"
-```
-
-And yet another update pass!
-
-```Shell
-docker exec -ti esmero-php bash -c "composer update -W"
+```shell  
+docker exec -ti esmero-php bash -c 'scripts/archipelago/setup.sh'
+docker exec -ti esmero-php bash -c 'drush urol administrator "admin"'
 docker exec -ti esmero-php bash -c "drush updatedb"
 ```
 
 ### Step 5:
 
-Good! If you made it this far you are almost ready (are we ever ready?). Now to restore permissions for your important protected Drupal files, and  then you should be ready to (hopefully) stay in the Drupal 9 realm for a few years!
+Previously D8 installations had a "module/profile" driven installation. Those are no longer used or even exist as part of core, but a profile can't be changed once installed so you have to do the following to avoid Drupal complaining about our new and simpler way of doing things (a small roll back):
 
-```Shell
-sudo chmod 755 drupal/web/sites/default
-sudo chmod 644 drupal/web/sites/default/*settings.php
-sudo chmod 644 drupal/web/sites/default/*services.yml
+```shell 
+docker exec -ti esmero-php bash -c "sed -i 's/minimal: 1000/standard: 1000/g' config/sync/core.extension.yml"
+docker exec -ti esmero-php bash -c "sed -i 's/profile: minimal/profile: standard/g' config/sync/core.extension.yml"
 ```
 
-Please log into your Archipelago and test/check all is working. Your Configurations will have changed (the .yml files) so it's a good moment to get yourself a package of those and after checking them you can export them.
+### Step 6:
 
-Type to get all the options. 
+Now you can Sync your new Archipelago 1.0.0-RC3 and bring all the new configs and settings in. For this you have **two** options (no worries, remember you made a backup!):
 
-```Shell
-docker exec -ti esmero-php bash -c "drush cex --help"
+#### A Partial Sync, which will bring new configs and update existing ones but will **not** remove ones that only exist in your custom setup, e.g. new Webforms or View Modes.
+
+```shell 
+docker exec esmero-php drush cim -y --partial
 ```
 
-If you run this comman directly it will overwrite your `drupal/config/sync` folder, so it may be a good idea to double check OR if you are keeping `configs` in an alternate folder to add the `--destination[=DESTINATION]` flag to the command at the end.
+#### A Complete Sync, which will bring new configs and update existing ones but will also remove all the ones that are not part of RC3. It's a like clean factory reset.
 
-```Shell
-docker exec -ti esmero-php bash -c "drush cex"
+```shell 
+docker exec esmero-php drush cim -y
 ```
 
----
+If all goes well here and you see no errors it's time to reindex `Solr` because there are new Fields. Run the following:
+
+```shell 
+docker exec esmero-php drush search-api-reindex
+docker exec esmero-php drush search-api-index
+```
+
+You might see some warnings related to modules dealing with previously non-existent data—no worries, just ignore those.
+
+If you made it this far you are done with code/devops (are we ever ready?), and that means you should be able to (hopefully) stay in the Drupal 9 realm for a few years!
+
+### Step 7: Update (or not) your Metadata Display Entities and Menu items.
+
+Recommended: If you want to add new templates and menu items 1.0.0-RC3 provides, run this:
+
+```shell
+docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
+```
+
+Once that is done, you can choose to update all Metadata Displays (Twig templates) we ship with new 1.0.0-RC3 versions (heavily fixed IIIF manifest, Markdown to HTML for Metadata, better Object descriptions). But before you do this, we **really** recommend that you first make sure to manually (copy/paste) backup any Twig templates you have modified. If unusure, do not run the command that comes after this warning! You can always manually copy the new templates from the `d8content/metadatadisplays` folder which contains text versions (again, copy/paste) of each shipped template you can pick and use when you feel ready.
+
+If you are sure (like really?) you want to overwrite the ones you modified (sure, just checking?), then you can run this:
+
+```shell
+docker exec -ti esmero-php bash -c 'scripts/archipelago/update_deployed.sh'
+```
+
+Done! (For realz now)
+
+Please log into your Archipelago and test/check all is working! Enjoy 1.0.0-RC3 and Drupal 9. Thanks!
+
+___
 
 Thank you for reading! Please contact us on our [Archipelago Commons Google Group](https://groups.google.com/forum/#!forum/archipelago-commons) with any questions or feedback, or open an ISSUE in this [Archipelago Deployment Live Repository](https://github.com/esmero/archipelago-deployment-live/).
 

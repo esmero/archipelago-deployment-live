@@ -1,42 +1,47 @@
+<!--documentation
+---
+title: Moving from archipelago-deployment to archipelago-deployment-live
+tags:
+  - Archipelago-deployment
+  - Archipelago-deployment-live
+---
+documentation-->
+
 # Moving from `archipelago-deployment` to `archipelago-deployment-live`
 
 ## What is this documentation for?
 
-If you have been using/running/populating with Archipelago Digital Objects an instance that was setup using our simpler to deploy but harder to customize [archipelago-deployment](https://github.com/esmero/archipelago-deployment) strategy 
-and can't wait to move to this one, meant for a larger (and somehow easier to maintain and upgrade on the long run) but (wait!) you do not want to ingest again, setup again, configure users, etc. You already did that! 
-If all that applies this is your documentation.
+If you have been using/running/populating an instance with Archipelago Digital Objects that was set up using our simpler-to-deploy but harder-to-customize [archipelago-deployment](https://github.com/esmero/archipelago-deployment) strategy and can't wait to move to this one—meant for a larger (and somehow easier to maintain and upgrade on the long run) instance—but (wait!) you do not want to ingest again, set up again, configure users, etc. (You already did that!), this is your documentation.
 
 ## What is this documentation not for?
 
-To install an archipelago-deployment-live from scratch or to keep (forever) syncing between the two deployment options in a quantum phase shifting eternum like a Timecrystal.
+To install an `archipelago-deployment-live` from scratch or to keep (forever) syncing between the two deployment options in a quantum phase shifting eternum like a time crystal.
 
 ## Requirements
 
-- An instance of archipelago (working, tested) installed using `archipelago-deployment` as a basis
-- Basic knowledge and instincts on how to run Terminal Commands, copy files, run `composer`, `drush`, linux Permissions and `git` of course.
-- Patience. You can't skip steps here. Also Patience again since you may have stretched (good) your current instance to do way more we thought it could. 
-- Time to read main Documentation of this Repo to have a basic knowledge of how this is deployed. Recommended even if you are not going to deploy one from scratch here.
-- For Shell Commands documented here please copy line by line. Not the whole block.
+- An instance of Archipelago (working, tested) installed using `archipelago-deployment` as a basis.
+- Basic knowledge and instincts on how to run Terminal Commands, copy files, run `composer`, `drush`, Linux Permissions, and `git` of course.
+- Patience. You can't skip steps here. Also, Patience again since you may have stretched (good) your current instance to do way more than we thought it could.
+- Time to read the main Documentation of this Repo to have a basic knowledge of how this is deployed. Recommended even if you are not going to deploy one from scratch here.
+- For Shell Commands documented here please copy line by line—not the whole block.
 
 ## Differences between both deployments strategies. 
 
-In a nutshell: `archipelago-deployment-live` uses a different folder structure moving configuration storage, data storage outside of your webroot and allows a much finer control of your settings (safer) and docker containers.
-In a nutshell inside the first nutshell: `archipelago-deployment-live` also ignores more files so keeping customized versions, your own packages, your own settings around and version controlled is much easier.
-lastly: `archipelago-deployment-live` makes more use of Cloud Services, e.g so if you have been running `min.io` as local mounted storage you may now consider to move storage (files) to a cloud service like AWS S3
+In a nutshell: `archipelago-deployment-live` uses a different folder structure moving configuration storage, data storage outside of your webroot, and allows a much finer control of your settings (safer) and Docker containers.
+In a nutshell inside the first nutshell: `archipelago-deployment-live` also ignores more files so keeping customized versions, your own packages, your own settings around, and version controlled is much easier.
+Lastly: `archipelago-deployment-live` makes more use of Cloud Services, e.g. so if you have been running `min.io` as local mounted storage you may now consider moving storage (files) to a cloud service like AWS S3.
 
-## Commonalities between both deployments strategies.
+## Commonalities between both deployment strategies.
 
-In a nutshell: Since both run same code and use the same Docker Containers the data is actually the same, all is just persisted in different places.
-
+In a nutshell: Since both run the same code and use the same Docker Containers, the data is actually the same. Everything is just persisted in different places.
 
 ## Getting the new repo in place
 
-First you need to clone this repository and (hopefully) store in the same parent folder to your current `archipelago-deployment` one. For the purpose
-of this tutorial we will assume you have `archipelago-deployment` cloned in this location: `$HOME/archipelago-deployment`
+First you need to clone this repository and (hopefully) store in the same parent folder to your current `archipelago-deployment` one. For the purpose of this tutorial we will assume you have `archipelago-deployment` cloned in this location: `$HOME/archipelago-deployment`.
 
-Locate your archipelago-deployment folder in your terminal. Do an `ls` to make sure you can see the folder (not the content) and run
+Locate your `archipelago-deployment` folder in your terminal. Do an `ls` to make sure you can see the folder (not the content) and run:
 
-```Shell
+```shell
 git clone https://github.com/esmero/archipelago-deployment-live
 cd archipelago-deployment-live
 git checkout 1.0.0-RC3
@@ -44,62 +49,64 @@ cd ..
 cd archipelago-deployment
 ```
 
-Now you have side by side `$HOME/archipelago_deployment` and `$HOME/archipelago-deployment-live`
+Now you have side by side `$HOME/archipelago_deployment` and `$HOME/archipelago-deployment-live`.
 
-This will give you the base structure. 
+This will give you the base structure.
 
-Before touching anything let's start by generating a backup of your current deployment (safety first)
+Before touching anything let's start by generating a backup of your current deployment (safety first).
 
 ## Backing up
 
 ### Step 1:
 
-Shutdown your `docker-compose` ensemble. Inside your original `archipelago-deployment` folder run this:
+Shut down your `docker-compose` ensemble. Inside your original `archipelago-deployment` folder run this:
 
-```Shell
+```shell
 docker-compose down
-````
+```
 
 ### Step 2:
 
-Verify all containers are actually down.
+Verify all containers are actually down:
 
-```Shell
+```shell
 docker ps
 ```
-The following command should return an empty listing. If anything is still running, wait a little longer and run the following comman again.
+
+The following command should return an empty listing. If anything is still running, wait a little longer and run the previous command again.
 
 ### Step 3:
 
-Now let's tar.gz the whole ensemble with data and configs. As an example we will save this into your `$HOME` folder. 
-As a good practice we append the **current date** (YEAR-DAY-MONTH) to the filename. Here we assume today is September 1st of 2021.
+Now let's tar.gz the whole ensemble with data and configs. As an example we will save this into your `$HOME` folder.
+As a good practice we append the **current date** (YEAR-MONTH-DAY) to the filename. Here we assume today is December 1st of 2021:
 
-```Shell
-sudo tar -czvpf $HOME/archipelago-deployment-backup-20210109.tar.gz ../archipelago-deployment
+```shell
+sudo tar -czvpf $HOME/archipelago-deployment-backup-20211201.tar.gz ../archipelago-deployment
 ```
 
-The process may take a few minutes. Now let's verify all is there and the `tar.gz` is not corrupt.
+The process may take a few minutes. Now let's verify that all is there and that the `tar.gz` is not corrupt:
 
-```Shell
-tar -tvvf $HOME/archipelago-deployment-backup-20210109.tar.gz 
+```shell
+tar -tvvf $HOME/archipelago-deployment-backup-20211201.tar.gz 
 ```
 
 You will see a listing of files. If corrupt (do you have enough space? did your ssh connection drop?) you will see:
 
-```
+```shell
 tar: Unrecognized archive format
 ```
 
-Done! If you are running a public instance we can allow ourselves to start docker again to avoid down times.
+Done! If you are running a public instance we can allow ourselves to start Docker again to avoid downtime:
 
-```Shell
+```shell
 docker-compose up -d
-````
+```
 
 ## The directory structures
+
 Now that you backed all up we can spend some minutes looking at both directory structures.
 
-If you observe both deployment strategies side by side you will inmediatelly notice the most important similarities and also differences.
+If you observe both deployment strategies side by side you will inmediately notice the most important similarities and also differences:
 
 <table>
 	<tr>
@@ -271,8 +278,8 @@ If you observe both deployment strategies side by side you will inmediatelly not
 
 ## The Data
 
-Let's start by focusing on the `data`, in our case Database, Solr and File (S3 + Private) storage. Collapsing here a few folder will make this easier to read. 
-Marked with a `*` are matching folders that contain DB, Solr Core, the S3 min.io data (if you are using local storage) and also Drupal's very own `private` folder
+Let's start by focusing on the `data`, in our case the Database, Solr, and File (S3 + Private) storage. Collapsing here a few folders will make this easier to read.
+Marked with a `*` are matching folders that contain DB, Solr Core, the S3 min.io data (if you are using local storage) and also Drupal's very own `private` folder:
 
 <table>
 	<tr>
@@ -332,49 +339,48 @@ Marked with a `*` are matching folders that contain DB, Solr Core, the S3 min.io
 
 ### Copying the Data into the new Structure
 
-To do so we need to stop docker again. This is needed because Databases sometimes keep an open Change Log and Locks in place and if there is any interaction, cron running, your data may end corrupted.
+To do so we need to stop Docker again. This is needed because Databases sometimes keep an open Change Log and Locks in place, and if there is any interaction or cron running, your data may end up corrupted.
 
 #### Step 1:
 
-Shutdown your `docker-compose` ensemble. Inside your original `archipelago-deployment` folder run this:
+Shut down your `docker-compose` ensemble. Inside your original `archipelago-deployment` folder run this:
 
-```Shell
+```shell
 docker-compose down
-````
+```
 
 #### Step 2:
 
-Verify all containers are actually down.
+Verify all containers are actually down:
 
-```Shell
+```shell
 docker ps
 ```
 
 #### Step 3:
 
-We will copy DB, min.io (File and ADO storage as files) and Drupal's private (temporary files, caches) folders to its new place
+We will copy DB, min.io (File and ADO storage as files) and Drupal's private (temporary files, caches) folders to its new place:
 
-```
+```shell
 sudo cp -rpv persistent/db ../archipelago-deployment-live/data_storage/db
 sudo cp -rpv persistent/solrcore ../archipelago-deployment-live/data_storage/solrcore
 sudo cp -rpv persistent/miniodata ../archipelago-deployment-live/data_storage/minio-data
 sudo cp -rpv private ../archipelago-deployment-live/drupal/private
 ```
 
-Running `-rpv` will copy verbosely, recursively while preserving original permissions.
+Running `-rpv` will copy verbosely and recursively while preserving original permissions.
 
 Done!
 
-You can now start docker-compose again
+You can now start `docker-compose` again:
 
-```Shell
+```shell
 docker-compose up -d
-````
+```
 
 ## The Web
 
-Collapsing again a few folder to aid in readability we can now focus on your actual Drupal/Archipelago Code/Web and settings. To be honest (we are) you can easily reinstall and restore all this via `composer` but we can also
-Move folders as a learning experience/time and bandwith experience. Marked with a `*` are matching folders you want to copy over.
+Collapsing again a few folders to aid in readability, we can now focus on your actual Drupal/Archipelago Code/Web and settings. To be honest (we are), you can easily reinstall and restore all this via `composer`, but we can also move folders as a learning experience/time and bandwidth experience. Marked with a `*` are matching folders you want to copy over:
 
 <table>
 	<tr>
@@ -422,37 +428,38 @@ Move folders as a learning experience/time and bandwith experience. Marked with 
 
 ### Copying the Web into the new Structure
 
-No need to stop docker again. We can do this while your archipelago is still running 
+No need to stop Docker again. We can do this while your Archipelago is still running.
 
 #### Step 1:
 
 We will copy all important folders over. From your `archipelago-deployment` folder run:
 
-```
+```shell
 sudo cp -rpv vendor ../archipelago-deployment-live/drupal/vendor
 sudo cp -rpv web ../archipelago-deployment-live/drupal/web
 sudo cp -rpv config ../archipelago-deployment-live/drupal/config
 ```
 
-And also a few files selectively we know you are very fond of!
+And also, selectively, a few files we know you are very fond of!
 
-```
+```shell
 sudo cp -rpv composer.json ../archipelago-deployment-live/drupal/composer.json
 sudo cp -rpv composer.lock ../archipelago-deployment-live/drupal/composer.lock
 ```
+
 Done!
 
 ## SSL, Enviromentals, Configurations, Settings and Docker
 
-We are almost done. But `archipelago-deployment-live` has a different, safer way of defining SSL Certs, credentials and global settings for your Archipelago. 
-We will start first by copying settings as they are (most likely not very safe) and then we can update passwords/etc to make your system better prepared for the world.
+We are almost done, but `archipelago-deployment-live` has a different, safer way of defining SSL Certs, credentials, and global settings for your Archipelago. 
+We will start first by copying settings as they are (most likely not very safe), and then we can update passwords/etc. to make your system better-prepared for the world.
 
-To learn more about these general settings please read [this section of the parent Documentation](../README.md#step-3-setup-your-enviromental-variables-for-dockerservices) (who likes duplicated documentation? nobody)
-The gist here is (after reading, please do not skip) is we need to add our service definitions into an `.env` file.
+To learn more about these general settings please read [this section of the parent Documentation](../README.md#step-3-setup-your-enviromental-variables-for-dockerservices) (who likes duplicated documentation? Nobody.).
+The gist here is (after reading, please do not skip) that we need to add our service definitions into a `.env` file.
 
-Coming from `archipelago-deployment` means and assuming you are running AWS Linux 2 using the suggested locations in this document, and you have a vanilla deployment and you followed [these instructions](https://github.com/esmero/archipelago-deployment/blob/1.0.0-RC2/docs/ubuntu.md)) that your values for `$HOME/archipelago-deployment-live/deploy/ec2-docker/.env` will be the following:
+Coming from `archipelago-deployment` means and assumes that you are running AWS Linux 2 using the suggested locations in this document, that you have a vanilla deployment, and that you followed [these instructions](https://github.com/esmero/archipelago-deployment/blob/1.0.0-RC2/docs/ubuntu.md)) so your values for `$HOME/archipelago-deployment-live/deploy/ec2-docker/.env` will be the following:
 
-```
+```shell
 ARCHIPELAGO_ROOT=/home/ec2-user/archipelago-deployment-live
 ARCHIPELAGO_EMAIL=your@validemail.org
 ARCHIPELAGO_DOMAIN=your.domain.org
@@ -465,19 +472,16 @@ MINIO_BUCKET_CACHE=archipelago
 MINIO_FOLDER_PREFIX_CACHE=/
 ```
 
-If you plan on staying on local storage driven `min.io` 
-`MINIO_BUCKET_CACHE` and `MINIO_FOLDER_PREFIX_CACHE` are not going to be used. If you are planning on moving your Storage from local to Cloud driven please replace with the right (e.g AWS IAM keys and Secrets + bucket names and prefixes (folders)).
-Again, refer to the [parent Documentation](../README.md#step-3-setup-your-enviromental-variables-for-dockerservices) for setting this up
+If you plan on staying on local storage driven `min.io`, `MINIO_BUCKET_CACHE` and `MINIO_FOLDER_PREFIX_CACHE` are not going to be used. If you are planning on moving your Storage from local to cloud driven please replace with the right values, e.g. AWS IAM keys and Secrets + bucket names and prefixes (folders).
+Again, refer to the [parent Documentation](../README.md#step-3-setup-your-enviromental-variables-for-dockerservices) for setting this up.
 
-Once you have that in place (double check, if something goes wrong here we can always fine tune and fix again) we need to decide on a new docker-compose file and
-you may need to customize it depending on your choices, current and future needs.
+Once you have that in place (Double-check. If something goes wrong here we can always fine-tune and fix again.), we need to decide on a new `docker-compose` file, and you may need to customize it depending on your choices and current and future needs.
 
-If you already have an SSL certificate and its provided by `CertBot` you can either copy the certs from your current system (will totally depend on your setup since archipelago-deployment does not provide out of the box SSL Certs) to
-`$HOME/archipelago-deployment-live/data_storage/letsencrypt`
+If you already have an SSL certificate, and it's provided by `CertBot` you can either copy the certs from your current system (will totally depend on your setup since `archipelago-deployment` does not provide out-of-the-box SSL Certs) to `$HOME/archipelago-deployment-live/data_storage/letsencrypt`.
 
 A normal folder structure for that is:
 
-```
+```shell
 .
 ├── accounts
 │   └── acme-v02.api.letsencrypt.org
@@ -520,20 +524,20 @@ A normal folder structure for that is:
     └── pre
 ```
 
-Or, if your SSL cert is up to renewal you can just let Archipelago request it for you. Renewal will happen auto-magically and you may never ever need to worry about that in the future.
+Or if your SSL cert is up for renewal, you can just let Archipelago request it for you. Renewal will happen auto-magically, and you may never ever need to worry about that in the future.
 
-Finally. Let's adapt the docker-compose file we need to our previous (but still current!) `archipelago-deployment` reality
+Finally, let's adapt the `docker-compose` file we need to our previous (but still current!) `archipelago-deployment` reality.
 
-Run, for x86/AMD. For ARM64/Apple M1 please check the [parent Documentation](../README.md#deployment-on-arm64v8graviton-apple-m1-system))
+For x86/AMD, run (for ARM64/Apple M1 please check the [parent Documentation](../README.md#deployment-on-arm64v8graviton-apple-m1-system)):
 
-```
+```shell
 cp $home/archipelago-deployment-live/deploy/ec2-docker/docker-compose-aws-s3.yml $home/archipelago-deployment-live/deploy/ec2-docker/docker-compose.yml
 nano $home/archipelago-deployment-live/deploy/ec2-docker/docker-compose.yml
 ```
 
-And replace the content with this slightly modified version. Note, we really only changed lines after this comment `# THIS DIFFERS FROM THE NORMAL ONE...`
+And replace the content with this slightly modified version. Note: we really only changed the lines after this comment: `# THIS DIFFERS FROM THE NORMAL ONE...`.
 
-```
+```shell
 # Run docker-compose up -d
 
 version: '3.5'
@@ -673,39 +677,38 @@ networks:
 
 ```
 
-Press CNTRL-X and you are done.
+Press CNTRL-X, and you are done.
 Now the final test!!
 
 ## Shutdown the old one, start the new one
 
-So we are ready. Testing may be a hit-miss thing here. Did we cover all steps? did a command failed? Good thing is we can start the new ensemble and all our old one 
-will survive and we can come back over and over until we are ready. Let's try!
+So we are ready. Testing may be a hit-or-miss thing here. Did we cover all the steps? Did a command fail? The good thing is that we can start the new ensemble, and all our old ones will survive. And we can come back over and over until we are ready. Let's try!
 
-We will start by shutting down the running docker-ensemble
+We will start by shutting down the running Docker ensemble:
 
-```
+```shell
 cd $HOME/archipelago-deployment
 docker-compose down
 ```
 
-Now let's go to our new deployment. Docker starts here in a different folder
+Now let's go to our new deployment. Docker starts here in a different folder:
 
 
-```
+```shell
 cd $HOME/archipelago-deployment-live/deploy/ec2-docker
 docker-compose up
 ```
 
-You may notice we removed the `-d`. Why? We want to see all the messages and notice/mark/copy any errors. E.g did the SSL CERT load correctly? Did the MYSQL import worked out?
+You may notice that we removed the `-d`. Why? We want to see all the messages and notice/mark/copy any errors, e.g. did the SSL CERT load correctly? Did the MYSQL import work out?
 To avoid shutting it down while all starts, please open another Terminal and type:
 
-```Shell
+```shell
 docker ps
 ```
-And look at the up-times. Do you see any Containers restarting? (Where Created and the Status differ for a lot and Status keeps reset to 0?) A healthy deployment
-will look similar to this (
 
-```
+And look at the up-times. Do you see any Containers restarting (where Created and the Status differ for a lot and Status keeps resetting to 0?)? A healthy deployment will look similar to this:
+
+```shell
 CONTAINER ID   IMAGE                                    COMMAND                  CREATED          STATUS         PORTS                                      NAMES
 f794c25db64c   esmero/cantaloupe-s3:4.1.9RC2-arm64      "sh -c 'java -Dcanta…"   6 seconds ago    Up 3 seconds   0.0.0.0:8183->8182/tcp                     esmero-cantaloupe
 5b791445720f   jonasal/nginx-certbot                    "/docker-entrypoint.…"   6 seconds ago    Up 3 seconds   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   esmero-web
@@ -716,14 +719,14 @@ e762ad7ea5e2   solr:8.8.2                               "docker-entrypoint.s…"
 381166d61f8c   mariadb:10.5.10-focal                    "docker-entrypoint.s…"   11 seconds ago   Up 6 seconds   3306/tcp      
 ```
 
-If you feel all seems to be fine open a browser window and visit your website. See if you can log in, see ADOs. 
-If not please you can momentarely shut down this new docker-ensemble and restart the older one. Nothing is lost!
+If you feel that all seems to be fine, open a browser window and visit your website. See if you can log in and see ADOs.
+If not you can momentarily shut down this new Docker ensemble and restart the older one. Nothing is lost!
 Then with time and tea/coffee and fresh eyes come back and re-trace your steps. 95% of the issues are incorrect values in the `.env` file. The other 5% may be on us.
 If you run into any trouble please get in touch!
 
 Happy deploying!
 
----
+___
 
 Thank you for reading! Please contact us on our [Archipelago Commons Google Group](https://groups.google.com/forum/#!forum/archipelago-commons) with any questions or feedback, or open an ISSUE in this [Archipelago Deployment Live Repository](https://github.com/esmero/archipelago-deployment-live/).
 
