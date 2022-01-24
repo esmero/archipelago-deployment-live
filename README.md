@@ -1,8 +1,8 @@
 <!--documentation
 ---
-title: archipelago-deployment-live
+title: Archipelago-deployment-live
 tags:
-  - archipelago-deployment-live
+  - Archipelago-deployment-live
 ---
 -->
 
@@ -351,7 +351,7 @@ Finally Done! Now you can log into your new Archipelago using `https` and start 
 This applies to AWS `m6g` and `t3g` Instances and is documented inline in this guide. Please open an [ISSUE](https://github.com/esmero/archipelago-deployment-live/issues) in this repository if you run into any problems.
 Please review <https://github.com/esmero/archipelago-deployment-live/blob/1.0.0-RC3/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
 
-### How to i know my Architecture?
+### How do I know my Architecture?
 
 Run 
 
