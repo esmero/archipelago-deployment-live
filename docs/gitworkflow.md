@@ -6,6 +6,8 @@ tags:
 ---
 documentation-->
 
+<!-- This is here as a small test of the workflow trigger. -->
+
 # Managing, sheltering, pruning and nurturing your own custom Archipelago 
 
 Now that you have your base Archipelago Live Deployment running (Do you? If not, [go back!](../README.md)) you may be wondering about things like:
