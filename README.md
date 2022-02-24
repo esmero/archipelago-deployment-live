@@ -344,6 +344,18 @@ NOTE: We are passing the `-y` flag to `drush` avoid that way having to answer "y
 docker exec -ti esmero-php bash -c "drush -y config-set format_strawberryfield.iiif_settings pub_server_url https://your.domain.org/cantaloupe/iiif/2"
 ```
 
+### Step 8. (Optional)
+
+You will need to either create the S3 Bucket you declared in your `.env` file, or create an analagous bucket in Minio. You can do this manually, though the Minio or S3 administrative consoles, but if you're using Minio it is easy to do this from the command line.
+
+```
+source .env
+echo "[default]\naws_access_key_id=$(MINIO_ACCESS_KEY)\naws_secret_access_key=$(MINIO_SECRET_KEY)" > .aws/credentials
+docker run --network="$(shell basename $(CURDIR))_esmero-net" --rm -it -v $(PWD)/.aws/:/root/.aws amazon/aws-cli:latest --endpoint-url http://minio:9000 s3 mb s3://$(MINIO_BUCKET_MEDIA)/$(MINIO_FOLDER_PREFIX_MEDIA)
+docker exec -ti esmero-php bash -c 'drush cset -y s3fs.settings bucket esmero'
+docker exec -ti esmero-php bash -c 'drush cset -y s3fs.settings use_customhost true'
+```
+
 Finally Done! Now you can log into your new Archipelago using `https` and start exploring. Thank you for following this guide!
 
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
