@@ -346,9 +346,9 @@ docker exec -ti esmero-php bash -c "drush -y config-set format_strawberryfield.i
 
 ### Step 8. (Optional)
 
-You will need to either create the S3 Bucket you declared in your `.env` file, or create an analagous bucket in Minio. You can do this manually, though the Minio or S3 administrative consoles, but if you're using Minio it is easy to do this from the command line.
+You will need to either create the S3 Bucket you declared in your `.env` file or create an analogous bucket in Minio. You can do this manually through the Minio or S3 administrative consoles, but if you're using Minio it is easy to do this from the command line:
 
-```
+```shell
 source .env
 echo "[default]\naws_access_key_id=$(MINIO_ACCESS_KEY)\naws_secret_access_key=$(MINIO_SECRET_KEY)" > .aws/credentials
 docker run --network="$(shell basename $(CURDIR))_esmero-net" --rm -it -v $(PWD)/.aws/:/root/.aws amazon/aws-cli:latest --endpoint-url http://minio:9000 s3 mb s3://$(MINIO_BUCKET_MEDIA)/$(MINIO_FOLDER_PREFIX_MEDIA)
