@@ -351,7 +351,7 @@ You will need to either create the S3 Bucket you declared in your `.env` file or
 ```shell
 source .env
 mkdir -p .aws && echo $'[default]\naws_access_key_id='"$MINIO_ACCESS_KEY"$'\naws_secret_access_key='"$MINIO_SECRET_KEY" > .aws/credentials
-docker run --network="$(shell basename $(CURDIR))_esmero-net" --rm -it -v $(PWD)/.aws/:/root/.aws amazon/aws-cli:latest --endpoint-url http://minio:9000 s3 mb s3://$(MINIO_BUCKET_MEDIA)/$(MINIO_FOLDER_PREFIX_MEDIA)
+docker run --network="$(basename $(pwd))_esmero-net" --rm -it -v $(pwd)/.aws/:/root/.aws amazon/aws-cli:latest --endpoint-url http://minio:9000 s3 mb s3://$MINIO_BUCKET_MEDIA/$MINIO_FOLDER_PREFIX_MEDIA
 docker exec -ti esmero-php bash -c 'drush cset -y s3fs.settings bucket "$MINIO_BUCKET_MEDIA"'
 ```
 
