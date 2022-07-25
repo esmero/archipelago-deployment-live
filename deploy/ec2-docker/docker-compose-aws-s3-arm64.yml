@@ -48,7 +48,7 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:8.11.1"
+    image: "solr:8.11.2"
     tty: true
     ports:
       - "8983:8983"
@@ -66,7 +66,7 @@ services:
       - /drupalconfig
   db:
     image: mariadb:10.5.10-focal
-    command: --default-authentication-plugin=mysql_native_password  --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
+    command: --default-authentication-plugin=mysql_native_password  --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
     container_name: esmero-db
     restart: always
     environment:
@@ -79,7 +79,7 @@ services:
   nlp:
     container_name: esmero-nlp
     restart: always
-    image: "esmero/esmero-nlp:1.0.1-RC2-arm64"
+    image: "esmero/esmero-nlp:fasttext-multiarch"
     ports:
       - "6400:6400"
     networks:
