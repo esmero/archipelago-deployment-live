@@ -30,7 +30,7 @@ services:
   php:
     container_name: esmero-php
     restart: always
-    image: "esmero/php-7.4-fpm:1.0.0-RC2-multiarch"
+    image: "esmero/php-8.0-fpm:1.0.0-multiarch"
     tty: true
     networks:
       - host-net
@@ -44,10 +44,11 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MINIO_BUCKET_MEDIA: ${MINIO_BUCKET_MEDIA}
       MINIO_FOLDER_PREFIX_MEDIA: ${MINIO_FOLDER_PREFIX_MEDIA}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:8.8.2"
+    image: "solr:8.11.2"
     tty: true
     ports:
       - "8983:8983"
@@ -65,7 +66,7 @@ services:
       - /drupalconfig
   db:
     image: mariadb:10.5.10-focal
-    command: --default-authentication-plugin=mysql_native_password  --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
+    command: --default-authentication-plugin=mysql_native_password  --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
     container_name: esmero-db
     restart: always
     environment:
@@ -78,7 +79,7 @@ services:
   nlp:
     container_name: esmero-nlp
     restart: always
-    image: "esmero/esmero-nlp:1.0.1-RC2-arm64"
+    image: "esmero/esmero-nlp:fasttext-multiarch"
     ports:
       - "6400:6400"
     networks:
@@ -86,7 +87,7 @@ services:
       - esmero-net
   iiif:
     container_name: esmero-cantaloupe
-    image: "esmero/cantaloupe-s3:4.1.9RC2-arm64"
+    image: "esmero/cantaloupe-s3:6.0.0-multiarch"
     restart: always
     ports:
       - "8183:8182"
@@ -102,7 +103,7 @@ services:
       S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_CACHE} 
       S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE} 
       XMS: 2g
-      XMX: 4g
+      XMX: 8g
     volumes:
       - ${ARCHIPELAGO_ROOT}/config_storage/iiifconfig:/etc/cantaloupe
       - ${ARCHIPELAGO_ROOT}/data_storage/iiifcache:/var/cache/cantaloupe
@@ -110,9 +111,10 @@ services:
   minio:
     container_name: esmero-minio
     restart: always
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2022-06-11T19-55-32Z
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
+      - /mnt/data/cache:/cache
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -125,10 +127,34 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_CACHE_DRIVES: /cache
+      MINIO_CACHE_EXCLUDE: "*.json,*.jpg,*.jpeg"
+      MINIO_CACHE_QUOTA: 80
+      MINIO_CACHE_RANGE: "off"
+      MINIO_CACHE_AFTER: 3
+      MINIO_CACHE_WATERMARK_LOW: 70
+      MINIO_CACHE_WATERMARK_HIGH: 90
     command: gateway s3 https://s3.amazonaws.com/ --console-address ":9001"
+ redis:
+    container_name: esmero-redis
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+      --save 20 1
+      --loglevel warning
+    networks:
+      - esmero-net
+    volumes: 
+      - redis-cache:/data
 networks:
   host-net:
     driver: bridge
   esmero-net:
     driver: bridge
     internal: true
+volumes:
+  redis-cache:
+    driver: local

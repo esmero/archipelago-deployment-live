@@ -6,6 +6,8 @@ cat <<EOT >> /var/www/html/web/sites/default/settings.php
 \$MINIO_SECRET_KEY=getenv("MINIO_SECRET_KEY");
 \$MINIO_BUCKET_MEDIA=getenv("MINIO_BUCKET_MEDIA");
 \$MINIO_FOLDER_PREFIX_MEDIA=rtrim(getenv("MINIO_FOLDER_PREFIX_MEDIA"), "/");
+\$REDIS_PASSWORD=getenv("REDIS_PASSWORD");
+
 \$settings['s3fs.access_key'] = \$MINIO_ACCESS_KEY;
 \$settings['s3fs.secret_key'] = \$MINIO_SECRET_KEY;
 \$config['s3fs.settings']['bucket'] = \$MINIO_BUCKET_MEDIA;
@@ -21,6 +23,32 @@ if (PHP_SAPI !== 'cli') {
 }
 \$settings['hash_salt'] = '46eb4e1a-5738-41b0-bf2e-f3de4ff8dfb0';
 \$settings['webform_strawberryfield.europeana_entity_apikey'] = 'apidemo';
+
+if (!empty(\$REDIS_PASSWORD)) {
+  \$settings['redis.connection']['interface'] = 'PhpRedis'; // Can be "Predis".
+  \$settings['redis.connection']['host'] = 'esmero-redis';
+  \$settings['redis.connection']['port'] = '6379';
+  \$settings['redis.connection']['password'] = \$REDIS_PASSWORD; // If you are using passwords, otherwise, omit
+  \$settings['redis.connection']['persistent'] = TRUE; // Persistant connection.
+
+  // Apply changes to the container configuration to better leverage Redis.
+  // This includes using Redis for the lock and flood control systems, as well
+  // as the cache tag checksum. Alternatively, copy the contents of that file
+  // to your project-specific services.yml file, modify as appropriate, and
+  // remove this line.
+  \$settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
+
+  // Allow the services to work before the Redis module itself is enabled.
+  \$settings['container_yamls'][] = 'modules/contrib/redis/redis.services.yml';
+   /** Optional prefix for cache entries */
+  \$settings['cache_prefix'] = 'archipelago';
+  // Or if you want to use reliable queue implementation.
+  \$settings['queue_default'] = 'queue.redis_reliable';
+  /** @see: https://github.com/md-systems/redis */
+  // Use for all bins otherwise specified.
+  \$settings['cache']['default'] = 'cache.backend.redis';
+}
+
 if (file_exists(\$app_root . '/' . \$site_path . '/settings.local.php')) {
    include \$app_root . '/' . \$site_path . '/settings.local.php';
 }
