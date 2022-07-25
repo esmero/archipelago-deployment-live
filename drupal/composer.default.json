@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": ">=7.3",
-        "archipelago/ami": "0.2.0.x-dev",
+        "archipelago/ami": "0.4.0.x-dev",
         "archipelago/archipelago_subtheme": "1.0.0.x-dev",
         "aws/aws-php-sns-message-validator": "^1.5",
         "aws/aws-sdk-php": "^3.63",
@@ -58,6 +58,7 @@
         "drupal/inline_entity_form": "1.x-dev",
         "drupal/jquery_ui_datepicker": "^1.1",
         "drupal/jquery_ui_slider": "^1.1",
+        "drupal/jquery_ui_touch_punch": "~1.0",
         "drupal/jsonapi_earlyrendering_workaround": "^1.0",
         "drupal/moderated_content_bulk_publish": "^2.0",
         "drupal/pathauto": "^1",
@@ -119,6 +120,7 @@
         "discard-changes": true,
         "allow-plugins": {
             "composer/installers": true,
+            "oomphinc/composer-installers-extender": true,
             "cweagans/composer-patches": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
@@ -186,15 +188,12 @@
         },
         "enable-patching": true,
         "patches": {
-            "drupal/facets": {
-                "Fix deprecated JQUERY UI Slider": "https://www.drupal.org/files/issues/2021-11-12/issue-3153622-nouislider_25.patch" 
-            },
-        "drupal/core": {
+           "drupal/core": {
                 "Fix Ajax/Preserve Facets on exposed forms Drupal 9.3.x": "patches/3032353-25-archipelago-05162022.patch"
-            },    
-        "drupal/moderated_content_bulk_publish": {
+            },
+           "drupal/moderated_content_bulk_publish": {
                 "Fix access check on every action": "patches/3280584-archipelago-05162022.patch"
-            }    
+            }
         }
     }
 }
