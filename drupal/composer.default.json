@@ -45,7 +45,7 @@
         "drupal/devel": "4.x-dev@dev",
         "drupal/display_field_copy": "^2.0",
         "drupal/ds": "^3.9",
-        "drupal/facets": "2.0.x-dev@dev",
+        "drupal/facets": "^2.0",
         "drupal/fancy_file_delete": "^2.0",
         "drupal/field_permissions": "^1.0@RC",
         "drupal/file_mdm": "^2",
