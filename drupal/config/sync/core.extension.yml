@@ -54,6 +54,7 @@ module:
   form_mode_manager: 0
   format_strawberryfield: 0
   google_api_client: 0
+  hal: 0
   help: 0
   history: 0
   image: 0
