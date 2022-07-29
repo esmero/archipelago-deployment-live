@@ -259,10 +259,11 @@ Start Docker again
 docker-compose up -d
 ```
 
-Wait a few seconds and run
+Wait a few seconds and run:
 
 ```shell
 docker exec -ti esmero-php bash -c "chown -R www-data:www-data private"
+docker exec -ti esmero-php bash -c "chown -R www-data:www-data web/sites"
 docker exec -ti esmero-php bash -c "composer install"
 ```
 
