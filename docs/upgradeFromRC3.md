@@ -219,7 +219,6 @@ docker exec -ti esmero-php bash -c "composer require 'drupal/facets:^2.0'"
 docker exec -ti esmero-php bash -c "composer require drupal/moderated_content_bulk_publish:^2"
 docker exec -ti esmero-php bash -c "composer require drupal/queue_ui:^3.1"
 docker exec -ti esmero-php bash -c "composer require archipelago/ami:0.4.0.x-dev strawberryfield/format_strawberryfield:1.0.0.x-dev strawberryfield/strawberryfield:1.0.0.x-dev strawberryfield/strawberry_runners:0.4.0.x-dev strawberryfield/webform_strawberryfield:1.0.0.x-dev drupal/views_bulk_operations:^4.1"
-docker exec -ti esmero-php bash -c "drush en jquery_ui_touch_punch"
 ```
 
 Now we are going to tell `composer` to actually fetch the new code and dependencies using `composer.lock` and update the whole Drupal/PHP/JS environment.
@@ -227,6 +226,7 @@ Now we are going to tell `composer` to actually fetch the new code and dependenc
 ```shell
 docker exec -ti esmero-php bash -c "composer update -W"
 docker exec -ti esmero-php bash -c "drush cr"
+docker exec -ti esmero-php bash -c "drush en jquery_ui_touch_punch"
 docker exec -ti esmero-php bash -c "drush updatedb"
 ```
 
