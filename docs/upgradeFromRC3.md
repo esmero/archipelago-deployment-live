@@ -15,7 +15,7 @@ If you already have a well-set-up and well-loved Archipelago (RC3 or your own cu
 
 ## Requirements
 
-- An [archipelago-deployment-live](https://github.com/esmero/archipelago-deployment-live) instance 1.0.0-RC3 (working, tested) deployed using provided instructions via Docker and running Drupal 8.
+- An [archipelago-deployment-live](https://github.com/esmero/archipelago-deployment-live) instance 1.0.0-RC3 (working, tested) deployed using provided instructions via Docker and running Drupal 9.
 - Basic knowledge and instincts (+ courage) on how to run Terminal Commands, `composer` and `drush`.
 - Patience. You can't skip steps here.
 - For Shell Commands documented here please copy line by line—not the whole block.
@@ -47,9 +47,7 @@ Now let's `tar.gz` the whole ensemble with data and configs. As an example we wi
 As a good practice we append the **current date **(YEAR-MONTH-DAY) to the filename. Here we assume today is December 1st of 2021.
 
 ```shell
-
 sudo tar -czvpf $HOME/archipelago-deployment-live-backup-20220803.tar.gz ../../../archipelago-deployment-live
-
 ```
 
 The process may take a few minutes. Now let's verify that all is there and that the `tar.gz` is not corrupt.
@@ -213,19 +211,23 @@ Important here is the `STATUS` column. It **needs** to be a number that goes up 
 ### Step 3:
 
 Instead of using the provided `composer.lock` out of the box we are going to loosen certain dependencies and bring manually Archipelago modules, all this to make update easier and future upgrades less of a pain.
-
+```shell
 docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 drupal/core-recommended:^9"
 docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^9 --dev"
 docker exec -ti esmero-php bash -c "composer require drupal/tokenuuid:^2"
 docker exec -ti esmero-php bash -c "composer require 'drupal/facets:^2.0'"
 docker exec -ti esmero-php bash -c "composer require drupal/moderated_content_bulk_publish:^2"
+docker exec -ti esmero-php bash -c "composer require drupal/queue_ui:^3.1"
 docker exec -ti esmero-php bash -c "composer require archipelago/ami:0.4.0.x-dev strawberryfield/format_strawberryfield:1.0.0.x-dev strawberryfield/strawberryfield:1.0.0.x-dev strawberryfield/strawberry_runners:0.4.0.x-dev strawberryfield/webform_strawberryfield:1.0.0.x-dev drupal/views_bulk_operations:^4.1"
 docker exec -ti esmero-php bash -c "drush en jquery_ui_touch_punch"
+```
 
 Now we are going to tell `composer` to actually fetch the new code and dependencies using `composer.lock` and update the whole Drupal/PHP/JS environment.
 
 ```shell
 docker exec -ti esmero-php bash -c "composer update -W"
+docker exec -ti esmero-php bash -c "drush cr"
+docker exec -ti esmero-php bash -c "drush updatedb"
 ```
 
 Well done! If you see **no** issues and all ends in a **Green colored message** all is good! [Jump to Step 4](#step-4_1)
@@ -286,7 +288,7 @@ If you made it this far you are done with code/devops (are we ever ready?), and 
 
 ### Step 7: Update (or not) your Metadata Display Entities and Menu items.
 
-Recommended: If you want to add new templates and menu items 1.0.0 provides, go to your base Github repo folder, replace in the following commands `your.domain.org` with the actual domain of your Server and run them:
+Recommended: If you want to add new templates and menu items 1.0.0 provides, go to your base Github repo folder, replace in the following commands `your.domain.org` with the actual domain of your Server and run those individually:
 
 ```shell
 sed -i 's/http:\/\/esmero-web/https:\/\/your.domain.org/g' drupal/scripts/archipelago/deploy.sh
