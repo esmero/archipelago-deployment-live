@@ -32,13 +32,6 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       digital_object_collection: digital_object_collection
-  node_type:
-    id: node_type
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      digital_object_collection: digital_object_collection
   request_path:
     id: request_path
     negate: true

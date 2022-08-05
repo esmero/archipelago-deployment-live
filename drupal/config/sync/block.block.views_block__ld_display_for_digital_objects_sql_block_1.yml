@@ -39,11 +39,3 @@ visibility:
     negate: true
     context_mapping: {  }
     pages: "/node/*/edit\r\n*/add/*\r\n/search"
-  node_type:
-    id: node_type
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      digital_object_collection: digital_object_collection
-      digital_object: digital_object

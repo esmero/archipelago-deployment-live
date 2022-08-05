@@ -628,7 +628,7 @@ display:
             multi_type: separator
             multi_separator: ', '
             display_methods:
-              node_type:
+              'entity_bundle:node':
                 display_method: id
         title:
           id: title
