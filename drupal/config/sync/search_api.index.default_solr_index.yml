@@ -5,7 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_tags
     - field.storage.node.field_descriptive_metadata
-    - search_api.server.esmero_solr_7_5
+    - search_api.server.esmero_solr
     - core.entity_view_mode.node.digital_object_image_only_for_carousel
     - core.entity_view_mode.node.search_index
   module:
@@ -689,4 +689,4 @@ options:
   cron_limit: 50
   index_directly: true
   track_changes_in_references: true
-server: esmero_solr_7_5
+server: esmero_solr

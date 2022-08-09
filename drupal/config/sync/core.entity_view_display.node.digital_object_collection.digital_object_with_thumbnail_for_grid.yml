@@ -52,7 +52,7 @@ content:
     type: strawberry_metadata_formatter
     label: hidden
     settings:
-      iiif_base_url: 'https://icg.archipelago.nyc/cantaloupe/iiif/2'
+      iiif_base_url: 'http://localhost:8183/iiif/2'
       iiif_base_url_internal: 'http://esmero-cantaloupe:8182/iiif/2'
       use_iiif_globals: '1'
       label: 'Descriptive Metadata'

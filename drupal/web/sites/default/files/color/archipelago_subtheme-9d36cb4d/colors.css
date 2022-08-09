@@ -2,30 +2,30 @@
 
 body {
     color: #000000;
-    background: #d3dbee;
+    background: #c3d5d1;
 }
 /* ---------- IAbookreader ----------- */
 .BRtoolbar {
     color: #000000;
-    background: #d3dbee !important;
+    background: #c3d5d1 !important;
 }
 #page,
 #main-wrapper,
 .region-primary-menu .menu-item a.is-active,
 .region-primary-menu .menu-item--active-trail a {
-    background: #f6f6f8;
+    background: #ffffff;
 }
 
 
 
 
 .tabs ul.primary li a.is-active {
-    background-color: #f6f6f8;
+    background-color: #ffffff;
 }
 
 .tabs ul.primary li.is-active a {
-    background-color: #f6f6f8;
-    border-bottom-color: #f6f6f8;
+    background-color: #ffffff;
+    border-bottom-color: #ffffff;
 }
 table tr th {
     background: #b4b7c1;
@@ -39,7 +39,7 @@ table tr th {
 }
 
 #navbar-main {
-    background-color: #e2e7f3;
+    background-color: #c3d5d1;
 }
 
 
@@ -47,9 +47,9 @@ table tr th {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    background-color: #6044d5;
-    border-color: #6044d5;
-    color: #f7f7f7;
+    background-color: #6cb298;
+    border-color: #6cb298;
+    color: #ffffff;
 }
 
 #views-exposed-form-solr-search-content-page-1:focus-within fieldset.form-type-search-api-autocomplete input {
@@ -61,7 +61,7 @@ table tr th {
 }
 .site-name-slogan .navbar-brand-slogan {
     padding-left: 1.25rem;
-    color: #f6f6f8;
+    color: #ffffff;
 }
 
 #navbar-main .nav-link {
@@ -69,7 +69,7 @@ table tr th {
 }
 nav.navbar li.nav-item {
     border-left-width: 3px;
-    border-left-color: #9493e2;
+    border-left-color: #6cb298;
     border-left-style: solid;
 }
 
@@ -79,17 +79,17 @@ main.main-content div.content {
 }
 
 .btn-warning {
-    background-color: #6044d5;
-    border-color: #6044d5;
+    background-color: #6cb298;
+    border-color: #6cb298;
 }
 
 .btn-warning:hover {
-    background-color: #9493e2;
-    border-color: #9493e2;
+    background-color: #6cb298;
+    border-color: #6cb298;
 }
 nav > ul > li.active.nav-item > a {
-    background-color: #9493e2 !important;
-    border-color: #9493e2 !important;
+    background-color: #6cb298 !important;
+    border-color: #6cb298 !important;
 }
 
 /* Webform progress tracker */
@@ -106,7 +106,7 @@ nav > ul > li.active.nav-item > a {
 }
 
 div > div.carousel-item.active > div > h3 {
-    background-color: #f6f6f8;
+    background-color: #ffffff;
 }
 
 .navbar-toggler {
@@ -116,7 +116,7 @@ div > div.carousel-item.active > div > h3 {
 }
 
 .nav-link:hover, .nav-link:focus {
-    color: #f6f6f8;
+    color: #ffffff;
 }
 .nav-tabs .nav-link:hover, .nav-link:focus {
     color: #000000;
@@ -124,12 +124,12 @@ div > div.carousel-item.active > div > h3 {
 
 .link {
     color: #000000 !important;
-    text-decoration-color: #9493e2;
+    text-decoration-color: #6cb298;
     text-decoration-thickness: 3px;
 }
 a:not(.toolbar-item) {
     color: #000000 !important;
-    text-decoration-color: #9493e2;
+    text-decoration-color: #6cb298;
     text-decoration-thickness: 3px;
 }
 
@@ -145,7 +145,7 @@ a:not(.toolbar-item):focus,
 a:not(.toolbar-item):active,
 .link:active {
     color: #000000 !important;
-    text-decoration-color: #9493e2;
+    text-decoration-color: #6cb298;
     text-decoration-thickness: 3px;
 }
 
@@ -162,7 +162,7 @@ a:not(.toolbar-item):active,
 
 dt {
     border-left-width: 3px;
-    border-color: #9493e2;
+    border-color: #6cb298;
     border-left-style: solid;
     padding-left: 0.5em;
 }
@@ -171,20 +171,20 @@ dt {
 
 .sidebar .block {
     background-color: #ffffff;
-    border-color: #f4f6ff;
+    border-color: #ebebeb;
     border-radius: 6px;
 }
 
 #page details summary, .ui-dialog details summary {
     color: #000000;
-    background-color: #f4f6ff;
+    background-color: #ebebeb;
     margin-block-end: 0.5em;
     padding: 12px;
     border-radius: 6px;
 }
 
 #page details div.details-wrapper, .ui-dialog div.details-wrapper {
-    background-color: #f4f6ff;
+    background-color: #ebebeb;
     padding-left: 1em;
 }
 
@@ -192,29 +192,30 @@ dt {
     margin: 0 0 0.5em;
     border-bottom: none;
     padding-bottom: 5px;
-    text-shadow: 0 1px 0 #f6f6f8;
+    text-shadow: 0 1px 0 #ffffff;
     font-size: 1.2em;
     line-height: 1.2;
 }
 
 .btn-primary {
-    background-color: #9493e2 !important;
-    border-color: #9493e2 !important;
+    background-color: #6cb298 !important;
+    border-color: #6cb298 !important;
 }
 
 .ui-slider-pips [class*=ui-slider-pip-selected] {
-    border-color: #9493e2;
-    color: #9493e2 !important;
+    border-color: #6cb298;
+    color: #6cb298 !important;
 }
 
 .btn-outline-primary {
-    border-color: #9493e2 !important;
+    border-color: #6cb298 !important;
 }
 
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color:#9a9adb !important;
+    background-color:#f3969a !important;
+    border-color:#f3969a !important;
 }
 
 .site-footer {
@@ -225,24 +226,24 @@ dt {
 
 /* Node edit buttons */
 #edit-submit {
-    background-color: #7877da;
+    background-color: #6cb298;
 }
 
 input.form-control.button {
-    background-color: #7877da;
-    color: #f7f7f7;
+    background-color: #6cb298;
+    color: #ffffff;
 }
 
 input.form-control.button:hover, input.form-control.button:focus {
-    background-color:#9a9adb !important;
+    background-color:#f3969a !important;
 }
 
 #edit-preview {
-    background-color: #7877da;
+    background-color: #6cb298;
 }
 
 .dropdown-item.active, .dropdown-item:active {
-    background-color: #9493e2
+    background-color: #6cb298
 }
 
 .region-header,
@@ -254,7 +255,7 @@ input.form-control.button:hover, input.form-control.button:focus {
 .region-header .site-branding a,
 .region-secondary-menu .menu-item a,
 .region-secondary-menu .menu-item a.is-active {
-    color: #fffeff;
+    color: #46408c;
 }
 
 
@@ -278,9 +279,9 @@ input.form-control.button:hover, input.form-control.button:focus {
 
 .BookReader .BookReaderSearchHilite, .BRmobileMenu .BookReaderSearchHilite, .BRfloat .BookReaderSearchHilite {
     opacity: 0.7;
-    outline: 3px solid #6044d5;
+    outline: 3px solid #6cb298;
     outline-offset: 1em;
     filter: alpha(opacity=70);
-    background-color: #6044d5;
+    background-color: #6cb298;
     animation: hiliteFadeIn 0.5s;
 }
