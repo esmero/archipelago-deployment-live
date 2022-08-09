@@ -31,7 +31,7 @@
         "composer/semver": "^3.2",
         "cweagans/composer-patches": "^1.6",
         "drupal/bamboo_twig": "5.x-dev",
-        "drupal/bootstrap_barrio": "5.1",
+        "drupal/bootstrap_barrio": "^5.5",
         "drupal/calendar": "^1.0@alpha",
         "drupal/redis": "^1.5",
         "drupal/config_inspector": "dev-1.x",
@@ -44,7 +44,7 @@
         "drupal/core-recommended": "^9",
         "drupal/devel": "4.x-dev@dev",
         "drupal/display_field_copy": "^2.0",
-        "drupal/ds": "^3.9",
+        "drupal/ds": "3.x-dev@dev",
         "drupal/facets": "^2.0",
         "drupal/fancy_file_delete": "^2.0",
         "drupal/field_permissions": "^1.0@RC",
@@ -52,7 +52,7 @@
         "drupal/file_mdm_exif": "^2",
         "drupal/flag": "^4.0",
         "drupal/form_mode_manager": "^2.0@RC",
-        "drupal/google_api_client": "3.2",
+        "drupal/google_api_client": "^4.2",
         "drupal/imagemagick": "^3.1",
         "drupal/imce": "^1.7",
         "drupal/inline_entity_form": "1.x-dev",
@@ -62,7 +62,7 @@
         "drupal/jsonapi_earlyrendering_workaround": "^1.0",
         "drupal/moderated_content_bulk_publish": "^2.0",
         "drupal/pathauto": "^1",
-        "drupal/queue_ui": "^2.0",
+        "drupal/queue_ui": "^3.1",
         "drupal/quick_node_clone": "^1.1",
         "drupal/restui": "^1.1",
         "drupal/role_theme_switcher": "^1.1",
@@ -76,7 +76,7 @@
         "drupal/tokenuuid": "^2.0",
         "drupal/twig_field": "^1.0",
         "drupal/twig_tweak": "^2.6",
-        "drupal/views_bootstrap": "^4.3",
+        "drupal/views_bootstrap": "^5.4",
         "drupal/views_bulk_operations": "^4.1",
         "drupal/webform": "^6",
         "drupal/webform_entity_handler": "1.x-dev",
@@ -190,9 +190,6 @@
         "patches": {
            "drupal/core": {
                 "Fix Ajax/Preserve Facets on exposed forms Drupal 9.3.x": "patches/3032353-25-archipelago-05162022.patch"
-            },
-           "drupal/moderated_content_bulk_publish": {
-                "Fix access check on every action": "patches/3280584-archipelago-05162022.patch"
             }
         }
     }
