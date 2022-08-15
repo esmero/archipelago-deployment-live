@@ -1,6 +1,12 @@
-
 .DS_Store
 config_storage/.DS_Store
 deploy/ec2-docker/.env
 data_storage/selfcert/private/nginx.key
 data_storage/selfcert/certs/nginx.crt
+data_storage/db/*
+data_storage/iiiftmp/*
+data_storage/letsencrypt/*
+data_storage/ngnixcache/*
+data_storage/solrcore/*
+drupal/vendor/*
+drupal/web/*
