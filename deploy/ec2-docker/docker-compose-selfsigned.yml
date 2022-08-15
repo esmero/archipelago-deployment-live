@@ -1,6 +1,7 @@
 # Run docker-compose run -d
 # drush config-import
-# From 1.0.0 this won't be maintained. For a non SSL version please see https://github.com/esmero/archipelago-deployment
+# After 1.0.0 this won't be maintained. For a non SSL version please see https://github.com/esmero/archipelago-deployment
+# Also no REDIS for this!
 
 version: '3.5'
 services:
@@ -30,7 +31,7 @@ services:
   php:
     container_name: esmero-php
     restart: always
-    image: "esmero/php-7.4-fpm:1.0.0-RC2-multiarch"
+    image: "esmero/php-8.0-fpm:1.1.0-multiarch"
     tty: true
     networks:
       - host-net
@@ -47,7 +48,7 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:8.8.2"
+    image: "solr:8.11.2"
     tty: true
     ports:
       - "8983:8983"
@@ -78,7 +79,7 @@ services:
   nlp:
     container_name: esmero-nlp
     restart: always
-    image: "esmero/esmero-nlp:1.0"
+    image: "esmero/esmero-nlp:fasttext-multiarch"
     ports:
       - "6400:6400"
     networks:
@@ -86,7 +87,7 @@ services:
       - esmero-net
   iiif:
     container_name: esmero-cantaloupe
-    image: "esmero/cantaloupe-s3:4.1.9RC"
+    image: "esmero/cantaloupe-s3:6.0.0-multiarch"
     restart: always
     ports:
       - "8183:8182"
@@ -110,7 +111,7 @@ services:
   minio:
     container_name: esmero-minio
     restart: always
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2022-06-11T19-55-32Z
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
     ports:
