@@ -1,12 +1,15 @@
 /* ---------- Color Module Styles ----------- */
-
+:root {
+  --bs-body-color:#5b6162 !important;
+  --bs-link-color: #6cb298 !important
+}
 body {
-    color: #000000;
+    color: #5b6162;
     background: #c3d5d1;
 }
 /* ---------- IAbookreader ----------- */
 .BRtoolbar {
-    color: #000000;
+    color: #5b6162;
     background: #c3d5d1 !important;
 }
 #page,
@@ -27,8 +30,9 @@ body {
     background-color: #ffffff;
     border-bottom-color: #ffffff;
 }
-table tr th {
-    background: #b4b7c1;
+#main-wrapper table thead.thead-dark tr th {
+    background: #6cb298;
+    color: #ffffff;
     border-bottom-style: none;
 }
 
@@ -59,8 +63,8 @@ table tr th {
 .navbar-dark .navbar-nav .nav-link {
     color: #000000;
 }
+
 .site-name-slogan .navbar-brand-slogan {
-    padding-left: 1.25rem;
     color: #ffffff;
 }
 
@@ -94,7 +98,7 @@ nav > ul > li.active.nav-item > a {
 
 /* Webform progress tracker */
 .webform-progress-tracker .progress-title[role="link"] {
-    color: #000000 
+    color: #000000
 }
 
 .webform-progress-tracker .progress-title[role="link"]:hover,
@@ -102,7 +106,6 @@ nav > ul > li.active.nav-item > a {
     text-decoration: underline;
     color: #000000;
     text-decoration-color:#000000;
-    text-decoration-thickness: 3px;
 }
 
 div > div.carousel-item.active > div > h3 {
@@ -120,17 +123,14 @@ div > div.carousel-item.active > div > h3 {
 }
 .nav-tabs .nav-link:hover, .nav-link:focus {
     color: #000000;
+    background-color:#f3969a !important;
 }
 
 .link {
     color: #000000 !important;
-    text-decoration-color: #6cb298;
-    text-decoration-thickness: 3px;
 }
 a:not(.toolbar-item) {
     color: #000000 !important;
-    text-decoration-color: #6cb298;
-    text-decoration-thickness: 3px;
 }
 
 
@@ -146,7 +146,6 @@ a:not(.toolbar-item):active,
 .link:active {
     color: #000000 !important;
     text-decoration-color: #6cb298;
-    text-decoration-thickness: 3px;
 }
 
 
@@ -183,11 +182,6 @@ dt {
     border-radius: 6px;
 }
 
-#page details div.details-wrapper, .ui-dialog div.details-wrapper {
-    background-color: #ebebeb;
-    padding-left: 1em;
-}
-
 .sidebar h2 {
     margin: 0 0 0.5em;
     border-bottom: none;
@@ -215,7 +209,13 @@ dt {
 .btn-primary:hover,
 .btn-primary:focus {
     background-color:#f3969a !important;
-    border-color:#f3969a !important;
+    border-color: #f3969a !important;
+}
+
+
+.form-check-input:checked {
+  background-color: #f3969a !important;
+  border-color: #f3969a !important;
 }
 
 .site-footer {

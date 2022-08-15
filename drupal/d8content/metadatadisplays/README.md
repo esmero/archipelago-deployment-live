@@ -13,7 +13,7 @@ If you are installing Archipelago 1.0.0-RC3 for the first time following the REA
 * Now run the Update script or skip and do it manually (expert)
   `docker exec -ti esmero-php bash -c 'scripts/archipelago/update_deployed.sh'` :
 * Manual (expert):
-   - replace https://yourdomain.com/metadatadisplay/ID where ID is the one you want to replace with the corresponding content of the file. Files are Named like each provided Metadata Display Entity Title plus `.twig.html` extension and Spaces replaced by a `_`.
+   - replace http://localhost:8001/metadatadisplay/ID where ID is the one you want to replace with the corresponding content of the file. Files are Named like each provided Metadata Display Entity Title plus `.twig.html` extension and Spaces replaced by a `_`.
   
 ## Where are these templates used? 
 
