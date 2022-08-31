@@ -8,5 +8,6 @@ data_storage/iiiftmp/*
 data_storage/letsencrypt/*
 data_storage/ngnixcache/*
 data_storage/solrcore/*
+drupal/composer.lock
 drupal/vendor/*
 drupal/web/*
