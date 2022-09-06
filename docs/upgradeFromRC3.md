@@ -115,40 +115,33 @@ Time to fetch the `1.0.0` branch and update our `docker-compose` and `composer` 
 ```shell
 cd deploy/ec2-docker
 docker-compose down
+git fetch
 git checkout 1.0.0 
 ```
+
+If you decide to enable the Drupal REDIS module, make sure to add the `REDIS_PASSWORD` variable to your `.env` file.
+
+`IMPORTANT NOTE`: For AWS EC2. If you selected an `IAM role` for your server when setting it up/deploying it, `min.io` will use the AWS EC2-backed internal API to request access to your S3. This means the ROLE itself needs to have read/write access (ACL) to the given Bucket(s) and your key/secrets won't be able to override that. Please do not ignore this note. It will save you a LOT of frustration and coffee. You can also run an EC2 instance without a given IAM and in that case just the ACCESS_KEY/SECRET will matter.
+
+Now that you know, you also know that these values **should not be shared** and this `.env` file **should not be commited/kept in version control**. Please be careful.
 
 Then copy the appropriate `docker-compose` file for your architecture:
 
 <!--switch_below
 
-??? info "OSX (macOS)/x86-64"
-
-    ```shell
-    cp docker-compose-osx.yml docker-compose.yml
-    ```
-
 ??? info "Linux/x86-64/AMD64"
 
     ```shell
-    cp docker-compose-linux.yml docker-compose.yml
+    cp docker-compose-aws-s3.yml docker-compose.yml
     ```
 
-??? info "OSX (macOS)/Linux/ARM64"
+??? info "Linux/ARM64/Apple Silicon (M1 and M2)"
 
     ```shell
-    cp docker-compose-arm64.yml docker-compose.yml
+    cp docker-compose-aws-s3-arm64.yml docker-compose.yml
     ```
 
 switch_below-->
-
-___
-
-OSX (macOS)/x86-64:
-
-```shell
-cp docker-compose-osx.yml docker-compose.yml
-```
 
 ___
 
@@ -160,10 +153,10 @@ cp docker-compose-linux.yml docker-compose.yml
 
 ___
 
-OSX (macOS)/Linux/ARM64:
+Linux/ARM64/Apple Silicon (M1 and M2):
 
 ```shell
-cp docker-compose-arm64.yml docker-compose.yml
+cp docker-compose-aws-s3-arm64.yml docker-compose.yml
 ```
 
 ___
