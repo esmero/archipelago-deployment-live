@@ -210,6 +210,7 @@ Important here is the `STATUS` column. It **needs** to be a number that goes up 
 ### Step 3:
 
 Instead of using the provided `composer.lock` out of the box we are going to loosen certain dependencies and bring manually Archipelago modules, all this to make update easier and future upgrades less of a pain.
+
 ```shell
 docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 drupal/core-recommended:^9"
 docker exec -ti esmero-php bash -c "composer require drupal/core-dev:^9 --dev"
