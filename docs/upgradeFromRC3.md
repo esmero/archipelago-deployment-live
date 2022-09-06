@@ -123,7 +123,7 @@ If you decide to enable the Drupal REDIS module, make sure to add the `REDIS_PAS
 
 `IMPORTANT NOTE`: For AWS EC2. If you selected an `IAM role` for your server when setting it up/deploying it, `min.io` will use the AWS EC2-backed internal API to request access to your S3. This means the ROLE itself needs to have read/write access (ACL) to the given Bucket(s) and your key/secrets won't be able to override that. Please do not ignore this note. It will save you a LOT of frustration and coffee. You can also run an EC2 instance without a given IAM and in that case just the ACCESS_KEY/SECRET will matter.
 
-Now that you know, you also know that these values **should not be shared** and this `.env` file **should not be commited/kept in version control**. Please be careful.
+Now that you know, you also know that these values **should not be shared** and this `.env` file **should not be committed/kept in version control**. Please be careful.
 
 Then copy the appropriate `docker-compose` file for your architecture:
 
