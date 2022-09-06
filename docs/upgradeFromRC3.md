@@ -125,6 +125,12 @@ If you decide to enable the Drupal REDIS module, make sure to add the `REDIS_PAS
 
 Now that you know, you also know that these values **should not be shared** and this `.env` file **should not be committed/kept in version control**. Please be careful.
 
+Now let's back up the existing `docker-compose` file:
+
+```shell
+cp docker-compose.yml docker-compose-original.yml
+```
+
 Then copy the appropriate `docker-compose` file for your architecture:
 
 <!--switch_below
@@ -164,7 +170,58 @@ ___
 <!--switch_above
 switch_above-->
 
-Finally, pull the images
+Next, let's review what's changed in case any customizations need to be brought into the new `docker-compose` configurations:
+
+```shell
+git diff --no-index docker-compose-original.yml docker-compose.yml
+```
+
+You should encounter something like the following:
+
+```diff
+diff --git a/docker-compose-original.yml b/docker-compose.yml
+index 6f5b17e..282417f 100644
+--- a/docker-compose-original.yml
++++ b/docker-compose.yml
+@@ -1,5 +1,5 @@
+ # Run docker-compose up -d
+-
++# Docker file for AMD64/X86 machines
+ version: '3.5'
+ services:
+   web:
+@@ -23,6 +23,7 @@ services:
+       - solr
+       - php
+       - db
++      - redis
+     tty: true
+     networks:
+       - host-net
+@@ -30,7 +31,7 @@ services:
+   php:
+     container_name: esmero-php
+     restart: always
+-    image: "esmero/php-7.4-fpm:1.0.0-RC2-multiarch"
++    image: "esmero/php-8.0-fpm:1.1.0-multiarch"
+     tty: true
+     networks:
+       - host-net
+@@ -44,10 +45,11 @@ services:
+       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+       MINIO_BUCKET_MEDIA: ${MINIO_BUCKET_MEDIA}
+       MINIO_FOLDER_PREFIX_MEDIA: ${MINIO_FOLDER_PREFIX_MEDIA}
++      REDIS_PASSWORD: ${REDIS_PASSWORD}
+   solr:
+     container_name: esmero-solr
+     restart: always
+-    image: "solr:8.8.2"
++    image: "solr:8.11.2"
+```
+
+As you can see, most of the changes in this example are for new images and a new service/container/environment variable (REDIS), but you may have custom settings for your containers. Review any differences carefully and make adjustments as needed.
+
+Finally, pull the images:
 
 ```shell
 docker compose pull 
