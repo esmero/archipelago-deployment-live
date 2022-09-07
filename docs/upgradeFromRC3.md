@@ -266,7 +266,21 @@ Important here is the `STATUS` column. It **needs** to be a number that goes up 
 
 ### Step 3:
 
-Instead of using the provided `composer.lock` out of the box we are going to loosen certain dependencies and bring manually Archipelago modules, all this to make update easier and future upgrades less of a pain.
+Instead of using the provided `composer.default.lock` out of the box we are going to loosen certain dependencies and bring manually Archipelago modules, all this to make update easier and future upgrades less of a pain.
+
+First, as a sanity check let's make sure nothing happened to our original `composer.lock` fileby doing a diff against our backed up file:
+
+```shell
+git diff --no-index ../../drupal/composer.original.lock ../../drupal/composer.lock
+```
+
+If all is ok, there should be no output. If there's any output, copy your backed up file back to default:
+
+```shell
+cp ../../drupal/composer.original.lock ../../drupal/composer.lock
+```
+
+Finally, we bring over the modules:
 
 ```shell
 docker exec -ti esmero-php bash -c "composer require drupal/core:^9 drupal/core-composer-scaffold:^9 drupal/core-project-message:^9 drupal/core-recommended:^9"
