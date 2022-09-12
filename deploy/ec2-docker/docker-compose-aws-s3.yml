@@ -115,7 +115,7 @@ services:
     image: minio/minio:RELEASE.2022-06-11T19-55-32Z
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
-    # Uncommend for Minio level caches  - /mnt/data/cache:/cache
+    # Uncomment for Minio level caches  - /mnt/data/cache:/cache
     ports:
       - "9000:9000"
       - "9001:9001"
