@@ -154,7 +154,7 @@ ___
 Linux/x86-64/AMD64:
 
 ```shell
-cp docker-compose-linux.yml docker-compose.yml
+cp docker-compose-aws-s3.yml docker-compose.yml
 ```
 
 ___
