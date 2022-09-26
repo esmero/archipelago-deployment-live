@@ -21,7 +21,9 @@ if (PHP_SAPI !== 'cli') {
 } else {
   \$settings['reverse_proxy'] = FALSE;
 }
+// Please change
 \$settings['hash_salt'] = '46eb4e1a-5738-41b0-bf2e-f3de4ff8dfb0';
+// Please request your own @see https://github.com/esmero/webform_strawberryfield/blob/main/README.md#setup
 \$settings['webform_strawberryfield.europeana_entity_apikey'] = 'apidemo';
 
 if (!empty(\$REDIS_PASSWORD)) {
@@ -37,13 +39,15 @@ if (!empty(\$REDIS_PASSWORD)) {
   // to your project-specific services.yml file, modify as appropriate, and
   // remove this line.
   \$settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
-
   // Allow the services to work before the Redis module itself is enabled.
   \$settings['container_yamls'][] = 'modules/contrib/redis/redis.services.yml';
    /** Optional prefix for cache entries */
   \$settings['cache_prefix'] = 'archipelago';
-  // Or if you want to use reliable queue implementation.
-  \$settings['queue_default'] = 'queue.redis_reliable';
+  // A Redis QUEUE implementation might use all your memory because they grow exponentially
+  // when strawberry_runners e.g process PDF pages. This will ensure they are never REDIS
+  // and always handled in DB. the performance hit is neglectable given that OCR will still
+  // take some time, so fast read is not the bottleneck.
+  \$settings['queue_default'] = 'queue.database';
   /** @see: https://github.com/md-systems/redis */
   // Use for all bins otherwise specified.
   \$settings['cache']['default'] = 'cache.backend.redis';
