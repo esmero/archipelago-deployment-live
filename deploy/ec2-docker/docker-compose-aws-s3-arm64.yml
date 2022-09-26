@@ -146,6 +146,8 @@ services:
       --requirepass ${REDIS_PASSWORD}
       --save 20 1
       --loglevel warning
+      --maxmemory-policy allkeys-lru
+      --maxmemory 2gb
     networks:
       - esmero-net
     volumes: 
