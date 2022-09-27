@@ -12,3 +12,4 @@ data_storage/solrcore/*
 drupal/composer.lock
 drupal/vendor/*
 drupal/web/*
+drupal/private/*
