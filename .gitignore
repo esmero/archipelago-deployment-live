@@ -10,6 +10,7 @@ data_storage/letsencrypt/*
 data_storage/ngnixcache/*
 data_storage/solrcore/*
 drupal/composer.lock
+drupal/composer.json
 drupal/vendor/*
 drupal/web/*
 drupal/private/*
