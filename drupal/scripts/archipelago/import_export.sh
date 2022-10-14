@@ -9,7 +9,7 @@ archipelago_domain_set=0
 json_api_endpoint=""
 
 domain_questions() {
-  if [[ -v "${ARCHIPELAGO_DOMAIN}" ]]; then
+  if [ -n "${ARCHIPELAGO_DOMAIN}" ]; then
     echo "Is $ARCHIPELAGO_DOMAIN the correct domain? "
     PS3='> '
     select opt in Yes No; do
