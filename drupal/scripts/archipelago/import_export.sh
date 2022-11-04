@@ -54,7 +54,14 @@ source_target_set=false
 if [ -n "${ARCHIPELAGO_DOMAIN}" ]; then
   archipelago_domain="${ARCHIPELAGO_DOMAIN}"
   archipelago_url="$archipelago_protocol$archipelago_domain"
+  json_api_endpoint="$archipelago_url/jsonapi/metadatadisplay_entity/metadatadisplay_entity"
   url_set=true
+fi
+
+if [ -n "${JSONAPI_USER}" ] && [ -n "${JSONAPI_PASSWORD}" ]; then
+  username="${JSONAPI_USER}"
+  password="${JSONAPI_PASSWORD}"
+  jsonapi_set=true
 fi
 
 domain_questions() {
@@ -100,7 +107,7 @@ import_data() {
 
 export_data() {
   [ ! -d "$source_target" ] && mkdir -p "$source_target"
-  echo "Exporting Metadata Displays to to the current directory."
+  echo "Exporting Metadata Displays to the current directory."
   cd "$source_target" &&
   curl -w "\n" -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -K - "$json_api_endpoint" <<< "user = \"$username:$password\"" | jq -cr '.data[]|del(.links)|del(.relationships)|del(.attributes.created)|del(.attributes.drupal_internal__id)|del(.attributes.changed)|del(.attributes.link)|{"data": .}'| awk -F'\t' '{ i++ ; fname = "metadatadisplay_entity_" i ".json"; print > fname; close(fname)}'
 }
@@ -141,7 +148,6 @@ interactive_prompts() {
 
   domain_questions
   
-  echo "$archipelago_url"
   json_api_endpoint="$archipelago_url/jsonapi/metadatadisplay_entity/metadatadisplay_entity"
   
   if [ "${selected_metadata_action}" == "export" ]
@@ -153,10 +159,10 @@ interactive_prompts() {
     select opt in "Yes, export to current directory." "No, specify a directory."; do
       case "$opt" in
         Yes*)
-  	       source_target="$PWD"
+  	  source_target="$PWD"
           break;;
         No*)
-  	       echo "Please provide an absolute directory (will be created if it doesn't already exist): "
+  	  echo "Please provide an absolute directory (will be created if it doesn't already exist): "
           read -p "> " source_target
           break;;
         *) echo "Please select an option.";;
@@ -173,10 +179,10 @@ interactive_prompts() {
     select opt in "Yes, import from current directory." "No, specify a directory."; do
       case "$opt" in
         Yes*)
-  	       source_target=$PWD
+  	  source_target=$PWD
           break;;
         No*)
-  	       echo "Please provide an absolute directory: "
+  	  echo "Please provide an absolute directory: "
           read -p "> " source_target
           break;;
         *) echo "Please select an option.";;
@@ -202,7 +208,6 @@ while getopts ":hniej:d:s:" option; do
        ;;
     j) # JSONAPI credentials
        env_file="$OPTARG"
-       echo "$env_file"
        if [ -f "$env_file" ]; then
          source "$env_file"
        else
@@ -236,7 +241,6 @@ done
 if [ "$interactive" = true ]; then
   interactive_prompts
 else
-  echo "noninteractive"
   if [ "$action_set" = false ]; then
     echo "Please select an action. Run with the -h flag for help."
     exit
