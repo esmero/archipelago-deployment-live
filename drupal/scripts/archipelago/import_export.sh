@@ -18,12 +18,15 @@ Help()
    echo "d     The URL of the Archipelago instance to import into or export out of. Examples: https://archipelago.nyc | https://metro.org | http://localhost:8001"
    echo "s     The absolute path for the source from which to import or the target for exporting."
    echo "k     Keep the files that are in the folder, which would be deleted otherwise."
+   echo "f     Simple JSON API Filter for the metadatadisplay entity to export, in the form of \"field name=value\". Be sure to urlencode the value if it contain spaces or special characters, e.g. -f \"name=New%20Custom%20Metadata%20Display\""
    echo
    echo "Examples:"
    echo
    echo "./import_export.sh -e -j /home/user/archipelago-deployment-live/deploy/ec2-docker/.env -d https://archipelago.nyc -s /home/user/metadata_export"
    echo
    echo "./import_export.sh -i -j /home/user/archipelago-deployment-live/deploy/ec2-docker/.env -d https://archipelago.nyc -s /home/user/metadata_import"
+   echo
+   echo "./import_export.sh -e -j /home/user/archipelago-deployment-live/deploy/ec2-docker/.env -d https://archipelago.nyc -s /home/user/metadata_export -f name=New%20Custom%20Metadata%20Display"
    echo
 }
 
@@ -114,7 +117,11 @@ export_data() {
   fi
   cd "$source_target" &&
   echo "Exporting Metadata Displays to $source_target"
-  curl -w "\n" -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -K - "$json_api_endpoint" <<< "user = \"$username:$password\"" | jq -cr '.data[]|del(.links)|del(.relationships)|del(.attributes.created)|del(.attributes.drupal_internal__id)|del(.attributes.changed)|del(.attributes.link)|{"data": .}'| awk -F'\t' '{ i++ ; fname = "metadatadisplay_entity_" i ".json"; print > fname; close(fname)}'
+  curl -w "\n" -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -K - "$json_api_endpoint" <<< "user = \"$username:$password\"" | jq -cr '.data[]|del(.links)|del(.relationships)|del(.attributes.created)|del(.attributes.drupal_internal__id)|del(.attributes.changed)|del(.attributes.link)|{"data": .}' | while read -r metadatadisplay_entity;
+  do
+    uuid=$(echo "$metadatadisplay_entity" | jq -r .data.id)
+    echo "$metadatadisplay_entity" >> "metadatadisplay_entity_$uuid.json"
+  done
 }
 
 interactive_prompts() {
@@ -193,7 +200,7 @@ interactive_prompts() {
     import_data
   fi
 }
-while getopts ":hniekj:d:s:" option; do
+while getopts ":hniekj:d:s:f:" option; do
   case $option in
     h) # Display Help
        Help
@@ -237,6 +244,16 @@ while getopts ":hniekj:d:s:" option; do
        ;;
     k) # Keep files
        keep_files=true;;
+    f) # JSON API Export Filter
+       IFS=\= read -a json_api_filter <<<"$OPTARG"
+       if [ ${#json_api_filter[*]} -ne 2 ];
+       then
+         unset json_api_filter
+         echo "Error: Invalid JSON API Filter expression. It should be in the form of field=value (make sure that value is url-encoded)."
+       else
+         json_api_endpoint=${json_api_endpoint}?filter\\[${json_api_filter[0]}\\]=${json_api_filter[1]};
+       fi
+       ;;
    \?) # Invalid option
        echo "Error: Invalid option"
        exit;;
