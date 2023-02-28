@@ -67,7 +67,7 @@ services:
       - /drupalconfig
   db:
     image: mariadb:10.6.8-focal
-    command: --default-authentication-plugin=mysql_native_password  --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
+    command: --binlog-expire-logs-seconds=172800 --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED --log-bin=mysqld-bin
     container_name: esmero-db
     restart: always
     environment:
