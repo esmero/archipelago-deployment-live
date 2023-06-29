@@ -5,12 +5,23 @@ services:
   web:
     container_name: esmero-web
     image: jonasal/nginx-certbot
+    # image: esmero/nginx-bot-blocker:1.1.0-multiarch
     restart: always
     environment:
       CERTBOT_EMAIL: ${ARCHIPELAGO_EMAIL}
       ENVSUBST_VARS: FQDN
       FQDN: ${ARCHIPELAGO_DOMAIN}
       NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
+      # MSMTP_ACCOUNT: ${MSMTP_ACCOUNT}
+      # MSMTP_EMAIL: ${MSMTP_EMAIL}
+      # MSMTP_HOST: ${MSMTP_HOST}
+      # MSMTP_PASSWORD: ${MSMTP_PASSWORD}
+      # MSMTP_PORT: ${MSMTP_PORT}
+      # MSMTP_STARTTLS: ${MSMTP_STARTTLS}
+      # NGXBLOCKER_CRON: ${NGXBLOCKER_CRON}
+      # NGXBLOCKER_CRON_COMMAND: ${NGXBLOCKER_CRON_COMMAND}
+      # NGXBLOCKER_CRON_START: ${NGXBLOCKER_CRON_START}
+      # NGXBLOCKER_ENABLE: ${NGXBLOCKER_ENABLE}
     ports:
       - "80:80"
       - "443:443"
@@ -19,6 +30,7 @@ services:
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
       - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx
       - ${ARCHIPELAGO_ROOT}/data_storage/letsencrypt:/etc/letsencrypt
+      # - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/bots.d:/etc/nginx/bots.d
     depends_on:
       - solr
       - php
@@ -115,7 +127,7 @@ services:
     image: minio/minio:RELEASE.2022-06-11T19-55-32Z
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
-    # Uncommend for min.io level cache  - /mnt/data/cache:/cache
+    # Uncomment for min.io level cache  - /mnt/data/cache:/cache
     ports:
       - "9000:9000"
       - "9001:9001"
