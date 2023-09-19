@@ -13,3 +13,6 @@ drupal/composer.lock
 drupal/vendor/*
 drupal/web/*
 drupal/private/*
+config_storage/nginxconfig/bots.d
+config_storage/nginxconfig/template/bots.include.template
+config_storage/nginxconfig/template/bots.include.copy
