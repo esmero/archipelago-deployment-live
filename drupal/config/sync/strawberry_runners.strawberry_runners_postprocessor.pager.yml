@@ -7,7 +7,7 @@ label: pager
 weight: '-10'
 pluginconfig:
   source_type: asstructure
-  ado_type: 'Document,Book,Article'
+  ado_type: 'Document,Book,Article,Map'
   jsonkey:
     'as:image': 'as:image'
     'as:document': 'as:document'

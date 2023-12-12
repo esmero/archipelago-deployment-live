@@ -9,6 +9,7 @@ dependencies:
     - node.type.digital_object_collection
   module:
     - ds
+    - field_layout
     - format_strawberryfield
     - text
     - user
@@ -44,6 +45,10 @@ third_party_settings:
           link: true
           wrapper: h2
           class: ''
+  field_layout:
+    id: layout_onecol
+    settings:
+      label: ''
 id: node.digital_object_collection.full
 targetEntityType: node
 bundle: digital_object_collection
