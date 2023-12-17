@@ -4,21 +4,33 @@ version: '3.5'
 services:
   web:
     container_name: esmero-web
-    image: staticfloat/nginx-certbot
+    image: jonasal/nginx-certbot
+    # image: esmero/nginx-bot-blocker:1.1.0-multiarch
     restart: always
     environment:
       CERTBOT_EMAIL: ${ARCHIPELAGO_EMAIL}
       ENVSUBST_VARS: FQDN
       FQDN: ${ARCHIPELAGO_DOMAIN}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
+      # MSMTP_ACCOUNT: ${MSMTP_ACCOUNT}
+      # MSMTP_EMAIL: ${MSMTP_EMAIL}
+      # MSMTP_HOST: ${MSMTP_HOST}
+      # MSMTP_PASSWORD: ${MSMTP_PASSWORD}
+      # MSMTP_PORT: ${MSMTP_PORT}
+      # MSMTP_STARTTLS: ${MSMTP_STARTTLS}
+      # NGXBLOCKER_CRON: ${NGXBLOCKER_CRON}
+      # NGXBLOCKER_CRON_COMMAND: ${NGXBLOCKER_CRON_COMMAND}
+      # NGXBLOCKER_CRON_START: ${NGXBLOCKER_CRON_START}
+      # NGXBLOCKER_ENABLE: ${NGXBLOCKER_ENABLE}
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/conf.d:/etc/nginx/user.conf.d
-      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/certbot_extra_domains:/etc/nginx/certbot/extra_domains:ro
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/template:/etc/nginx/templates
       - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
       - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx
       - ${ARCHIPELAGO_ROOT}/data_storage/letsencrypt:/etc/letsencrypt
+        # - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/bots.d:/etc/nginx/bots.d
     depends_on:
       - solr
       - php
@@ -31,7 +43,7 @@ services:
   php:
     container_name: esmero-php
     restart: always
-    image: "esmero/php-8.0-fpm:1.1.0-multiarch"
+    image: "esmero/php-8.1-fpm:1.2.0-multiarch"
     tty: true
     networks:
       - host-net
@@ -49,8 +61,11 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:8.11.2"
+    image: "solr:9.1.1"
     tty: true
+    environment:
+      SOLR_HEAP: 512m
+      SOLR_OPTS: -Dsolr.jetty.request.header.size=65535 -Dsolr.modules=scripting
     ports:
       - "8983:8983"
     networks:
@@ -88,7 +103,7 @@ services:
       - esmero-net
   iiif:
     container_name: esmero-cantaloupe
-    image: "esmero/cantaloupe-s3:6.0.0-multiarch"
+    image: "esmero/cantaloupe-s3:6.0.1-multiarch"
     restart: always
     ports:
       - "8183:8182"
@@ -101,8 +116,8 @@ services:
       CACHE_SERVER_DERIVATIVE: S3Cache
       S3SOURCE_BASICLOOKUPSTRATEGY_BUCKET_NAME: ${MINIO_BUCKET_MEDIA}
       S3SOURCE_BASICLOOKUPSTRATEGY_PATH_PREFIX: ${MINIO_FOLDER_PREFIX_MEDIA}
-      S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_CACHE} 
-      S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE} 
+      S3CACHE_BUCKET_NAME: ${MINIO_BUCKET_CACHE}
+      S3CACHE_OBJECT_KEY_PREFIX: ${MINIO_FOLDER_PREFIX_CACHE}
       XMS: 2g
       XMX: 8g
     volumes:
@@ -150,7 +165,7 @@ services:
       --maxmemory 2gb
     networks:
       - esmero-net
-    volumes: 
+    volumes:
       - redis-cache:/data
 networks:
   host-net:
@@ -161,4 +176,3 @@ networks:
 volumes:
   redis-cache:
     driver: local
-    

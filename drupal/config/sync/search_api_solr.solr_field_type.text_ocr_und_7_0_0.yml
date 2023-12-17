@@ -14,12 +14,13 @@ domains: {  }
 field_type:
   name: text_ocr_stored
   class: solr.TextField
+  storeOffsetsWithPositions: true
   analyzers:
     -
       type: index
       charFilters:
         -
-          class: de.digitalcollections.solrocr.lucene.filters.OcrCharFilterFactory
+          class: solrocr.OcrCharFilterFactory
       tokenizer:
         class: solr.WhitespaceTokenizerFactory
       filters:
@@ -31,6 +32,10 @@ field_type:
           words: stopwords_und.txt
         -
           class: solr.PorterStemFilterFactory
+        -
+          class: solr.EdgeNGramFilterFactory
+          minGramSize: 2
+          maxGramSize: 25
     -
       type: query
       tokenizer:
@@ -42,8 +47,9 @@ field_type:
           class: solr.StopFilterFactory
         -
           class: solr.PorterStemFilterFactory
-  storeOffsetsWithPositions: true
   termVectors: true
+  termPositions: true
+  termOffsets: true
 unstemmed_field_type: null
 spellcheck_field_type: null
 collated_field_type: null
@@ -51,5 +57,5 @@ solr_configs:
   searchComponents:
     -
       name: ocrHighlight
-      class: de.digitalcollections.solrocr.solr.OcrHighlightComponent
+      class: solrocr.OcrHighlightComponent
 text_files: {  }

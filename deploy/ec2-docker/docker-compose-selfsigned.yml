@@ -48,17 +48,20 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:8.11.2"
+    image: "solr:9.1.1"
     tty: true
+    environment:
+      SOLR_HEAP: 512m
+      SOLR_OPTS: -Dsolr.jetty.request.header.size=65535 -Dsolr.modules=scripting
     ports:
       - "8983:8983"
     networks:
       - host-net
       - esmero-net
     volumes:
-      - ${ARCHIPELAGO_ROOT}/data_storage/solrcore:/var/solr/data:cached
-      - ${ARCHIPELAGO_ROOT}/config_storage/solrconfig:/drupalconfig:cached
-      - ${ARCHIPELAGO_ROOT}/data_storage/solrlib:/opt/solr/contrib/archipelago/lib:cached
+      - ${ARCHIPELAGO_ROOT}/data_storage/solrcore:/var/solr/data
+      - ${ARCHIPELAGO_ROOT}/config_storage/solrconfig:/drupalconfig
+      - ${ARCHIPELAGO_ROOT}/data_storage/solrlib:/opt/solr/contrib/archipelago/lib
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
@@ -87,7 +90,7 @@ services:
       - esmero-net
   iiif:
     container_name: esmero-cantaloupe
-    image: "esmero/cantaloupe-s3:6.0.0-multiarch"
+    image: "esmero/cantaloupe-s3:6.0.1-multiarch"
     restart: always
     ports:
       - "8183:8182"
@@ -121,6 +124,8 @@ services:
       - host-net
       - esmero-net
     environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
       MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
     command: server /data --console-address ":9001"

@@ -13,6 +13,7 @@ module:
   bamboo_twig_security: 0
   bamboo_twig_token: 0
   basic_auth: 0
+  better_exposed_filters: 0
   block: 0
   block_content: 0
   breakpoint: 0
@@ -41,8 +42,11 @@ module:
   dynamic_page_cache: 0
   editor: 0
   facets: 0
+  facets_date_range: 0
   facets_range_widget: 0
   facets_rest: 0
+  facets_searchbox_widget: 0
+  facets_summary: 0
   field: 0
   field_layout: 0
   field_permissions: 0
@@ -53,6 +57,8 @@ module:
   filter: 0
   form_mode_manager: 0
   format_strawberryfield: 0
+  format_strawberryfield_facets: 0
+  format_strawberryfield_views: 0
   google_api_client: 0
   hal: 0
   help: 0
@@ -63,10 +69,10 @@ module:
   inline_form_errors: 0
   jquery_ui: 0
   jquery_ui_datepicker: 0
+  jquery_ui_effects: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
   jsonapi: 0
-  jsonapi_earlyrendering_workaround: 0
   language: 0
   layout_discovery: 0
   link: 0
@@ -82,9 +88,9 @@ module:
   page_cache: 0
   path: 0
   path_alias: 0
+  phpass: 0
   queue_ui: 0
   quick_node_clone: 0
-  quickedit: 0
   redis: 0
   responsive_image: 0
   rest: 0

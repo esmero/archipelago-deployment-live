@@ -1,3 +1,4 @@
+uuid: 298a0d78-6e38-49ec-94fa-a23dabfa97d0
 langcode: en
 status: true
 dependencies:
@@ -10,7 +11,7 @@ dependencies:
       - search_api_solr
       - strawberryfield
 id: ado_tools_children
-label: ADO_Tools_Children
+label: 'ADO Tools Children'
 module: views
 description: 'Lists Member objects of a Collection driven by Solr'
 tag: ''
@@ -354,6 +355,15 @@ display:
             date_format: medium
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -701,6 +711,7 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   block_1:
     id: block_1
     display_title: Block
@@ -727,3 +738,4 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
