@@ -11,6 +11,10 @@ server {
 
     root /var/www/html/web; ## <-- Your only path reference.
 
+    if ($http_user_agent ~* (lplinkcheck|netcrawl|npbot|bytedance|bytespider|gptbot|semrush|petalbot|amazonbot|brightbot|python-requests)) {
+        return 444;
+    }
+
     fastcgi_send_timeout 120s;
     fastcgi_read_timeout 120s;
     fastcgi_pass_request_headers on;
@@ -23,6 +27,37 @@ server {
     proxy_buffer_size 16k;
 
     include /etc/nginx/conf.d/bots.include;
+
+    #gzip
+    gzip on;
+    gzip_disable "msie6";
+
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_min_length 256;
+    gzip_types
+      application/atom+xml
+      application/geo+json
+      application/javascript
+      application/x-javascript
+      application/json
+      application/ld+json
+      application/manifest+json
+      application/rdf+xml
+      application/rss+xml
+      application/xhtml+xml
+      application/xml
+      font/eot
+      font/otf
+      font/ttf
+      image/svg+xml
+      text/css
+      text/javascript
+      text/plain
+      text/xml;
 
     # Cantaloupe proxypass
     location /cantaloupe/ {
