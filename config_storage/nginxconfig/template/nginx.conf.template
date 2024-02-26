@@ -11,7 +11,7 @@ server {
 
     root /var/www/html/web; ## <-- Your only path reference.
 
-    if ($http_user_agent ~* (lplinkcheck|netcrawl|npbot|bytedance|bytespider|gptbot|semrush|petalbot|amazonbot|brightbot|python-requests)) {
+    if ($http_user_agent ~* (lplinkcheck|netcrawl|npbot|bytedance|bytespider|gptbot|semrush|petalbot|amazonbot|ahrefsbot|zhanzhang|semrushbot|brightbot|imagesiftbot|barkrowler|friendlycrawler)) {
         return 444;
     }
 
@@ -156,5 +156,11 @@ server {
     # Handle private files through Drupal.
     location ~ ^/system/files/ { # For Drupal >= 7
         try_files $uri /index.php?$query_string;
+    }
+    # Enforce clean URLs
+    # Removes index.php from urls like www.example.com/index.php/my-page --> www.example.com/my-page
+    # Could be done with 301 for permanent or other redirect codes.
+    if ($request_uri ~* "^(.*/)index\.php/(.*)") {
+        return 307 $1$2;
     }
 }
