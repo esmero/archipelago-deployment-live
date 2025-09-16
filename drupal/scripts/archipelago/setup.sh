@@ -24,6 +24,12 @@ ini_set('memory_limit', \$PHP_MEMORY_LIMIT.'M');
 if (PHP_SAPI !== 'cli') {
   \$settings['reverse_proxy'] = TRUE;
   \$settings['reverse_proxy_addresses'] = [@\$_SERVER['REMOTE_ADDR']];
+  # If Running Anubis via NGINX, as Documented in this release, comment the previous line
+  # and uncomment The two following Lines. Add/Replace Any Private IP Ranges under which your Docker Containers Run. 
+  # The ranges set there are the most common ones found for Docker Networks, but could be different if you customized it.
+  # You can also disable some of the trusted headers for extra security (most important one is the .
+  # \$settings['reverse_proxy_addresses'] = ['10.0.0.0/8','192.168.0.0/16', '172.16.0.0/12'];
+  # \$settings['reverse_proxy_trusted_headers'] = \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_FOR | \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_HOST | \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_PORT | \\Symfony\\Component\\HttpFoundation\\Request::HEADER_X_FORWARDED_PROTO | \\Symfony\\Component\\HttpFoundation\\Request::HEADER_FORWARDED;
 } else {
   ini_set('memory_limit', \$PHP_CLI_MEMORY_LIMIT.'M');
   \$settings['reverse_proxy'] = FALSE;
