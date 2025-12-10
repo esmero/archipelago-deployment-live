@@ -1,10 +1,10 @@
 # Run docker-compose up -d
-# Docker file for AMD64/X86 machines (e.g AWS M5 family)
+# Docker file for AMD64/X86 machines (e.g AWS M5(g) families)
 services:
   web:
     container_name: esmero-web
     image: jonasal/nginx-certbot
-    # image: esmero/nginx-bot-blocker:1.1.0-multiarch
+    # image: esmero/nginx-bot-blocker:1.6.0-multiarch
     restart: always
     environment:
       CERTBOT_EMAIL: ${ARCHIPELAGO_EMAIL}
@@ -88,7 +88,7 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:9.8.1"
+    image: "solr:9.10.0"
     # If running Docker < 20.10.10 please uncomment the following lines
     # See https://solr.apache.org/guide/solr/latest/upgrade-notes/major-changes-in-solr-9.html#solr-9-2 
     #security_opt:
@@ -115,7 +115,7 @@ services:
       - /drupalconfig
   # see https://hub.docker.com/_/mysql/
   db:
-    image: mysql:8.0.42
+    image: mysql:8.0.44
     command: mysqld --transaction-isolation=READ-COMMITTED --default-authentication-plugin=mysql_native_password  --skip-log-bin --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
     container_name: esmero-db
     restart: always
@@ -153,6 +153,12 @@ services:
     networks:
       - host-net
       - esmero-net
+    healthcheck:
+      test: "curl -f --connect-timeout 3 --max-time 15  http://localhost:8182/iiif/2 || exit 1"
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
     environment:
       AWS_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${MINIO_SECRET_KEY}
@@ -215,6 +221,13 @@ services:
       - esmero-net
     volumes:
       - redis-cache:/data
+  unhealthy_container_restarter:
+    image: docker:cli
+    network_mode: none
+    cap_drop:
+      - ALL
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
+    command: [ "/bin/sh", "-c", "while true; do sleep 120; docker ps -q -f health=unhealthy | xargs --no-run-if-empty docker restart; done" ]
 networks:
   host-net:
     driver: bridge
