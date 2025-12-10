@@ -14,6 +14,3 @@ https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html
 Customizing
 
 cp .env.template to .env and modify passwords/domains
-
-Rename the file found inside archipelago-deployment-live/config_storage/nginxconfig/certbot_extra_domains and name it like your primary domain
-Add all your subdomains there (if any) if not leave empty
