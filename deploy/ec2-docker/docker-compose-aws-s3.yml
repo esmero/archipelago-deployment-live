@@ -37,6 +37,12 @@ services:
       - redis
       # - anubis
     tty: true
+    # Defines a Log file limit. 8Gbytes in this case. Adjust to your traffic
+    # and reporting needs (might cover less than a month with all the stupid bots and AI/ML insanity)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8196m"
     networks:
       - host-net
       - esmero-net
