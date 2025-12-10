@@ -3,11 +3,11 @@ echo -e "Updating Metadata Display entities or better known as Twig Templates:\n
 
 echo -e "General HTML Description block\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/bde1cb38-e1b8-4f2d-bc1c-bff646d2e8b7 --data-binary @d8content/metadatadisplay_entity_01.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/bde1cb38-e1b8-4f2d-bc1c-bff646d2e8b7 --data-binary @'d8content/Object Description-bde1cb38-e1b8-4f2d-bc1c-bff646d2e8b7.json';
 
 echo -e  "Linked Data Block HTML\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/998d30c0-57b7-4219-bcff-6ac2c0bf6563 --data-binary @d8content/metadatadisplay_entity_02.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/998d30c0-57b7-4219-bcff-6ac2c0bf6563 --data-binary @'d8content/Linked Data-998d30c0-57b7-4219-bcff-6ac2c0bf6563.json';
 
 echo -e "IIIF 3.0 Manifest for Mirador\n"
 
@@ -39,11 +39,11 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 
 echo -e "Multiple Thumbnails via IIIF and FontAwesome\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/7ca9ef30-1535-4616-b3b2-201dcc7d6a69 --data-binary @d8content/metadatadisplay_entity_10.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/7ca9ef30-1535-4616-b3b2-201dcc7d6a69 --data-binary @'d8content/Multiple Thumbnails via IIIF and FontAwesome-7ca9ef30-1535-4616-b3b2-201dcc7d6a69.json';
 
 echo -e "AMI Ingest JSON Template\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/8595827e-b17d-42bc-bc46-a746bdd05417 --data-binary @d8content/metadatadisplay_entity_11.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/8595827e-b17d-42bc-bc46-a746bdd05417 --data-binary @'d8content/AMI Ingest JSON Template-8595827e-b17d-42bc-bc46-a746bdd05417.json';
 
 echo -e "Simple Dublin Core XML\n"
 
@@ -51,11 +51,15 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 
 echo -e "IIIF 3.0 Canvases for Creative Work Series Children\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/d37a75ec-5da9-4374-b190-71385e630ded --data-binary @d8content/metadatadisplay_entity_13.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/d37a75ec-5da9-4374-b190-71385e630ded --data-binary @'IIIF Presentation API 3 Creative Works Series Child Canvases-d37a75ec-5da9-4374-b190-71385e630ded.json';
 
 echo -e "IIIF 3.0 Manifest for Creative Work Series Parents\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/6c405928-9ae8-4557-b062-91fcf2b0af0a --data-binary @d8content/metadatadisplay_entity_14.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/6c405928-9ae8-4557-b062-91fcf2b0af0a --data-binary @'d8content/IIIF Presentation API 3 Creative Works Series Manifest-6c405928-9ae8-4557-b062-91fcf2b0af0a.json';
+
+echo -e "IIIF 3.0 Manifest for Simple and Creative Work Series (Unified)\n"
+
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/d4ca85ee-4ecd-40f3-ae6b-d24732863b27 --data-binary @'d8content/IIIF Presentation API 3 Series Manifest Unified-d4ca85ee-4ecd-40f3-ae6b-d24732863b27.json';
 
 echo -e "IIIF 3.0 Collection Manifest for Collections, Newspapers and Serial Publications\n"
 
@@ -67,11 +71,23 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 
 echo -e "OAI-PMH Wrapper\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/7ed7f7b2-7690-402f-93ea-a9b50a094f30 --data-binary @d8content/metadatadisplay_entity_17.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/7ed7f7b2-7690-402f-93ea-a9b50a094f30 --data-binary @'d8content/OAI-PMH Wrapper-7ed7f7b2-7690-402f-93ea-a9b50a094f30.json';
 
 echo -e "OAI-PMH Item with DC\n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/b5c12175-e0a9-49e9-a698-cbba342667e0 --data-binary @d8content/metadatadisplay_entity_18.json;
+
+echo -e "Thumbnails with Annotations for ML\n"
+
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/f13e8744-f6b2-46fc-8744-ef153e4c49f4 --data-binary @d8content/metadatadisplay_entity_19.json;
+
+echo -e "AMI set Display \n"
+
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/80a5d179-1689-4cdc-b21b-5a9461d86501 --data-binary @'d8content/AMI Set Description-80a5d179-1689-4cdc-b21b-5a9461d86501.json';
+
+echo -e "DataCite Schema V4 \n"
+
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity/4003250e-a596-4c29-a7e3-d55ff1009d44 --data-binary @'d8content/DataCite V4 Default Template for 1.6.0+-4003250e-a596-4c29-a7e3-d55ff1009d44.json';
 
 echo -e "Updating Menu Items\n"
 
@@ -79,6 +95,10 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/2c576406-2a37-4fb8-b988-cd6db1105084 --data-binary @d8content/menu_link_content_02.json;
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/9085dade-61be-4581-ba00-239f16787d7f --data-binary @d8content/menu_link_content_03.json;
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/b858da4a-e1fc-4bf3-a7b8-2e16fd21ccd9 --data-binary @d8content/menu_link_content_04.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/87ea9325-0dba-4ac6-83da-6e94c5d7f3b5 --data-binary @d8content/menu_link_content_05.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/999d0644-198b-493f-9d88-9502f4c7650f --data-binary @d8content/menu_link_content_06.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/ab52b8d4-14e4-4abc-a676-fbdadd50769a --data-binary @d8content/menu_link_content_07.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/menu_link_content/menu_link_content/3756cd18-6387-4c37-9033-5045f6a4a525 --data-binary @d8content/menu_link_content_08.json;
 
 echo -e "Adding your Demo AMI Set\n"
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPATCH http://esmero-web/jsonapi/ami_set_entity/ami_set_entity/5e537ff6-3b84-4540-afef-94e5e81e4768  --data-binary @d8content/ami_set_entity_01.json;
