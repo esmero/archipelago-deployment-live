@@ -233,19 +233,6 @@ elements: |-
           '#vocab_family_name': rdftype
           '#rdftype_family_name': FamilyName
           '#role_type': loc
-      creator_lod_ir:
-        '#type': webform_metadata_scholarly_agent
-        '#title': creator_lod_ir
-        '#local_role__options': local_role
-        '#agent_type_options':
-          personal: personal
-          corporate: 0
-          family: 0
-        '#vocab_personal_name': names
-        '#vocab_corporate_name': names
-        '#vocab_family_name': names
-        '#role_type': loc
-        '#vocab_affiliation': names
     date_created_fieldset:
       '#type': fieldset
       '#title': 'Date Created'
@@ -829,7 +816,7 @@ elements: |-
               value: Book
           - xor
           - ':input[name="type"]':
-              value: Manuscript
+              value: Manuscript    
       '#states_clear': false
       '#file_placeholder': 'Archipelago is currently only configured to display pdfs via a Viewer, but can still enable download other file types.'
       '#file_extensions': 'txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods csv jsonld'
