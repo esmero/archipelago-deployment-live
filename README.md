@@ -3,14 +3,14 @@
 title: Archipelago-deployment-live
 tags:
   - Archipelago-deployment-live
-  - Drupal 10
+  - Drupal 11
 ---
 documentation-->
 
 # Archipelago Deployment Live
 
-A Cloud / Local production ready Archipelago 1.6.0 Deployment (Drupal 10) using Docker,
-For Drupal 11 (IOHO less stable) please follow the [Archipelago 2.0.0 Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/2.0.0/README.md) guide. Same features but different code (and more work for us!).
+A Cloud / Local production ready Archipelago 2.0.0 Deployment (Drupal 11) using Docker,
+For Drupal 10 (IOHO more stable than D11) please follow the [Archipelago  Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/2.0.0/README.md) guide. Same features, same documentation tag (1.6.0 at https://docs.archipelago.nyc), but different code (and more work for us!).
 
 Last updated: December 10th 2025.
 
@@ -105,7 +105,7 @@ In your location of choice clone this repo
 ```shell
 git clone https://github.com/esmero/archipelago-deployment-live
 cd archipelago-deployment-live
-git checkout 1.6.0
+git checkout 2.0.0
 ```
 
 ### Step 3. Setup your enviromental variables for Docker/Services
@@ -124,7 +124,7 @@ nano deploy/ec2-docker/.env
 ```
 
 The content of that file would be similar to this. 
-`Note`: There are a few extra commented lines at the end only used for: https://docs.archipelago.nyc/1.5.0/security_bots/ if you decide to go that way.
+`Note`: There are a few extra commented lines at the end only used for: https://docs.archipelago.nyc/1.6.0/security_bots/ if you decide to go that way.
 
 ```env
 ARCHIPELAGO_ROOT=/home/ec2-user/archipelago-deployment-live
@@ -230,7 +230,7 @@ sudo chown -R 8983:8983 data_storage/solrcore
 
 #### Second, Choices (so many)
 
-Archipelago 1.6.0 ships (since 1.5.0) with a custom [Anubis](https://anubis.techaro.lol/), an OSS Application Firewall/middleware that will alliviate some very valid concerns (and late night server hiccups, even costs related issues) related to AI/ML/Bot swarms and unwanted traffic. But you need to choose. And you need to choose now. Want it enabled immediately? Later on? In any case we need to do some setup. Not hard. Let's get started.
+Archipelago  ships (since 1.5.0) with a custom [Anubis](https://anubis.techaro.lol/), an OSS Application Firewall/middleware that will alliviate some very valid concerns (and late night server hiccups, even costs related issues) related to AI/ML/Bot swarms and unwanted traffic. But you need to choose. And you need to choose now. Want it enabled immediately? Later on? In any case we need to do some setup. Not hard. Let's get started.
 
 ##### Important Note About Troubleshooting Anubis Configurations
 
@@ -320,7 +320,7 @@ Archipelago will do that for you whenever it's about to expire so no need to dea
 
 Now press CTRL+C. `docker-compose` will shutdown gracefully. Good!
 
-### Step 5. Deploy Drupal 10
+### Step 5. Deploy Drupal 11
 
 #### Composer and Drupal
 
@@ -365,7 +365,7 @@ And now you can deploy Drupal!
 
 **IMPORTANT:** Make sure you replace in the following command inside `root:MYSQL_ROOT_PASSWORD` the `MYSQL_ROOT_PASSWORD` string with the **value** you used/assigned in your `.env` file for `MYSQL_ROOT_PASSWORD`. And replace `ADMIN_PASSWORD` with a password that is safe and you won't forget! That passwords is for your Drupal super user (uid:1). 
 
-**IMPORTANT 2:** Also make sure you are INDEED running Drush Version 13. (`docker exec -ti -u www-data esmero-php bash -c "drush version"`). Why this last comment? This is just in case you "cloned" this repository before we made that change (always do a git clone before starting!). The original guide of our previous release, 1.5.0, (June 10th 2025) used Drush 12 and because of some bugs/warnings we upgraded composer.json and its lock (June 19th 2025!) to drush 13, still under 1.5.0. That applies to 1.6.0 too, adding a new argument to the following command.
+**IMPORTANT 2:** Also make sure you are INDEED running Drush Version 13. (`docker exec -ti -u www-data esmero-php bash -c "drush version"`). Why this last comment? This is just in case you "cloned" this repository before we made that change (always do a git clone before starting!). The original guide of our previous release, 1.5.0, (June 10th 2025) used Drush 12 and because of some bugs/warnings we upgraded composer.json and its lock (June 19th 2025!) to drush 13, still under 1.5.0. Drupal 11 requires Drush 13 and is shipped in this version by default
 
 ```shell
 docker exec -ti -u www-data esmero-php bash -c "cd web;../vendor/bin/drush -y si --verbose --existing-config --extra=--skip-ssl --db-url=mysql://root:MYSQL_ROOT_PASSWORD@esmero-db/drupal --account-name=admin --account-pass=ADMIN_PASSWORD -r=/var/www/html/web --sites-subdir=default --notify=false;drush cr;chown -R www-data:www-data sites;"
@@ -403,7 +403,7 @@ docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 ```
 
 **IMPORTANT:**  `update_deployed.sh` is not needed when deploying for the first time and totally **discouraged** on a customized Archipelago. 
-If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc/1.6.0/utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates).
+If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc//utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates).
 
 ### Step 7. Set your public IIIF server URL to your actual domain
 
@@ -434,7 +434,7 @@ Finally Done! Now you can log into your new Archipelago using `https` and start 
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
 
 This applies to AWS `m6g` and `t3g` Instances and is documented inline in this guide. Please open an [ISSUE](https://github.com/esmero/archipelago-deployment-live/issues) in this repository if you run into any problems.
-Please review <https://github.com/esmero/archipelago-deployment-live/blob/1.6.0/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
+Please review <https://github.com/esmero/archipelago-deployment-live/blob//deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
 
 ### How do I know my Architecture?
 
