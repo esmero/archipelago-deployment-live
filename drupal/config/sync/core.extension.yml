@@ -116,8 +116,6 @@ module:
   token: 0
   tokenuuid: 0
   toolbar: 0
-  tour: 0
-  tracker: 0
   twig_field: 0
   twig_tweak: 0
   update: 0
