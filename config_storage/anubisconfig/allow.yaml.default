@@ -5,6 +5,18 @@
 #  remote_addresses: 
 #  - my.ip.add.ress/32
 #  - myother.ip.add.ress/32
+# Uncomment if using Drupal saml_sp or miniorange_saml
+#- name: allow-saml-api
+#  action: ALLOW
+#  expression:
+#    all:
+#    - >-
+#        (
+#          path.startsWith("/samllogin") ||
+#          path.startsWith("/samlassertion") ||
+#          path.startsWith("/saml_metadata") ||
+#          path.startsWith("/saml/")
+#        )
 - name: allow-myself-ajax
   action: ALLOW
   expression:
