@@ -12,7 +12,10 @@ documentation-->
 A Cloud / Local production ready Archipelago 2.0.0 Deployment (Drupal 11) using Docker,
 For Drupal 10 (IOHO more stable than D11) please follow the [Archipelago  Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/2.0.0/README.md) guide. Same features, same documentation tag (1.6.0 at https://docs.archipelago.nyc), but different code (and more work for us!).
 
-Last updated: December 10th 2025.
+Last updated:  May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 11.3.10)
+
+Previously updated: December 10th 2025.
+
 
 
 ## What is this repo for?
