@@ -35,6 +35,7 @@ services:
       - php
       - db
       - redis
+      # Uncomment if Running Anubis
       # - anubis
     tty: true
     # Defines a Log file limit. 8Gbytes in this case. Adjust to your traffic
@@ -49,7 +50,7 @@ services:
   php:
     container_name: esmero-php
     restart: always
-    image: "esmero/php-8.3-fpm:1.5.0-multiarch"
+    image: "esmero/php-8.3-fpm:1.7.0-multiarch"
     tty: true
     networks:
       - host-net
@@ -68,7 +69,7 @@ services:
       PHP_CLI_MEMORY_LIMIT: ${PHP_CLI_MEMORY_LIMIT}
   anubis:
     container_name: esmero-anubis
-    image: esmero/anubis:multiarch
+    image: esmero/anubis:1.7.0-multiarch
     environment:
       BIND: ":8969"
       DIFFICULTY: "4"
@@ -94,9 +95,9 @@ services:
   solr:
     container_name: esmero-solr
     restart: always
-    image: "solr:9.10.0"
+    image: "solr:10"
     # If running Docker < 20.10.10 please uncomment the following lines
-    # See https://solr.apache.org/guide/solr/latest/upgrade-notes/major-changes-in-solr-9.html#solr-9-2 
+    # See https://solr.apache.org/guide/solr/latest/upgrade-notes/major-changes-in-solr-10.html         
     #security_opt:
     #  - seccomp:unconfined
     tty: true
@@ -121,7 +122,7 @@ services:
       - /drupalconfig
   # see https://hub.docker.com/_/mysql/
   db:
-    image: mysql:8.0.44
+    image: mysql:8.4
     command: mysqld --transaction-isolation=READ-COMMITTED --default-authentication-plugin=mysql_native_password  --skip-log-bin --max_allowed_packet=256M --sort_buffer_size=512K --lower_case_table_names=1
     container_name: esmero-db
     restart: always
@@ -150,9 +151,9 @@ services:
       - esmero-net
   iiif:
     container_name: esmero-cantaloupe
-    image: "esmero/cantaloupe-s3:6.0.5-noturbojpeg-multiarch"
+    image: "esmero/cantaloupe-s3:6.0.6-noturbojpeg-multiarch"
     # If you need to use TurboJPEG you can swap this image for the next tile
-    # image: "esmero/cantaloupe-s3:6.0.5-multiarch"
+    # image: "esmero/cantaloupe-s3:6.0.6-multiarch"
     restart: always
     ports:
       - "8183:8182"
