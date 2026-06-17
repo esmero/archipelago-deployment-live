@@ -21,3 +21,5 @@ config_storage/nginxconfig/template/bots.include.copy
 config_storage/nginxconfig/template/ipdeny.include.template
 config_storage/anubisconfig/*.yaml
 config_storage/nginxconfig/template/nginx.conf.template
+deploy/ec2-docker/docker-compose.yml
+drupal/composer.json
