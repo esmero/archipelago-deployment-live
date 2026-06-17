@@ -153,7 +153,8 @@
         "frictionlessdata/tableschema": "dev-ISSUE-78 as v1.2.3",
         "devizzent/cebe-php-openapi": "dev-master",
         "chx/drupal-issue-fork": "^1.0",
-        "drupal/role_theme_switcher": "dev-3557239-new-constructor-argument#9c1b9ffc9c33836bab5ac02bc05c3ff3fc37eae6"
+        "drupal/role_theme_switcher": "dev-3557239-new-constructor-argument#9c1b9ffc9c33836bab5ac02bc05c3ff3fc37eae6",
+        "drupal/config_batch_export": "^2.0"
     },
     "require-dev": {
         "drupal/core-dev": "^11.3",
