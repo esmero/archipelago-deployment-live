@@ -4,14 +4,15 @@ features:
   comment_user_verification: 1
   favicon: 1
 logo:
-  use_default: 1
+  use_default: 0
+  path: 'public://ArchipelagoCommonsLogoDumpling_Final_2024_Web_420px_Pink.png'
 favicon:
   use_default: 0
   path: 'public://ArchipelagoCommonsLogo_favicon-32x32.png'
   mimetype: image/png
 bootstrap_barrio_source: '0'
 bootstrap_barrio_enable_color: 1
-bootstrap_barrio_system_messages: ''
+bootstrap_barrio_system_messages: messages_light
 bootstrap_barrio_table_style: ''
 bootstrap_barrio_table_hover: 0
 bootstrap_barrio_table_head: ''
@@ -119,10 +120,10 @@ bootstrap_barrio_navbar_toggle: navbar-toggleable-xl
 bootstrap_barrio_navbar_top_navbar: 0
 bootstrap_barrio_navbar_top_position: ''
 bootstrap_barrio_navbar_top_color: ''
-bootstrap_barrio_navbar_top_background: bg-white
+bootstrap_barrio_navbar_top_background: ''
 bootstrap_barrio_navbar_position: ''
 bootstrap_barrio_navbar_color: ''
-bootstrap_barrio_navbar_background: bg-white
+bootstrap_barrio_navbar_background: ''
 bootstrap_barrio_navbar_top_class: ''
 bootstrap_barrio_navbar_class: ''
 bootstrap_barrio_navbar_offcanvas: offcanvas-collapse
@@ -139,7 +140,7 @@ bootstrap_barrio_navbar_affix: 0
 bootstrap_barrio_sidebar_first_affix: 0
 bootstrap_barrio_sidebar_second_affix: 0
 bootstrap_barrio_scroll_spy: ''
-bootstrap_barrio_google_fonts: dosis_opensans
+bootstrap_barrio_google_fonts: vollkorn_exo
 bootstrap_barrio_bootstrap_icons: 0
 bootstrap_barrio_icons: fontawesome
 bootstrap_barrio_base_primary_color: '#f41176'
@@ -161,4 +162,5 @@ bootstrap_barrio_region_class_content_bottom_flex: ''
 bootstrap_barrio_region_clean_sidebar_first_bottom_flex: 0
 bootstrap_barrio_region_width_sidebar_first_bottom_flex: 0
 bootstrap_barrio_region_class_sidebar_first_bottom_flex: row
-
+logo_dark_path: 'public://ArchipelagoCommonsLogoDumpling_Final_2024_Web_420px_Pink_dark.png'
+logo_dark_upload: ''
