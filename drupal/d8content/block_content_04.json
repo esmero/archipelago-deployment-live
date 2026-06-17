@@ -1,0 +1,18 @@
+{
+    "data": {
+        "type": "block_content--basic",
+        "id": "18fa77c1-8f18-408a-b300-03fb05be8118",
+        "attributes": {
+            "status": true,
+            "info": "Light Dark Bootstrap Theme Switcher",
+            "reusable": true,
+            "default_langcode": true,
+            "body": {
+              "value": "<li class=\"nav-item align-items-center d-flex\" >\r\n  <i class=\"fas fa-sun\"></i>\r\n  <div class=\"mx-2 form-check form-switch\">\r\n    <input class=\"form-check-input form-checkbox\" type=\"checkbox\" role=\"switch\" id=\"themeToggler\" />\r\n    <label class=\"form-check-input-placeholder form-check-label\" for=\"themeToggler\" id=\"themeLabel\">Light Mode</label>\r\n  </div>\r\n  <i class=\"fas fa-moon\"></i>\r\n</li>",
+              "format": "full_html"
+            }
+        }
+    }
+}
+
+
