@@ -12,7 +12,7 @@ documentation-->
 A Cloud / Local production ready Archipelago 2.1.0 Deployment (Drupal 11) using Docker,
 For Drupal 10 (IOHO more stable than D11) please follow the [Archipelago  Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/1.7.0/README.md) guide. Same features, same documentation tag (1.7.0 at https://docs.archipelago.nyc), but different code (and more work for us!).
 
-Last updated: Jun 17th 2026 for Drupal 11.3.12 and Archipelago 2.1.0 release day!
+Last updated: Jun 17th 2026 for Drupal 11.3.12 and Archipelago 2.1.0  (and 1.7.0) release day!
 
 previoysly updated: for 2.0.0, May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 11.3.10)
 
@@ -141,7 +141,7 @@ nano deploy/ec2-docker/.env
 ```
 
 The content of that file would be similar to this. 
-`Note`: There are a few extra commented lines at the end only used for: https://docs.archipelago.nyc/2.1.0/security_bots/ if you decide to go that way, but also not needed if running `anubis`.
+`Note`: There are a few extra commented lines at the end only used for: https://docs.archipelago.nyc/1.7.0/security_bots/ if you decide to go that way, but also not needed if running `anubis`.
 
 ```env
 ARCHIPELAGO_ROOT=/home/ec2-user/archipelago-deployment-live
@@ -346,7 +346,7 @@ docker exec -ti esmero-php bash -c "composer update archipelago/* strawberryfiel
 
 for this release we had to patch Drupal and contributed modules a lot. We waited patiently for the maintainers to merge/accept or even review our changes, but sometimes people are busy (for months!), so we had opt for fetching versions from forks and our own diverging (and very well tested) modifications. You might want to peek into the `composer.json` to see where/what is being fetched from other sources. That said. When you are running `composer update` and specially, if you do that very often, `Github` might ask you to generate a token (which requires you to have a Github account) to access the APIs without throttling limits. The message you will see might be like this:
 
-```Shell
+```shell
 GitHub API limit (60 calls/hr) is exhausted, could not fetch https://api.github.com/repos/DiegoPino/tableschema-php/commits/6d36f14a53c627aa12bca5837218f7e5fb0cfba7. Create a GitHub OAuth token to go over the API rate limit. You can also wait until 202X-XX-XX XX:XX:XX for the rate limit to reset.
 
 You need to provide a GitHub access token.
@@ -371,7 +371,7 @@ private repositories across multiple organisations at the same time and using di
 is not an option. You can generate a classic token here:
 https://github.com/settings/tokens/new?scopes=repo&description=Composer+on+XXXX
 
-````
+```
 
 If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it pelase) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
 
@@ -423,7 +423,7 @@ docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 ```
 
 **IMPORTANT:**  `update_deployed.sh` is not needed when deploying for the first time and totally **discouraged** on a customized Archipelago. 
-If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc//utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates).
+If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc/1.7.0/utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates).
 
 ### Step 7. Set your public IIIF server URL to your actual domain
 
