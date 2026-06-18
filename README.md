@@ -14,7 +14,7 @@ For Drupal 11 (IOHO less stable) please follow the [Archipelago 2.1.0 Deployment
 
 Last updated: Jun 17th 2026 for Drupal 10.6.11 and Archipelago 1.7.0 (and 2.1.0) release day!
 
-Last updated:  for 1.6.0, May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 10.6.9)
+Last updated: for 1.6.0, May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 10.6.9)
 
 Previously updated: for 1.6.0, December 10th 2025.
 
