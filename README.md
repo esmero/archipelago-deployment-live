@@ -12,9 +12,9 @@ documentation-->
 A Cloud / Local production ready Archipelago 2.1.0 Deployment (Drupal 11) using Docker,
 For Drupal 10 (IOHO more stable than D11) please follow the [Archipelago  Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/1.7.0/README.md) guide. Same features, same documentation tag (1.7.0 at https://docs.archipelago.nyc), but different code (and more work for us!).
 
-Last updated: Jun 17th 2026 for Drupal 11.3.12 and Archipelago 2.1.0  (and 1.7.0) release day!
+Last updated: Jun 17th 2026 for Drupal 11.3.12 and Archipelago 2.1.0 (and 1.7.0) release day!
 
-previoysly updated: for 2.0.0, May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 11.3.10)
+Previously updated: for 2.0.0, May 22nd 2026 for https://www.drupal.org/psa-2026-05-18 (Drupal 11.3.10)
 
 Previously updated: for 2.0.0, December 10th 2025.
 
@@ -373,7 +373,7 @@ https://github.com/settings/tokens/new?scopes=repo&description=Composer+on+XXXX
 
 ```
 
-If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it pelase) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
+If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it please) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
 
 #### Now onto Drupal
 
