@@ -373,7 +373,7 @@ https://github.com/settings/tokens/new?scopes=repo&description=Composer+on+XXXX
 
 ```
 
-If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it pelase) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
+If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it please) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
 
 #### Now onto Drupal
 
