@@ -187,7 +187,7 @@ services:
     image: esmero/minio:gateway
     volumes:
       - ${ARCHIPELAGO_ROOT}/data_storage/minio-data:/data:cached
-    # If you are using a Native Cloud Storage Plase move out of min.io
+    # If you are using a Native S3 Compatible Cloud Storage Please move out of min.io
     # Recommended only for Local Drives to S3 or for non native S3 (e.g Azure) routing 
     # Uncomment for min.io level cache  - /mnt/data/cache:/cache
     ports:
