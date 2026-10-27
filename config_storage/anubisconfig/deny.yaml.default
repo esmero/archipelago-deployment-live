@@ -1,1 +1,6 @@
-# At least one line, even if empty ok?
+- name: block-u-get
+  action: DENY
+  expression:
+    all:
+      - 'path.startsWith("/jsonapi/user/")'
+      - '(method == "HEAD" || method == "GET")'
