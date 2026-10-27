@@ -48,6 +48,7 @@
   expression:
     all:
     - path.startsWith("/jsonapi/")
+    - '!path.contains("/user")'
 - name: allow-my-archipelago-webform-routes
   action: ALLOW
   expression:
