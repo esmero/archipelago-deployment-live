@@ -9,10 +9,11 @@ documentation-->
 
 # Archipelago Deployment Live
 
-A Cloud / Local production ready Archipelago 2.1.0 Deployment (Drupal 11) using Docker,
-For Drupal 10 (IOHO more stable than D11) please follow the [Archipelago  Deployment Live](https://github.com/esmero/archipelago-deployment-live/blob/1.7.0/README.md) guide. Same features, same documentation tag (1.7.0 at https://docs.archipelago.nyc), but different code (and more work for us!).
+A Cloud / Local production ready Archipelago 2.2.0 Deployment (Drupal 11/PHP 8.4+) using Docker,
 
-Last updated: Sept 16th 2026. Replaces "gone" minio/minio with gateway support with our own built from scratch.
+Last updated: Nov 23rd 2026 for Drupal 11.4.13 and Archipelago 2.2.0 release day!
+
+Previously updated: Sept 16th 2026. Replaces "gone" minio/minio with gateway support with our own built from scratch.
 
 Previously updated: Jun 17th 2026 for Drupal 11.3.12 and Archipelago 2.1.0 (and 1.7.0) release day!
 
@@ -33,16 +34,16 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 
 - Running your own local/development Archipelago. For that we suggest using <https://github.com/esmero/archipelago-deployment>
 
-### What is inside this dumpling for 2.1.0? (new section)
+### What is inside this dumpling for 2.2.0? (new section)
 
 - minio.io (our own build, with legacy gateway support) for local or Routed S3 with Console. We recommend disabling it and using directly a cloud managed S3 for better performance and full multipart upload compliance.
-- Updated Apache Solr 10.0 with custom built and updated wizardly Solr OCR Highlight library [v0.10](https://github.com/dbmdz/solr-ocrhighlighting) coded and maintained by the Development Team at the [Bavarian State Library](https://github.com/dbmdz). Thanks Johannes Baiter and team.
+- Updated Apache Solr 10.0 with custom built and updated wizardly Solr OCR Highlight library [v0.11](https://github.com/dbmdz/solr-ocrhighlighting) coded and maintained by the Development Team at the [Bavarian State Library](https://github.com/dbmdz). Thanks Johannes Baiter and team.
 - MySQL 8.4(amd64/x86) or MariaDB 12.3 (Arm64/M1/M2/M3/M4/M5)
-- Updated NGINX 1.31.1
-- Updated Custom PHP-FPM 8.3 multi architecture, fine-tuned for Drupal 10/11 , WARC to WACZ processing, Tesseract 5 with JP2 support, PDFAlto(what a pain to build!) and latest Composer 2.x, Drush 13.x-dev, FFMPEG, FIDO, plus (NEW) Audiowave for Waveform to JSON extraction and BWFmetaedit for WAV files holding BWF metadata (Checksumming and other extras per stream).
+- Updated NGINX 1.31.9
+- Updated & Custom PHP-FPM 8.4+ (new to this release, was PHP 8.3) multi architecture, fine-tuned for Drupal 11, WARC to WACZ processing, Tesseract 5 with JP2 support, PDFAlto(what a pain to build!) and latest Composer 2.x, Drush 13.x-dev, FFMPEG, FIDO, plus Audiowave for Waveform to JSON extraction and BWFmetaedit for WAV files holding BWF metadata (Checksumming and other extras per stream).
 - Natural Language Processing via NLPWEB64 multi architecture with FastText Language detection (Thanks Mike Bennett!) or alternatively Machine learning/ML containers/APIs. (Image similarity: YOLO,MobileNet,ViT(New),Insightface and Text transformer: SBERT) differentiated for arm64 and amd/intel/64
-- New Cantaloupe 6.0.6 (our own versioning, but based on latest `dev` upstream) on Java 26, multi architecture, IIIF2/3 Server with precise Video Frame, PDF extraction, PDF Tiling support, new Jetty with tons of community and custom fixes.
-- A Skeleton Project setup to run latest Version of Drupal 11 (11.3.12), Updated Archipelago Chiloe Base theme based on Bootstrap 5 with Light/Dark Mode (for those late night dwellers) and Strawberry Field modules on 2.1.0.
+- Newest Cantaloupe (our own versioning, but based on latest `dev` upstream) on Java 27, multi architecture, IIIF2/3 Server with precise Video Frame, PDF extraction, PDF Tiling support, new Jetty with tons of community and custom fixes.
+- A Skeleton Project setup to run latest Version of Drupal 11 (11.4.13), Updated Archipelago Chiloe Base theme based on Bootstrap 5 with Light/Dark Mode (for those late night dwellers) and Strawberry Field modules on 2.2.0.
 - Complete support for Apple Silicon M1/M2/M3/M4/M5 Machines and in general arm64 architecture Chips like Raspberry Pi 4, with specially built arm64 docker containers. The only differences now between deployment strategies is the DB. Blazing fast OCR.
 - A freshly baked Anubis with bugfixes, more Bot control and new options for rules. Also faster.
 
@@ -124,7 +125,7 @@ In your location of choice clone this repo
 ```shell
 git clone https://github.com/esmero/archipelago-deployment-live
 cd archipelago-deployment-live
-git checkout 2.1.0
+git checkout 2.2.0
 ```
 
 ### Step 3. Setup your enviromental variables for Docker/Services
@@ -467,7 +468,7 @@ And Done Done! Thank you for following this guide!
 ## Deployment on ARM64/v8(Graviton, Apple M1) system:
 
 This applies to AWS `m6g` and `t3g` Instances and is documented inline in this guide. Please open an [ISSUE](https://github.com/esmero/archipelago-deployment-live/issues) in this repository if you run into any problems.
-Please review <https://github.com/esmero/archipelago-deployment-live/blob/2.1.0/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
+Please review <https://github.com/esmero/archipelago-deployment-live/blob/2.2.0/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
 
 ### How do I know my Architecture?
 
