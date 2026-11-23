@@ -2,6 +2,15 @@ map $http_x_forwarded_proto $fastcgi_param_https_variable {
     default '';
     https 'on';
 }
+
+map $http_x_requested_with $limit_non_ajax_ip {
+        default           $binary_remote_addr;
+        ~*XMLHttpRequest  "";
+}
+
+# 10MB zone or ~160K IPs, max 5 requests/sec per IP
+limit_req_zone $binary_remote_addr zone=limit_non_ajax_ip:10m rate=5r/s;
+
 upstream cantaloupe {
     server esmero-cantaloupe:8182;
     keepalive 32;
@@ -34,10 +43,20 @@ server {
     ## TUS Protocol will still need client_max_body_size value to match max File Size, event if never really sending a complete POST that requires it.
     client_max_body_size 4096M; ## Larger or equal to PHP from FPM container. At least as large as TUS File Upload MAX.
  
-    if ($http_user_agent ~* (go\-http|zgrab|mj12bot|meta\-externalagent|oai\-searchbot|tiktok|tiktokspider|lplinkcheck|netcrawl|npbot|AliyunSecBot|bytedance|bytespider|gptbot|semrush|petalbot|amazonbot|ahrefsbot|zhanzhang|semrushbot|brightbot|imagesiftbot|barkrowler|friendlycrawler|turnitin|claudebot|python-requests|aiohttp|semanticscholarbot|go\-http\-client|facebookexternalhit)) {
-
-        return 444;
+    if ($http_user_agent ~* (go\-http|aio\-kb\-crawler|siteimprove|zgrab|mj12bot|meta\-webindexer|meta\-externalagent|oai\-searchbot|tiktok|tiktokspider|lplinkcheck|netcrawl|npbot|AliyunSecBot|bytedance|bytespider|gptbot|semrush|petalbot|amazonbot|ahrefsbot|zhanzhang|semrushbot|brightbot|imagesiftbot|barkrowler|friendlycrawler|turnitin|claudebot|python-requests|aiohttp|semanticscholarbot|go\-http\-client|facebookexternalhit)){
+      return 444;
     }
+    
+    # Security
+    location ^~ /jsonapi/user/user {
+      deny all;
+      return 403;
+    }
+ 
+    location = /core/install.php {
+      deny all;
+      return 403;
+    }    
 
     fastcgi_send_timeout 120s;
     fastcgi_read_timeout 120s;
