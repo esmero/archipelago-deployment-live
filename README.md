@@ -34,7 +34,7 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 
 - Running your own local/development Archipelago. For that we suggest using <https://github.com/esmero/archipelago-deployment>
 
-### What is inside this dumpling for 2.2.0? (new section)
+### What is inside this dumpling for 2.2.0?
 
 - minio.io (our own build, with legacy gateway support) for local or Routed S3 with Console. We recommend disabling it and using directly a cloud managed S3 for better performance and full multipart upload compliance.
 - Updated Apache Solr 10.0 with custom built and updated wizardly Solr OCR Highlight library [v0.11](https://github.com/dbmdz/solr-ocrhighlighting) coded and maintained by the Development Team at the [Bavarian State Library](https://github.com/dbmdz). Thanks Johannes Baiter and team.
@@ -43,9 +43,9 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - Updated & Custom PHP-FPM 8.4+ (new to this release, was PHP 8.3) multi architecture, fine-tuned for Drupal 11, WARC to WACZ processing, Tesseract 5 with JP2 support, PDFAlto(what a pain to build!) and latest Composer 2.x, Drush 13.x-dev, FFMPEG, FIDO, plus Audiowave for Waveform to JSON extraction and BWFmetaedit for WAV files holding BWF metadata (Checksumming and other extras per stream).
 - Natural Language Processing via NLPWEB64 multi architecture with FastText Language detection (Thanks Mike Bennett!) or alternatively Machine learning/ML containers/APIs. (Image similarity: YOLO,MobileNet,ViT(New),Insightface and Text transformer: SBERT) differentiated for arm64 and amd/intel/64
 - Newest Cantaloupe (our own versioning, but based on latest `dev` upstream) on Java 27, multi architecture, IIIF2/3 Server with precise Video Frame, PDF extraction, PDF Tiling support, new Jetty with tons of community and custom fixes.
-- A Skeleton Project setup to run latest Version of Drupal 11 (11.4.13), Updated Archipelago Chiloe Base theme based on Bootstrap 5 with Light/Dark Mode (for those late night dwellers) and Strawberry Field modules on 2.2.0.
+- A Skeleton Project setup to run latest Version of Drupal 11 (11.4.13 as of today), Updated Archipelago Chiloe Base theme based on Bootstrap 5 with Light/Dark Mode (for those late night dwellers) and Strawberry Field modules on 2.2.0.
 - Complete support for Apple Silicon M1/M2/M3/M4/M5 Machines and in general arm64 architecture Chips like Raspberry Pi 4, with specially built arm64 docker containers. The only differences now between deployment strategies is the DB. Blazing fast OCR.
-- A freshly baked Anubis with bugfixes, more Bot control and new options for rules. Also faster.
+- An Updated Anubis with bugfixes, more Bot control and new options for rules. Also faster.
 
 ## Requirements
 
@@ -63,7 +63,7 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 
 ### OS:
 
-- Ubuntu 22.04 LTS /Ubuntu 24.04 LTS/Amazon Linux 2023/Debian 10 "Buster" matching your CPU architecture (of course)
+- Ubuntu 24.04 LTS /Ubuntu 26.04 LTS/Amazon Linux 2023/Debian 10 "Buster" matching your CPU architecture (of course)
 - Most recent `Docker` running as a service and `docker-compose` or `docker compose`
 
 ### Skills and the important human aspect
@@ -72,6 +72,7 @@ Running Archipelago Commons on a live public instance using SSL with Blob/Object
 - `Docker` basics knowledge and how to manage packages in your System
 - Knowledge of how to manage AWS/Azure or any other cloud-based provider for Computing Instances and S3 compatible Object Storage system and the associated permissions credentials to do so.
 - To be patient. Please read everything. Do not skip steps. Do not only copy and paste commands. Explanations give context and might help you troubleshoot issues.
+- Basic composer and Drupal knowledge
 
 Basically this guide is meant for humans with basic to medium `DevOps` background or humans with patience that are willing to troubleshoot, ask, and try again when that background is not (yet) enough. And we are here to help.
 
@@ -100,7 +101,7 @@ Setup your system using your favorite package manager with
 - tree
 - docker-compose or `docker compose` (V2) if running the most recent docker service. See https://docs.docker.com/compose/migrate/
 
-e.g. for Amazon Linux 2023 (x86/amd64) these steps are tested:
+e.g. for Amazon Linux 2023 (x86/amd64) these steps are tested (will install both `docker compose` and `docker-compose`):
 
 ```shell
 sudo yum update -y
@@ -110,8 +111,11 @@ sudo usermod -a -G docker ec2-user
 sudo chkconfig docker on
 sudo systemctl enable docker
 sudo yum install -y git htop tree jq perl-JSON-PP
+sudo mkdir -p /usr/libexec/docker/cli-plugins
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo cp /usr/local/bin/docker-compose /usr/libexec/docker/cli-plugins/.
 sudo chmod +x /usr/local/bin/docker-compose
+sudo chmod +x /usr/libexec/docker/cli-plugins/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 sudo reboot
 ```
@@ -161,6 +165,8 @@ REDIS_PASSWORD=YOUR_REDIS_PASSWORD
 PHP_MEMORY_LIMIT=MEGABYTES_OF_MEMORY_ASSIGNED_TO_PHP_WEB
 PHP_CLI_MEMORY_LIMIT=MEGABYTES_OF_MEMORY_ASSIGNED_TO_PHP_CLI_DRUSH_HYDROPONICS
 ANUBIS_PRIVATE_KEY=ed25519_PRIVATE_KEY
+GEOIPUPDATE_ACCOUNT_ID=YOUR_GEOIPLITE_MAXMIND_ACCOUNT_ID
+GEOIPUPDATE_LICENSE_KEY=YOUR_GEOIPLITE_MAXMIND_ACCOUNT_LICENSE_KEY
 ```
 
 What does each key mean?
@@ -177,8 +183,10 @@ What does each key mean?
 - `MINIO_FOLDER_PREFIX_CACHE`:  The `folder` (a prefix really) where Cantaloupe will/can write its `iiif` caches. `iiifcache/` is a _lovely_ name we use a lot. **IMPORTANT:** Always terminate these with a `/`.
 - `REDIS_PASSWORD`: Password for your REDIS (Drupal Cache/Queue storage) if you decide to enable the Drupal REDIS module.
 - `PHP_MEMORY_LIMIT`: PHP's (esmero-php) Memory limit in Megabytes without the "M" at the end(so just a number). Defaults to 1024
-- `PHP_CLI_MEMORY_LIMIT`: PHP's (esmero-php) client (the php command, drush and hydropinics) Memory limit in Megabytes without the "M" at the end(so just a number) t. Defaults to PHP_MEMORY_LIMIT. If you are going to enabled Search API Background indexing, new since 1.5.0, then this number should be ideally 2048 so the queue can render/ingest/and do its Drupal magic.
+- `PHP_CLI_MEMORY_LIMIT`: PHP's (esmero-php) client (the php command, drush and hydropinics) Memory limit in Megabytes without the "M" at the end(so just a number) t. Defaults to PHP_MEMORY_LIMIT. If you are going to enabled Search API Background indexing, since 1.5.0, then this number should be ideally 2048 so the queue can render/ingest/and do its Drupal magic.
 - `ANUBIS_PRIVATE_KEY`: Since 1.5.0. Because we (and you) do not like ML Bots (or people making money out of your data and re-selling the output as canned/simplified answers), you should put the output of ```openssl rand -hex 32``` in this key.
+- `GEOIPUPDATE_ACCOUNT_ID`: new since 2.2.0. Allows maxmind's GeoIP databases to be downloaded automatically and shared with NGNIX and Anubis. If you want to use this feature please create an account at https://www.maxmind.com/en/create-account. Leave empty if you are not planning on using this feature
+- `GEOIPUPDATE_LICENSE_KEY`: new since 2.2.0. Your licences key for your GEOIPUPDATE_ACCOUNT_ID. Leave empty if you are not planning on using this feature
 
 `IMPORTANT NOTE`: For AWS EC2. If you selected an `IAM role` for your server when setting it up/deploying it, `min.io` will use the AWS EC2-backed internal API to request access to your S3. This means the ROLE itself needs to have read/write access (ACL) to the given Bucket(s) and your key/secrets won't be able to override that. Please do not ignore this note. It will save you a LOT of frustration and coffee. You can also run an EC2 instace without a given IAM and in that case just the ACCESS_KEY/SECRET will matter.
 
@@ -188,7 +196,7 @@ Now that you know, you also know that these values **should not be shared** and 
 
 Once you have modified this you are ready for your first big decision. 
 
-#### Running a fully qualified domain you wish a valid/signed certificate for AMD/INTEL Architecture?
+#### Running a fully qualified domain you wish a valid/signed certificate for AMD64/INTEL64 Architecture?
 
 This means you will use the `docker-compose-aws-s3.yml`. Do the following:
 
@@ -196,7 +204,7 @@ This means you will use the `docker-compose-aws-s3.yml`. Do the following:
 cp deploy/ec2-docker/docker-compose-aws-s3.yml deploy/ec2-docker/docker-compose.yml
 ```
 
-#### Running a fully qualified domain you wish a valid/signed certificate for ARM64/Apple M1 Architecture?
+#### Running a fully qualified domain you wish a valid/signed certificate for ARM64/Graviton/Apple M1-M5 Architecture?
 
 This means you will use the `docker-compose-aws-s3-arm64.yml`. Do the following:
 
@@ -347,10 +355,10 @@ docker exec -ti esmero-php bash -c "composer update archipelago/* strawberryfiel
 
 #### Note on Composer, Github and VCS repositories
 
-for this release we had to patch Drupal and contributed modules a lot. We waited patiently for the maintainers to merge/accept or even review our changes, but sometimes people are busy (for months!), so we had opt for fetching versions from forks and our own diverging (and very well tested) modifications. You might want to peek into the `composer.json` to see where/what is being fetched from other sources. That said. When you are running `composer update` and specially, if you do that very often, `Github` might ask you to generate a token (which requires you to have a Github account) to access the APIs without throttling limits. The message you will see might be like this:
+for this release we had to patch Drupal and contributed modules a lot again. PHP 8.4 brings deprecations and that also meant some packages we love required a personalized patch strategy. We always wait patiently for the maintainers to merge/accept or even review our changes, but sometimes people are busy (for months!) and we have to act. But for 2.2.0 we also decided to remove some dependencies and patching is less. You might want to peek into the `composer.json` to see where/what is being fetched from other sources. That said. In our previous release, when running `composer update` very often, `Github` might have asked you to generate a token (which requires you to have a Github account) to access the APIs without throttling limits. For this release that is no longer a problem.
 
 ```shell
-GitHub API limit (60 calls/hr) is exhausted, could not fetch https://api.github.com/repos/DiegoPino/tableschema-php/commits/6d36f14a53c627aa12bca5837218f7e5fb0cfba7. Create a GitHub OAuth token to go over the API rate limit. You can also wait until 202X-XX-XX XX:XX:XX for the rate limit to reset.
+GitHub API limit (60 calls/hr) is exhausted, could not fetch https://api.github.com/repos/someorganization/somepackage/commits/6d36f14a53c627aa12bca5837218f7e5fb0cfba7. Create a GitHub OAuth token to go over the API rate limit. You can also wait until 202X-XX-XX XX:XX:XX for the rate limit to reset.
 
 You need to provide a GitHub access token.
 Tokens will be stored in plain text in "/root/.config/composer/auth.json" for future use by Composer.
@@ -376,9 +384,9 @@ https://github.com/settings/tokens/new?scopes=repo&description=Composer+on+XXXX
 
 ```
 
-If you hit this limit (will never happen during a `composer install`), please follow the link on `1.`. It will generate a token (copy it please) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
+If you hit this limit (will never happen during a `composer install`, should not be an issue in 2.2.0), please follow the link on `1.`. It will generate a token (copy it please) that you can paste (it please) into the terminal. Then press enter. That is all. Tokens last some time so you won't be bothered again.
 
-#### Now onto Drupal
+#### Now onto Drupal 11
 
 Once done, execute our setup script that will prepare your Drupal `settings.php` and bring some of the `.env` enviromental variables to the Drupal environment. 
 
@@ -425,8 +433,9 @@ Now your `deploy.sh` and `update_deployed.sh` are update and ready. Let's ingest
 docker exec -ti esmero-php bash -c 'scripts/archipelago/deploy.sh'
 ```
 
-**IMPORTANT:**  `update_deployed.sh` is not needed when deploying for the first time and totally **discouraged** on a customized Archipelago. 
-If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc/1.7.0/utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates).
+**IMPORTANT:**  `update_deployed.sh` is **NOT** needed when deploying for the first time and totally **discouraged** on a customized Archipelago. 
+If you make modifications to your `Twig templates`, that command will **replace** the ones shipped by us with fresh copies overwriting all your modifications. Only run to restore larger errors or when needing to update **everything** ones with newer versions and you don't care for your own customization. Please read https://docs.archipelago.nyc/2.2.0/utility_scripts/ for more ways of managing exporting/importing Metadata Display Entities (Twig templates) but also the recent
+"Download" functionality (UI) to fetch your templates in JSON API ready serialization.
 
 ### Step 7. Set your public IIIF server URL to your actual domain
 
@@ -454,7 +463,7 @@ docker exec -ti esmero-php bash -c "drush config-set -y format_strawberryfield.i
 
 Almost Done! Now you can log into your new Archipelago using `https` and start exploring. 
 
-### Run any Pending Search API Tasks (New to Drupal Search API 1.4.x)
+### Run any Pending Search API Tasks (Since Drupal Search API 1.4.x)
 
 This is new to us and specific to this version of Drupal's Search API.
 Please, once logged in, navigate to `/admin/config/search/search-api>` and press, if present,
@@ -465,7 +474,7 @@ We discussed this issue with the maintainers, they are aware, but can not provid
 
 And Done Done! Thank you for following this guide!
 
-## Deployment on ARM64/v8(Graviton, Apple M1) system:
+## Deployment on ARM64/v8(Graviton, Apple M1-M5) system:
 
 This applies to AWS `m6g` and `t3g` Instances and is documented inline in this guide. Please open an [ISSUE](https://github.com/esmero/archipelago-deployment-live/issues) in this repository if you run into any problems.
 Please review <https://github.com/esmero/archipelago-deployment-live/blob/2.2.0/deploy/ec2-docker/docker-compose-aws-s3-arm64.yml> for more info.
