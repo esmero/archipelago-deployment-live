@@ -9,9 +9,9 @@ echo -e  "Linked Data Block HTML\n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/Linked Data-998d30c0-57b7-4219-bcff-6ac2c0bf6563.json';
 
-echo -e "IIIF 3.0 Manifest for Images and Mirador\n"
+echo -e "IIIF 3.0 Manifest\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @d8content/metadatadisplay_entity_03.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/IIIF Presentation API 3.0 Manifest-ad7aab5a-4bb3-43f2-8328-2b62895a3821.json';
 
 echo -e "MODS 3.7\n"
 
@@ -57,7 +57,7 @@ echo -e "IIIF 3.0 Manifest for Creative Work Series Parents\n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/IIIF Presentation API 3 Creative Works Series Manifest-6c405928-9ae8-4557-b062-91fcf2b0af0a.json';
 
-echo -e "IIIF 3.0 Manifest for Simple and Creative Work Series (Unified)\n"
+echo -e "IIIF 3.0 Manifest for Digital Objects and and Creative Work Series (Unified + single View based)\n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/IIIF Presentation API 3 Series Manifest Unified-d4ca85ee-4ecd-40f3-ae6b-d24732863b27.json';
 
@@ -89,6 +89,14 @@ echo -e "DataCite Schema V4 \n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/DataCite V4 Default Template for 1.6.0+-4003250e-a596-4c29-a7e3-d55ff1009d44.json';
 
+echo -e "IIIF Presentation 3 - Multispectral Images Only - Choice \n"
+
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/d8content/IIIF_Choice_Template-99b0d299-67b4-4c53-b2d2-3e86593c8a21.json';
+
+# echo -e "Advanced AMI Ingest Template\n"
+
+# curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/metadatadisplay_entity/metadatadisplay_entity --data-binary @'d8content/Advanced AMI Ingest Template-6d2b24fc-768a-48f6-af78-5f7a96c17ad8.json';
+
 echo -e "Deploying Menu Items\n"
 
 curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/menu_link_content/menu_link_content --data-binary @d8content/menu_link_content_01.json;
@@ -106,7 +114,7 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 
 echo -e "A welcome Message Block\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/block_content/block_with_twig_templating_ --data-binary @d8content/block_content_01.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/block_content/block_with_twig_templating --data-binary @d8content/block_content_01.json;
 
 echo -e "A Footer Block with cute icons\n"
 
@@ -114,7 +122,7 @@ curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Co
 
 echo -e "Advanced Search Page Block\n"
 
-curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/block_content/block_with_twig_templating_ --data-binary @d8content/block_content_02.json;
+curl -w "\n" --user jsonapi:jsonapi -H 'Accept: application/vnd.api+json' -H 'Content-type: application/vnd.api+json' -XPOST http://esmero-web/jsonapi/block_content/block_with_twig_templating --data-binary @d8content/block_content_02.json;
 
 echo -e "The Theme Mode Switcher Block\n"
 
