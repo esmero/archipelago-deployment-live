@@ -23,3 +23,5 @@ config_storage/anubisconfig/*.yaml
 config_storage/nginxconfig/template/nginx.conf.template
 deploy/ec2-docker/docker-compose.yml
 drupal/composer.json
+deploy/ec2-docker-release-testing/.env
+deploy/ec2-docker-release-testing/docker-compose.yml
