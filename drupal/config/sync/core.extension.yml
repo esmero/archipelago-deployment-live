@@ -109,7 +109,7 @@ module:
   strawberry_runners: 0
   strawberryfield: 0
   system: 0
-  opensolr_turbo_indexer: 0
+  opensolr: 0
   taxonomy: 0
   telephone: 0
   text: 0
