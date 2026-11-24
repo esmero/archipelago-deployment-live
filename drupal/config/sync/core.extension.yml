@@ -84,6 +84,7 @@ module:
   moderated_content_bulk_publish: 0
   mysql: 0
   node: 0
+  opensolr: 0
   options: 0
   page_cache: 0
   path: 0
@@ -109,7 +110,6 @@ module:
   strawberry_runners: 0
   strawberryfield: 0
   system: 0
-  opensolr: 0
   taxonomy: 0
   telephone: 0
   text: 0

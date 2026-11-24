@@ -8,6 +8,8 @@ domain_root: none
 use_customhost: true
 hostname: 'http://esmero-minio:9000'
 domain: 'localhost:9000/minio/archipelago/'
+use_path_style_endpoint: true
+disable_version_sync: true
 cache_control_header: ''
 encryption: ''
 use_https: false
@@ -16,8 +18,8 @@ read_only: false
 disable_cert_verify: false
 redirect_styles_ttl: 0
 root_folder: ''
-public_folder: ''
-private_folder: ''
+public_folder: s3fs-public
+private_folder: s3fs-private
 presigned_urls: ''
 saveas: ''
 torrents: ''

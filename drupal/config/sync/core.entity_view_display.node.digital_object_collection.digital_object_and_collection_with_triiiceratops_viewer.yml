@@ -64,30 +64,30 @@ content:
     type: strawberry_triiiceratops_formatter
     label: hidden
     settings:
+      iiif_base_url: 'http://localhost:8183/iiif/2'
+      iiif_base_url_internal: 'http://esmero-cantaloupe:8182/iiif/2'
       mediasource:
         metadataexposeentity: metadataexposeentity
-      viewer_overrides: '{ "gallery": { "open": true } } '
-      viewer_theme_overrides: "{\r\n\"primary\": \"var(--bb-primary, #59656f)\"\r\n}"
       main_mediasource: metadataexposeentity
       metadataexposeentity_source: iiifmanifest3cws_multiple
+      max_width: '0'
+      max_height: '720'
+      use_iiif_globals: '1'
+      upload_json_key_source: ''
+      embargo_json_key_source: ''
+      hide_on_embargo: '0'
+      viewer_overrides: '{ "gallery": { "open": true } } '
+      viewer_theme_overrides: "{\r\n\"primary\": \"var(--bb-primary, #59656f)\"\r\n}"
+      webannotations: true
+      webannotations_storage: single
+      content_state_drop: true
+      content_state_url_update: true
       enabled_plugins:
         plugin-image-manipulation: plugin-image-manipulation
         plugin-av: plugin-av
         plugin-pdf-export: plugin-pdf-export
         plugin-image-export: plugin-image-export
         plugin-annotation-editor: plugin-annotation-editor
-      webannotations: '1'
-      webannotations_storage: single
-      content_state_drop: '1'
-      content_state_url_update: '1'
-      max_width: '0'
-      max_height: '720'
-      upload_json_key_source: ''
-      embargo_json_key_source: ''
-      use_iiif_globals: '1'
-      iiif_base_url: 'http://localhost:8183/iiif/2'
-      iiif_base_url_internal: 'http://esmero-cantaloupe:8182/iiif/2'
-      hide_on_embargo: 0
       manifestnodelist_json_key_source: isrelatedto
       manifesturl_json_key_source: iiifmanifest
     third_party_settings: {  }
