@@ -237,7 +237,7 @@
         "PHP 8.4 deprecations": "https://www.drupal.org/files/issues/2025-03-17/context-fix-php-84-deprecations-3513516-62.patch"
       },
       "ankitpokhrel/tus-php": {
-        "Less Cache writes during upload fix": "https://raw.githubusercontent.com/esmero/archipelago-deployment-live/refs/heads/2.2.0/patches/tus-file-cache.patch",
+        "Less Cache writes during upload fix": "https://raw.githubusercontent.com/esmero/archipelago-deployment-live/refs/heads/2.2.0/drupal/patches/tus-file-cache.patch",
         "PHP84 compatibility": "https://raw.githubusercontent.com/esmero/archipelago-deployment-live/refs/heads/2.2.0/drupal/patches/tus-php-archipelago-PHP84.patch"
       },
       "league/openapi-psr7-validator": {
