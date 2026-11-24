@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   content:
-    - 'block_content:block_with_twig_templating_:1cdf7155-eb60-4f27-9e5e-64fffe93127a'
+    - 'block_content:block_with_twig_templating:1cdf7155-eb60-4f27-9e5e-64fffe93127a'
   module:
     - block_content
     - context
@@ -21,8 +21,6 @@ settings:
   label: 'Front page welcome'
   label_display: '0'
   provider: block_content
-  status: true
-  info: ''
   view_mode: full
 visibility:
   request_path_exclusion:

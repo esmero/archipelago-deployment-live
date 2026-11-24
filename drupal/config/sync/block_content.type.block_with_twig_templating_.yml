@@ -1,8 +1,8 @@
-uuid: 4885591b-96e6-480f-9415-4f8a63504ca3
+uuid: 02c27b0f-1f7e-4fdb-8ec7-22eeff20b258
 langcode: en
 status: true
 dependencies: {  }
 id: block_with_twig_templating_
-label: 'Block with Twig Templating '
+label: '(DEPRECATED) Block with Twig Templating (legacy) do not use'
 revision: true
-description: 'Custom Block with a Twig field'
+description: 'DEPRECATED, please use the other one!'

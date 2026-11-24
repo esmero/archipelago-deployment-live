@@ -99,8 +99,8 @@ module:
   s3fs: 0
   search_api: 0
   search_api_autocomplete: 0
-  search_api_solr_autocomplete: 0
   search_api_solr: 0
+  search_api_solr_autocomplete: 0
   serialization: 0
   settings_tray: 0
   shortcut: 0
@@ -109,6 +109,7 @@ module:
   strawberry_runners: 0
   strawberryfield: 0
   system: 0
+  opensolr_turbo_indexer: 0
   taxonomy: 0
   telephone: 0
   text: 0
