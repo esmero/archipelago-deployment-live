@@ -8,8 +8,11 @@ map $http_x_requested_with $limit_non_ajax_ip {
         ~*XMLHttpRequest  "";
 }
 
-# 10MB zone or ~160K IPs, max 5 requests/sec per IP
+# 10MB zone or ~160K IPs, max 5 requests/sec per IP for calls that are not Ajax driven. Helps to remediate an overwhelmed cantaloupe
 limit_req_zone $binary_remote_addr zone=limit_non_ajax_ip:10m rate=5r/s;
+
+# geoip. By default all inside the geoip_asn_zones.include.template is commented out
+# include /etc/nginx/conf.d/geoip_asn_zones.include;
 
 upstream cantaloupe {
     server esmero-cantaloupe:8182;
