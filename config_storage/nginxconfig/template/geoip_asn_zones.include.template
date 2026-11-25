@@ -1,0 +1,38 @@
+# Example Include file to be used in combination of docker-compose-geoip-addon.yml
+# and your Maxmind GeoLite2 accunt
+#
+# Provides two different approaches: 
+# - Detect DataCenter, then map each IP to one of those. Limits will apply per IP. Blocks less. Allows more traffic
+# - Create DataCenter Buckets. Limits will apply to the complete data center as a while. Blocks more. The whole data center shares the limit
+# you need to uncomment at least the following line
+
+#geoip_org /usr/share/GeoIP/GeoLite2-ASN.mmdb;
+
+# 1. Per IP of data center, uncomment/edit at will 
+#map $geoip_org $is_datacenter {
+#        default 0;
+#        ~*^Datacamp\s+Limited$ 1;
+#        ~*^Amazon(\.com|\s+Technologies|\s+Data\s+Services|-02|-AES)\b 1;
+#        ~*^Microsoft(\s+Corporation|-CORP-MSN-AS-BLOCK)\b 1;
+#        ~*^Alibaba(\s+\(US\)|\s+Cloud|\.com|\s+Advertising)\b 1;
+#    }
+#map $is_datacenter $datacenter_limit_key {
+#        default "";
+#        1       $binary_remote_addr;
+#}
+# 10MB zone or ~160K IPs, max 2 requests/sec per individual IP belonging to an ASN
+#limit_req_zone $datacenter_limit_key zone=throttle_by_asn:10m rate=2r/s;
+#
+# 2. Per Data center as a whole, uncomment/edit at will
+#map $geoip_org $datacenter_bucket {
+#        default "";
+#        ~*^Datacamp\s+Limited$                                       "datacamp";
+#        ~*^Amazon(\.com|\s+Technologies|\s+Data\s+Services|-02|-AES)\b "aws";
+#        ~*^Microsoft(\s+Corporation|-CORP-MSN-AS-BLOCK)\b             "azure";
+#        ~*^Alibaba(\s+\(US\)|\s+Cloud|\.com|\s+Advertising)\b         "alibaba";
+#}
+#
+# 1MB zone because we only have 4 buckers here  max 5 requests/sec per complete ASN (All IPs share a single common rate)
+#limit_req_zone $datacenter_bucket zone=throttle_by_asn:10m rate=5r/s;
+
+

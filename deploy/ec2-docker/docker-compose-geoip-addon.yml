@@ -1,0 +1,107 @@
+# Addon Docker file for any architecture, complements the main docker-compose.yml
+#
+# First: Make sure any custom attributes used in your primary docker-compose.yml for ANUBIS and NGINX are matched here
+# Second: Get a free account at https://www.maxmind.com/en/create-account for GeoIP2 Lite Dabatases and acquire a license key
+# Third: Update your .env with those values
+# Fourth: This only mounts the DBs and updates them dynamically. Its up to you to use them in NGINX or Anubis
+# Finally:
+# docker compose -f docker-compose.yml -f docker-compose-geoip-addon.yml up -d
+services:
+  geoipupdate:
+    image: ghcr.io/maxmind/geoipupdate:latest
+    container_name: geoipupdate
+    restart: unless-stopped
+    environment:
+      - GEOIPUPDATE_ACCOUNT_ID=${GEOIPUPDATE_ACCOUNT_ID}
+      - GEOIPUPDATE_LICENSE_KEY=${GEOIPUPDATE_LICENSE_KEY}
+      - GEOIPUPDATE_EDITION_IDS=GeoLite2-ASN GeoLite2-City GeoLite2-Country
+      - GEOIPUPDATE_FREQUENCY=72
+    volumes:
+      - geoip-data:/usr/share/GeoIP
+  web:
+    container_name: esmero-web
+    image: jonasal/nginx-certbot
+    restart: always
+    environment:
+      CERTBOT_EMAIL: ${ARCHIPELAGO_EMAIL}
+      ENVSUBST_VARS: FQDN
+      FQDN: ${ARCHIPELAGO_DOMAIN}
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/user_conf.d
+      # MSMTP_ACCOUNT: ${MSMTP_ACCOUNT}
+      # MSMTP_EMAIL: ${MSMTP_EMAIL}
+      # MSMTP_HOST: ${MSMTP_HOST}
+      # MSMTP_PASSWORD: ${MSMTP_PASSWORD}
+      # MSMTP_PORT: ${MSMTP_PORT}
+      # MSMTP_STARTTLS: ${MSMTP_STARTTLS}
+      # NGXBLOCKER_CRON: ${NGXBLOCKER_CRON}
+      # NGXBLOCKER_CRON_COMMAND: ${NGXBLOCKER_CRON_COMMAND}
+      # NGXBLOCKER_CRON_START: ${NGXBLOCKER_CRON_START}
+      # NGXBLOCKER_ENABLE: ${NGXBLOCKER_ENABLE}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/template:/etc/nginx/templates
+      - ${ARCHIPELAGO_ROOT}/drupal:/var/www/html:cached
+      - ${ARCHIPELAGO_ROOT}/data_storage/ngnixcache:/var/cache/nginx
+      - ${ARCHIPELAGO_ROOT}/data_storage/letsencrypt:/etc/letsencrypt
+      # Mounts a modified main config that enables the GEOIP dynamic module
+      - ${ARCHIPELAGO_ROOT}/config_storage/nginxconfig/nginx-geoip.conf:/etc/nginx/nginx.conf:ro
+      # Volumen holding the GEOIP2 Lite Databases
+      - geoip-data:/usr/share/GeoIP
+    depends_on:
+      - solr
+      - php
+      - db
+      - redis
+      # Uncomment if Running Anubis
+      # - anubis
+      - geoipupdate
+    tty: true
+    # Defines a Log file limit. 8Gbytes in this case. Adjust to your traffic
+    # and reporting needs (might cover less than a month with all the stupid bots and AI/ML insanity)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8196m"
+    networks:
+      - host-net
+      - esmero-net
+  anubis:
+    container_name: esmero-anubis
+    image: esmero/anubis:1.7.0-multiarch
+    environment:
+      BIND: ":8969"
+      DIFFICULTY: "4"
+      METRICS_BIND: ":9090"
+      SERVE_ROBOTS_TXT: "true"
+      # see https://anubis.techaro.lol/docs/admin/installation/#key-generation
+      ED25519_PRIVATE_KEY_HEX: ${ANUBIS_PRIVATE_KEY}
+      TARGET: "http://esmero-web:61111"
+      REDIRECT_DOMAINS: ${ARCHIPELAGO_DOMAIN}
+      POLICY_FNAME: "/data/cfg/botPolicies.yaml"
+      OG_PASSTHROUGH: "false"
+      OG_EXPIRY_TIME: "24h"
+      SLOG_LEVEL: "info"
+      #SLOG_LEVEL: "debug"
+    ports:
+      - 8969:8969
+    networks:
+      - esmero-net
+    volumes:
+      - ${ARCHIPELAGO_ROOT}/config_storage/anubisconfig/botPolicies.yaml:/data/cfg/botPolicies.yaml:ro
+      - ${ARCHIPELAGO_ROOT}/config_storage/anubisconfig/allow.yaml:/data/cfg/archipelago/allow.yaml:ro
+      - ${ARCHIPELAGO_ROOT}/config_storage/anubisconfig/deny.yaml:/data/cfg/archipelago/deny.yaml:ro
+      - geoip-data:/usr/share/GeoIP:ro
+networks:
+  host-net:
+    driver: bridge
+  esmero-net:
+    driver: bridge
+    internal: true
+volumes:
+  redis-cache:
+    driver: local
+  geoip-data:
+    driver: local
+    
